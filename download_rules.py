@@ -1,0 +1,37 @@
+import csv, os, urllib.request
+
+BASE = "https://raw.githubusercontent.com/SigmaHQ/sigma/master"
+RULE_DIR = "rules/windows/process_creation"
+DATA_DIR = "regression_data/rules/windows/process_creation"
+
+RULES = [
+    ("T1059.001", "proc_creation_win_powershell_susp_download_patterns", "e6c54d94-498c-4562-a37c-b469d8e9a275", False),
+    ("T1218.011", "proc_creation_win_rundll32_sys", "731231b9-0b5d-4219-94dd-abb6959aa7ea", False),
+    ("T1218.005", "proc_creation_win_mshta_javascript", "67f113fa-e23d-4271-befa-30113b3e08b1", True),
+    ("T1218.010", "proc_creation_win_regsvr32_http_ip_pattern", "2dd2c217-bf68-437a-b57c-fe9fd01d5de8", False),
+    ("T1105", "proc_creation_win_certutil_download", "19b08b1c-861d-4e75-a1ef-ea0c1baf202b", True),
+    ("T1053.005", "proc_creation_win_schtasks_creation_temp_folder", "39019a4e-317f-4ce3-ae63-309a8c6b53c5", False),
+    ("T1547.001", "proc_creation_win_reg_add_run_key", "de587dce-915e-4218-aac4-835ca6af6f70", True),
+    ("T1136.001", "proc_creation_win_net_user_add", "cd219ff3-fa99-45d4-8380-a7d15116c6dc", False),
+    ("T1003.001", "proc_creation_win_sysinternals_procdump_lsass", "5afee48e-67dd-4e03-a783-f74259dcf998", True),
+    ("T1197", "proc_creation_win_bitsadmin_download_susp_extensions", "5b80a791-ad9b-4b75-bcc1-ad4e1e89c200", True),
+    ("T1047", "proc_creation_win_wmic_process_creation", "526be59f-a573-4eea-b5f7-f0973207634d", True),
+    ("T1033", "proc_creation_win_whoami_priv_discovery", "97a80ec7-0e2f-4d05-9ef4-65760e634f6b", True),
+]
+
+def get(url, path):
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    urllib.request.urlretrieve(url, path)
+
+os.makedirs("results", exist_ok=True)
+with open("results/techniques.csv", "w", newline="") as f:
+    w = csv.writer(f)
+    w.writerow(["technique", "rule_file", "rule_id", "has_test_data"])
+    for tech, name, rid, has_data in RULES:
+        get(f"{BASE}/{RULE_DIR}/{name}.yml", f"data/sigmahq_rules/{name}.yml")
+        if has_data:
+            for ext in ("json", "evtx"):
+                get(f"{BASE}/{DATA_DIR}/{name}/{rid}.{ext}", f"data/sigmahq_test_logs/{name}/{rid}.{ext}")
+        w.writerow([tech, name + ".yml", rid, has_data])
+        print("ok", tech, name)
+print("done")
