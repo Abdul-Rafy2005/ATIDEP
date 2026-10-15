@@ -1,0 +1,12 @@
+{
+ "Image": "C:\\Windows\\System32\\schtasks.exe",
+ "CommandLine": "schtasks.exe /create /tn Updater /tr C:\\Users\\student\\AppData\\Local\\Temp\\x.exe /sc once /st 12:00",
+ "OriginalFileName": "SCHTASKS.EXE",
+ "ParentImage": "C:\\Windows\\System32\\cmd.exe",
+ "ParentCommandLine": "C:\\Windows\\system32\\cmd.exe",
+ "User": "LABPC\\student",
+ "IntegrityLevel": "Medium",
+ "Description": "",
+ "Product": "",
+ "Company": ""
+}

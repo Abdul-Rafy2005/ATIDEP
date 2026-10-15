@@ -1,0 +1,12 @@
+{
+ "Image": "C:\\Windows\\System32\\wbem\\WMIC.exe",
+ "CommandLine": "wmic.exe process call create \"cmd.exe /c calc.exe\"",
+ "OriginalFileName": "WMIC.EXE",
+ "ParentImage": "C:\\Windows\\System32\\cmd.exe",
+ "ParentCommandLine": "C:\\Windows\\system32\\cmd.exe",
+ "User": "LABPC\\student",
+ "IntegrityLevel": "Medium",
+ "Description": "",
+ "Product": "",
+ "Company": ""
+}

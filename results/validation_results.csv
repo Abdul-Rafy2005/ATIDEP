@@ -1,0 +1,13 @@
+technique,rule_file,status,detail
+T1059.001,proc_creation_win_powershell_susp_download_patterns.yml,PASS,"caught malicious, quiet on benign"
+T1218.011,proc_creation_win_rundll32_sys.yml,PASS,"caught malicious, quiet on benign"
+T1218.005,proc_creation_win_mshta_javascript.yml,PASS,"caught malicious, quiet on benign"
+T1218.010,proc_creation_win_regsvr32_http_ip_pattern.yml,PASS,"caught malicious, quiet on benign"
+T1105,proc_creation_win_certutil_download.yml,PASS,"caught malicious, quiet on benign"
+T1053.005,proc_creation_win_schtasks_creation_temp_folder.yml,PASS,"caught malicious, quiet on benign"
+T1547.001,proc_creation_win_reg_add_run_key.yml,PASS,"caught malicious, quiet on benign"
+T1136.001,proc_creation_win_net_user_add.yml,PASS,"caught malicious, quiet on benign"
+T1003.001,proc_creation_win_sysinternals_procdump_lsass.yml,PASS,"caught malicious, quiet on benign"
+T1197,proc_creation_win_bitsadmin_download_susp_extensions.yml,PASS,"caught malicious, quiet on benign"
+T1047,proc_creation_win_wmic_process_creation.yml,PASS,"caught malicious, quiet on benign"
+T1033,proc_creation_win_whoami_priv_discovery.yml,PASS,"caught malicious, quiet on benign"

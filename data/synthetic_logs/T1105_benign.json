@@ -1,0 +1,12 @@
+{
+ "Image": "C:\\Windows\\System32\\certutil.exe",
+ "CommandLine": "certutil.exe -hashfile C:\\Users\\student\\Downloads\\setup.iso SHA256",
+ "OriginalFileName": "CERTUTIL.EXE",
+ "ParentImage": "C:\\Windows\\System32\\cmd.exe",
+ "ParentCommandLine": "C:\\Windows\\system32\\cmd.exe",
+ "User": "LABPC\\student",
+ "IntegrityLevel": "Medium",
+ "Description": "",
+ "Product": "",
+ "Company": ""
+}

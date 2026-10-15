@@ -1,0 +1,12 @@
+{
+ "Image": "C:\\Windows\\System32\\schtasks.exe",
+ "CommandLine": "schtasks.exe /create /tn Backup /tr C:\\Scripts\\backup.bat /sc daily /st 02:00",
+ "OriginalFileName": "SCHTASKS.EXE",
+ "ParentImage": "C:\\Windows\\System32\\cmd.exe",
+ "ParentCommandLine": "C:\\Windows\\system32\\cmd.exe",
+ "User": "LABPC\\student",
+ "IntegrityLevel": "Medium",
+ "Description": "",
+ "Product": "",
+ "Company": ""
+}

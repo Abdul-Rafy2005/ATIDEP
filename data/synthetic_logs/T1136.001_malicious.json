@@ -1,0 +1,12 @@
+{
+ "Image": "C:\\Windows\\System32\\net.exe",
+ "CommandLine": "net.exe user hacker P@ssw0rd123 /add",
+ "OriginalFileName": "NET.EXE",
+ "ParentImage": "C:\\Windows\\System32\\cmd.exe",
+ "ParentCommandLine": "C:\\Windows\\system32\\cmd.exe",
+ "User": "LABPC\\student",
+ "IntegrityLevel": "Medium",
+ "Description": "",
+ "Product": "",
+ "Company": ""
+}

