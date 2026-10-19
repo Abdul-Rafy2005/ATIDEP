@@ -1,0 +1,16 @@
+title: PowerShell Used for Remote Script Execution (T1059.001)
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\powershell.exe'
+        CommandLine|contains: '-nop -w hidden -c IEX'
+        CommandLine|contains: '(New-Object Net.WebClient).DownloadString'
+        CommandLine|contains: '\http://'
+    condition: CommandLine|contains|all(selection)
+level: high
+tags:
+    - attack.command-and-control
+    - attack.t1059.001

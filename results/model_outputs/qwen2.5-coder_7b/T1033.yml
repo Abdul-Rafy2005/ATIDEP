@@ -1,0 +1,14 @@
+title: User Privileges Enumeration With Whoami
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\whoami.exe'
+        CommandLine|contains: ' /priv'
+    condition: selection
+level: low
+tags:
+    - attack.discovery
+    - attack.t1033

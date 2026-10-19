@@ -1,0 +1,17 @@
+title: File Download Using Certutil
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\certutil.exe'
+        CommandLine|contains: '-urlcache -f '
+        CommandLine|contains: 'http://'
+    condition: selection
+    correlation:
+      - selection[0] and selection[1] and selection[2]
+level: medium
+tags:
+    - attack.command-and-control
+    - attack.t1105

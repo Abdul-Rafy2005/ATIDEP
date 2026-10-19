@@ -1,0 +1,14 @@
+title: Process Creation Using WMIC
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\wmic.exe'
+        CommandLine|contains: ' process call create '
+    condition: selection
+level: high
+tags:
+    - attack.execution
+    - attack.t1047

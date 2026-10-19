@@ -1,0 +1,17 @@
+title: Inline JavaScript Execution via Mshta
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\mshta.exe'
+        CommandLine|contains|all:
+            - 'javascript:'
+            - 'GetObject'
+            - 'Exec'
+    condition: selection
+level: high
+tags:
+    - attack.execution
+    - attack.t1218.005

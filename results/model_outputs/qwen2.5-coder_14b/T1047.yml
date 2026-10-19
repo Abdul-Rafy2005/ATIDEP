@@ -1,0 +1,16 @@
+title: WMIC Used to Create a New Process
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\wmic.exe'
+        CommandLine|contains|all: 
+            - 'process call create'
+            - 'cmd.exe /c'
+    condition: selection
+level: high
+tags:
+    - attack.execution
+    - attack.t1047

@@ -1,0 +1,16 @@
+title: Mshta Runs Inline JavaScript Instead Of Opening Normal HTA File
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\mshta.exe'
+        CommandLine|contains: 'javascript:'
+        CommandLine|contains: 'a=GetObject('
+        CommandLine|contains: ').Exec();close()'
+    condition: selection
+level: high
+tags:
+    - attack.defense_evasion
+    - attack.t1218.005

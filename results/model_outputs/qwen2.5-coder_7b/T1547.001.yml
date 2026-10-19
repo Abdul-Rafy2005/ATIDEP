@@ -1,0 +1,14 @@
+title: Registry Run Key Modification
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\reg.exe'
+        CommandLine|contains: ' add HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run'
+    condition: selection
+level: high
+tags:
+    - attack.persistence
+    - attack.t1547.001

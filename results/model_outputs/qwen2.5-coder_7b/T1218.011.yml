@@ -1,0 +1,14 @@
+title: Suspicious Rundll32 Execution with .sys File
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\rundll32.exe'
+        CommandLine|contains|all: 'C:\Windows\Temp\driver.sys', 'Run'
+    condition: selection
+level: high
+tags:
+    - attack.persistence
+    - attack.t1218.011

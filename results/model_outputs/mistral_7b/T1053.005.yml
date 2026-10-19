@@ -1,0 +1,19 @@
+title: Scheduled Task Creation for Temporary Executable
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\schtasks.exe'
+        CommandLine|contains: '/create'
+        CommandLine|contains: '/tn'
+        CommandLine|contains: '/tr'
+        CommandLine|contains: 'C:\Users\.*\AppData\Local\Temp'
+        CommandLine|contains: '/sc once'
+        CommandLine|contains: '/st'
+    condition: CommandLine|contains|all(selection)
+level: medium
+tags:
+    - attack.persistence
+    - attack.t1053.005

@@ -1,0 +1,17 @@
+title: Remote File Download Using Bitsadmin
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\bitsadmin.exe'
+        CommandLine|contains: '/transfer'
+        CommandLine|contains: 'http'
+        CommandLine|endswith: 'download'
+        OriginalFileName|contains: 'evil.dll'
+    condition: CommandLine|contains|all(selection.CommandLine) & OriginalFileName|contains(selection.OriginalFileName)
+level: high
+tags:
+    - attack.command-and-control
+    - attack.t1197

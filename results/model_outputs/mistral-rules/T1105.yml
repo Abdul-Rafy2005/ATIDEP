@@ -1,0 +1,15 @@
+title: Certutil Used To Download A File From The Internet
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\certutil.exe'
+        CommandLine|contains: ' -urlcache -f '
+        CommandLine|endswith: ' payload.exe'
+    condition: selection
+level: high
+tags:
+    - attack.command_and_control
+    - attack.t1105

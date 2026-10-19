@@ -1,0 +1,16 @@
+title: Lsass Memory Dump Using Procdump
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\procdump.exe'
+        CommandLine|contains|all: 
+            - ' -ma '
+            - ' lsass.exe '
+    condition: selection
+level: high
+tags:
+    - attack.credential-access
+    - attack.t1003.001
