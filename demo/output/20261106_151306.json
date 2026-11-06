@@ -1,0 +1,18 @@
+{
+  "timestamp": "20261106_151306",
+  "input_text": "Synthetic example, not real intelligence. During the incident response investigation on workstation WS-04, analysts identified that the adversary attempted to establish persistence by adding an entry to the user Run key. The suspicious execution observed in the forensic timeline was:\nreg.exe add HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run /v Updater /d C:\\Users\\student\\x.exe\nThis command configured the binary x.exe located in the user directory to execute automatically upon user logon.\n",
+  "model": "qwen2.5-coder:7b",
+  "prompt_version": "v2",
+  "technique": "T1560.001",
+  "extracted_command_line": "reg.exe add HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run /v Updater /d C:\\Users\\student\\x.exe",
+  "process_image": "C:\\Program Files\\WinRAR\\rar.exe",
+  "gate_verdict": "FAIL",
+  "gate_reason": "Missed extracted command line",
+  "rule_yaml": "title: Registry Entry Added With Reg.exe\nstatus: test\nlogsource:\n    category: process_creation\n    product: windows\ndetection:\n    selection_img:\n        Image|endswith: '\\reg.exe'\n    selection_cli:\n        CommandLine|contains|all:\n            - 'HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run'\n            - '/v Updater'\n            - '/d C:\\Users\\student\\x.exe'\n    condition: all of selection_*\nlevel: high\ntags:\n    - attack.persistence\n    - attack.t1560.001",
+  "timings": {
+    "step1_technique_seconds": 3.31,
+    "step2_rule_seconds": 4.05,
+    "step3_gate_seconds": 0.01,
+    "total_seconds": 7.36
+  }
+}

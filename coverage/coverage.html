@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8'>
+<title>ATIDEP ATT&amp;CK Coverage</title>
+<style>
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; margin: 24px; color: #222; }
+h1 { font-size: 1.5em; margin-bottom: 8px; }
+p.subtitle { color: #666; margin-top: 0; margin-bottom: 16px; font-size: 0.9em; }
+.totals { background: #f5f5f5; border: 1px solid #ddd; padding: 12px 16px; border-radius: 4px; margin-bottom: 16px; font-size: 0.95em; }
+.totals strong { color: #111; }
+.legend { margin: 16px 0; display: flex; flex-wrap: wrap; gap: 16px; align-items: center; }
+.legend-item { display: inline-flex; align-items: center; font-size: 0.85em; }
+.legend-box { width: 14px; height: 14px; margin-right: 6px; border-radius: 2px; }
+table { border-collapse: collapse; width: 100%; font-size: 0.85em; margin-top: 8px; }
+th, td { border: 1px solid #ddd; padding: 6px 10px; }
+th { background: #2c3e50; color: #fff; text-align: left; font-weight: 600; }
+th.config-header { text-align: center; font-size: 0.8em; line-height: 1.3; }
+td.tech-id { font-family: monospace; font-weight: 600; white-space: nowrap; }
+td.tactic { white-space: nowrap; color: #555; }
+td.title { max-width: 280px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+td.status { text-align: center; font-weight: 600; color: #fff; }
+td.verdict { text-align: center; font-weight: 600; color: #fff; }
+tr:nth-child(even) td.title, tr:nth-child(even) td.tech-id, tr:nth-child(even) td.tactic { background: #fafafa; }
+tfoot td { font-weight: bold; background: #eee; border-top: 2px solid #333; }
+</style>
+</head>
+<body>
+<h1>ATIDEP ATT&amp;CK Coverage Grid</h1>
+<p class='subtitle'>Automated Threat-Informed Detection Engineering Platform</p>
+<div class='totals'>
+<strong>Coverage Summary:</strong> 12 of 24 techniques have at least one configuration that passes.<br>
+Sets included: sets 1 and 2 (24 techniques total). Set 3 has not been run.
+</div>
+<div class='legend'>
+<strong>Legend:</strong>
+<span class='legend-item'><span class='legend-box' style='background:#4caf50;'></span>PASS</span>
+<span class='legend-item'><span class='legend-box' style='background:#ff9800;'></span>NARROW</span>
+<span class='legend-item'><span class='legend-box' style='background:#f44336;'></span>MISSED</span>
+<span class='legend-item'><span class='legend-box' style='background:#9c27b0;'></span>SYNTAX</span>
+<span class='legend-item'><span class='legend-box' style='background:#e91e63;'></span>NOISY</span>
+<span class='legend-item'><span class='legend-box' style='background:#9e9e9e;'></span>NOT_TESTED</span>
+</div>
+<table>
+<thead><tr>
+<th>Technique ID</th>
+<th>Tactic</th>
+<th>Reference Rule</th>
+<th style='text-align:center;'>Reference Status</th>
+<th class='config-header'>qwen2.5-coder:14b<br>prompt v1<br>set 1</th>
+<th class='config-header'>qwen2.5-coder:14b<br>prompt v2_1<br>set 1</th>
+<th class='config-header'>qwen2.5-coder:14b<br>prompt v2<br>set 1</th>
+<th class='config-header'>qwen2.5-coder:7b<br>prompt v1<br>set 1</th>
+<th class='config-header'>qwen2.5-coder:7b<br>prompt v2_1<br>set 1</th>
+<th class='config-header'>qwen2.5-coder:7b<br>prompt v2<br>set 1</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class='tech-id'>T1059.001</td>
+<td class='tactic'>Execution</td>
+<td class='title' title='Suspicious PowerShell Download and Execute Pattern'>Suspicious PowerShell Download and Execute Pattern</td>
+<td class='status' style='background:#4caf50;'>PASS</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#f44336;'>0/3</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+</tr>
+<tr>
+<td class='tech-id'>T1218.011</td>
+<td class='tactic'>Defense Evasion</td>
+<td class='title' title='Suspicious Rundll32 Activity Invoking Sys File'>Suspicious Rundll32 Activity Invoking Sys File</td>
+<td class='status' style='background:#4caf50;'>PASS</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#f44336;'>0/3</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+</tr>
+<tr>
+<td class='tech-id'>T1218.005</td>
+<td class='tactic'>Defense Evasion</td>
+<td class='title' title='Suspicious JavaScript Execution Via Mshta.EXE'>Suspicious JavaScript Execution Via Mshta.EXE</td>
+<td class='status' style='background:#4caf50;'>PASS</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+</tr>
+<tr>
+<td class='tech-id'>T1218.010</td>
+<td class='tactic'>Defense Evasion</td>
+<td class='title' title='Potentially Suspicious Regsvr32 HTTP IP Pattern'>Potentially Suspicious Regsvr32 HTTP IP Pattern</td>
+<td class='status' style='background:#4caf50;'>PASS</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#f44336;'>0/3</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+</tr>
+<tr>
+<td class='tech-id'>T1105</td>
+<td class='tactic'>Defense Evasion</td>
+<td class='title' title='Suspicious Download Via Certutil.EXE'>Suspicious Download Via Certutil.EXE</td>
+<td class='status' style='background:#4caf50;'>PASS</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#ff9800;'>2/3</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+</tr>
+<tr>
+<td class='tech-id'>T1053.005</td>
+<td class='tactic'>Privilege Escalation</td>
+<td class='title' title='Suspicious Scheduled Task Creation Involving Temp Folder'>Suspicious Scheduled Task Creation Involving Temp Folder</td>
+<td class='status' style='background:#4caf50;'>PASS</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#ff9800;'>2/3</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+</tr>
+<tr>
+<td class='tech-id'>T1547.001</td>
+<td class='tactic'>Privilege Escalation</td>
+<td class='title' title='Potential Persistence Attempt Via Run Keys Using Reg.EXE'>Potential Persistence Attempt Via Run Keys Using Reg.EXE</td>
+<td class='status' style='background:#4caf50;'>PASS</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#ff9800;'>2/3</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+</tr>
+<tr>
+<td class='tech-id'>T1136.001</td>
+<td class='tactic'>Persistence</td>
+<td class='title' title='New User Created Via Net.EXE'>New User Created Via Net.EXE</td>
+<td class='status' style='background:#4caf50;'>PASS</td>
+<td class='verdict' style='background:#ff9800;'>2/3</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#f44336;'>0/3</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+</tr>
+<tr>
+<td class='tech-id'>T1003.001</td>
+<td class='tactic'>Defense Evasion</td>
+<td class='title' title='Potential LSASS Process Dump Via Procdump'>Potential LSASS Process Dump Via Procdump</td>
+<td class='status' style='background:#4caf50;'>PASS</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#f44336;'>0/3</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+</tr>
+<tr>
+<td class='tech-id'>T1197</td>
+<td class='tactic'>Persistence</td>
+<td class='title' title='File With Suspicious Extension Downloaded Via Bitsadmin'>File With Suspicious Extension Downloaded Via Bitsadmin</td>
+<td class='status' style='background:#4caf50;'>PASS</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+</tr>
+<tr>
+<td class='tech-id'>T1047</td>
+<td class='tactic'>Execution</td>
+<td class='title' title='Process Creation Attempt via Wmic.EXE'>Process Creation Attempt via Wmic.EXE</td>
+<td class='status' style='background:#4caf50;'>PASS</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+</tr>
+<tr>
+<td class='tech-id'>T1033</td>
+<td class='tactic'>Privilege Escalation</td>
+<td class='title' title='Security Privileges Enumeration Via Whoami.EXE'>Security Privileges Enumeration Via Whoami.EXE</td>
+<td class='status' style='background:#4caf50;'>PASS</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#4caf50;'>3/3</td>
+</tr>
+<tr>
+<td class='tech-id'>T1218.001</td>
+<td class='tactic'>Defense Evasion</td>
+<td class='title' title='Remote CHM File Download/Execution Via HH.EXE'>Remote CHM File Download/Execution Via HH.EXE</td>
+<td class='status' style='background:#4caf50;'>PASS</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+</tr>
+<tr>
+<td class='tech-id'>T1021.002</td>
+<td class='tactic'>Lateral Movement</td>
+<td class='title' title='Windows Admin Share Mount Via Net.EXE'>Windows Admin Share Mount Via Net.EXE</td>
+<td class='status' style='background:#4caf50;'>PASS</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+</tr>
+<tr>
+<td class='tech-id'>T1560.001</td>
+<td class='tactic'>Collection</td>
+<td class='title' title='Rar Usage with Password and Compression Level'>Rar Usage with Password and Compression Level</td>
+<td class='status' style='background:#4caf50;'>PASS</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+</tr>
+<tr>
+<td class='tech-id'>T1222.001</td>
+<td class='tactic'>Defense Evasion</td>
+<td class='title' title='Suspicious Recursive Takeown'>Suspicious Recursive Takeown</td>
+<td class='status' style='background:#4caf50;'>PASS</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+</tr>
+<tr>
+<td class='tech-id'>T1489</td>
+<td class='tactic'>Impact</td>
+<td class='title' title='Stop Windows Service Via Net.EXE'>Stop Windows Service Via Net.EXE</td>
+<td class='status' style='background:#4caf50;'>PASS</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+</tr>
+<tr>
+<td class='tech-id'>T1482</td>
+<td class='tactic'>Discovery</td>
+<td class='title' title='Domain Trust Discovery Via Dsquery'>Domain Trust Discovery Via Dsquery</td>
+<td class='status' style='background:#4caf50;'>PASS</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+</tr>
+<tr>
+<td class='tech-id'>T1218.008</td>
+<td class='tactic'>Defense Evasion</td>
+<td class='title' title='New DLL Registered Via Odbcconf.EXE'>New DLL Registered Via Odbcconf.EXE</td>
+<td class='status' style='background:#4caf50;'>PASS</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+</tr>
+<tr>
+<td class='tech-id'>T1546.007</td>
+<td class='tactic'>Privilege Escalation</td>
+<td class='title' title='Potential Persistence Via Netsh Helper DLL'>Potential Persistence Via Netsh Helper DLL</td>
+<td class='status' style='background:#4caf50;'>PASS</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+</tr>
+<tr>
+<td class='tech-id'>T1090</td>
+<td class='tactic'>Lateral Movement</td>
+<td class='title' title='RDP Port Forwarding Rule Added Via Netsh.EXE'>RDP Port Forwarding Rule Added Via Netsh.EXE</td>
+<td class='status' style='background:#4caf50;'>PASS</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+</tr>
+<tr>
+<td class='tech-id'>T1485</td>
+<td class='tactic'>Impact</td>
+<td class='title' title='Deleted Data Overwritten Via Cipher.EXE'>Deleted Data Overwritten Via Cipher.EXE</td>
+<td class='status' style='background:#4caf50;'>PASS</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+</tr>
+<tr>
+<td class='tech-id'>T1490</td>
+<td class='tactic'>Impact</td>
+<td class='title' title='Boot Configuration Tampering Via Bcdedit.EXE'>Boot Configuration Tampering Via Bcdedit.EXE</td>
+<td class='status' style='background:#4caf50;'>PASS</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+</tr>
+<tr>
+<td class='tech-id'>T1059</td>
+<td class='tactic'>Execution</td>
+<td class='title' title='Forfiles Command Execution'>Forfiles Command Execution</td>
+<td class='status' style='background:#4caf50;'>PASS</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+</tr>
+</tbody>
+<tfoot><tr>
+<td colspan='4' style='text-align:right;'>Strict Pass Total (matches RESULTS_SUMMARY.md):</td>
+<td style='text-align:center;'>35/36</td>
+<td style='text-align:center;'>36/36</td>
+<td style='text-align:center;'>26/36</td>
+<td style='text-align:center;'>28/36</td>
+<td style='text-align:center;'>36/36</td>
+<td style='text-align:center;'>36/36</td>
+</tr></tfoot>
+</table>
+</body></html>

@@ -19,9 +19,10 @@ sys.path.insert(0, os.path.dirname(__file__))
 from runner import rule_matches, rule_to_sql
 from generate import TECHNIQUES, make_pair
 from techniques_set2 import TECHNIQUES2, DESCRIPTIONS2, make_triple
+from techniques_set3 import TECHNIQUES3, DESCRIPTIONS3, make_triple3
 from compare_models import ask_ollama, extract_yaml, safe, DESCRIPTIONS
 from analyze_results import analyze_rule, format_flags
-from prompts import v1, v2
+from prompts import v1, v2, v2_1
 
 
 def tags(url):
@@ -45,7 +46,8 @@ def command_output(command):
 
 
 def prompt_for(version, tech, techniques, descriptions):
-    return (v1 if version == "v1" else v2).build_prompt(tech, techniques, descriptions)
+    module = {"v1": v1, "v2": v2, "v2_1": v2_1}[version]
+    return module.build_prompt(tech, techniques, descriptions)
 
 
 def ask(url, model, prompt, max_tokens, temperature=0, seed=None):
@@ -68,8 +70,9 @@ def ask(url, model, prompt, max_tokens, temperature=0, seed=None):
 
 
 def build_repair_prompt(prompt, rule, error, repair_hint=False):
-    hint = ("\nA value in your rule was read as a YAML mapping or has a quoting problem. "
-            "Write every value in single quotes (double any single quote inside it) and write the whole rule again.") if repair_hint else ""
+    hint = ("\nA list item in your rule is a key and value pair, but every list item must be plain text. "
+            "Modifiers such as windash belong in the key name (for example CommandLine|contains|windash|all:), "
+            "never as a list item. Write the whole rule again.") if (repair_hint and "Unsupported type" in error) else ""
     return (prompt + rule + f"\n\nThis rule failed with: {error}{hint}\n"
             "Write the corrected rule. Output ONLY the YAML.\nRule:\n")
 
@@ -81,8 +84,10 @@ def single_score(rule_text, tech, set_number):
         return {"syntax": False, "caught": False, "quiet": False, "error": str(error)[:150], "pass": False}
     if set_number == 1:
         shown, benign = make_pair(tech)
-    else:
+    elif set_number == 2:
         shown, _, benign = make_triple(tech)
+    else:
+        shown, _, benign = make_triple3(tech)
     caught = rule_matches(rule_text, shown)
     quiet = not rule_matches(rule_text, benign)
     return {"syntax": True, "caught": caught, "quiet": quiet, "error": "",
@@ -149,10 +154,10 @@ def write_report(path, rows):
             output.write(yaml.safe_dump(result["detection"], sort_keys=False).rstrip() + "\n\n")
 
 
-def main():
+def build_parser():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--set", type=int, choices=(1, 2), required=True)
-    parser.add_argument("--prompt", choices=("v1", "v2"), required=True)
+    parser.add_argument("--set", type=int, choices=(1, 2, 3), required=True)
+    parser.add_argument("--prompt", choices=("v1", "v2", "v2_1"), required=True)
     parser.add_argument("--models", nargs="+", required=True)
     parser.add_argument("--repeats", type=int, default=1)
     parser.add_argument("--max-tokens", type=int, default=800)
@@ -161,13 +166,30 @@ def main():
     parser.add_argument("--repair-hint", action="store_true")
     parser.add_argument("--url", default="http://localhost:11434")
     parser.add_argument("--allow-validation-set", action="store_true")
+    parser.add_argument("--final", action="store_true")
     parser.add_argument("--reason")
+    return parser
+
+
+def main():
+    parser = build_parser()
     args = parser.parse_args()
     if args.repeats < 1:
         parser.error("--repeats must be at least 1")
     if args.set == 2 and (not args.allow_validation_set or not args.reason):
         print("Set 2 is the validation set. Use --allow-validation-set and write down why.")
         return 2
+    if args.set == 3:
+        frozen_check = False
+        if os.path.exists("tools/check_frozen.py"):
+            try:
+                res = subprocess.run([sys.executable, "tools/check_frozen.py"], capture_output=True)
+                frozen_check = (res.returncode == 0)
+            except Exception:
+                frozen_check = False
+        if not (args.final and args.reason and os.path.exists("FROZEN.md") and frozen_check):
+            print("Set 3 is the locked final test set. Refusing run unless --final and --reason are given, FROZEN.md exists, and tools/check_frozen.py passes.")
+            return 2
 
     available = tags(args.url)
     missing = [model for model in args.models if not model_record(available, model)]
@@ -176,8 +198,15 @@ def main():
         print("Available models: " + ", ".join(model.get("name", "") for model in available))
         return 2
 
-    techniques = TECHNIQUES if args.set == 1 else TECHNIQUES2
-    descriptions = DESCRIPTIONS if args.set == 1 else DESCRIPTIONS2
+    if args.set == 1:
+        techniques = TECHNIQUES
+        descriptions = DESCRIPTIONS
+    elif args.set == 2:
+        techniques = TECHNIQUES2
+        descriptions = DESCRIPTIONS2
+    else:
+        techniques = TECHNIQUES3
+        descriptions = DESCRIPTIONS3
     run_id = datetime.datetime.now().strftime("%Y%m%d_%H%M")
     folder = os.path.join("results", "runs", f"{run_id}_set{args.set}_{args.prompt}")
     suffix = 1
@@ -253,6 +282,12 @@ def main():
         writer.writerow([os.path.basename(folder), settings["date"], args.set, args.prompt, ";".join(args.models)])
     if args.set == 2:
         with open("results/set2_use_log.csv", "a", newline="", encoding="utf-8") as output:
+            writer = csv.writer(output)
+            if output.tell() == 0:
+                writer.writerow(["date", "models", "prompt", "reason"])
+            writer.writerow([settings["date"], ";".join(args.models), args.prompt, args.reason])
+    if args.set == 3:
+        with open("results/set3_use_log.csv", "a", newline="", encoding="utf-8") as output:
             writer = csv.writer(output)
             if output.tell() == 0:
                 writer.writerow(["date", "models", "prompt", "reason"])

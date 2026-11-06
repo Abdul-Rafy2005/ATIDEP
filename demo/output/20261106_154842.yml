@@ -1,0 +1,18 @@
+title: Memory Dump of Lsass Process
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_img:
+        Image|endswith:
+            - '\procdump.exe'
+    selection_cli:
+        CommandLine|contains|all:
+            - 'lsass.exe'
+            - '.dmp'
+    condition: all of selection_*
+level: critical
+tags:
+    - attack.defense_evasion
+    - attack.t1003.001

@@ -1,0 +1,3 @@
+Synthetic example, not real intelligence. During the forensic triage of workstation WS-04, security operations detected internal discovery activity where the threat actor checked their current user privileges on the endpoint. The command execution recorded in the timeline was:
+whoami.exe /priv
+This command was invoked to enumerate the assigned security privileges and determine whether administrative tokens were available.

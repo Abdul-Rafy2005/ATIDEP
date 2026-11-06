@@ -1,0 +1,37 @@
+model,technique,repeat,single_pass,strict_pass,single_syntax,single_caught,single_quiet,verdict,error,flags,duplicate_keys,padded_values,seed,first_done_reason,first_eval_count,repair_done_reason,repair_eval_count,seconds,tokens_per_second,repaired
+qwen2.5-coder:14b,T1059.001,1,False,False,False,False,False,SYNTAX_ERROR,Unsupported type: <class 'dict'>,-,False,False,100,stop,137,stop,131,20.88,33.71,True
+qwen2.5-coder:14b,T1059.001,2,False,False,False,False,False,SYNTAX_ERROR,Unsupported type: <class 'dict'>,-,False,False,101,stop,137,stop,131,12.57,33.41,True
+qwen2.5-coder:14b,T1059.001,3,False,False,False,False,False,SYNTAX_ERROR,Unsupported type: <class 'dict'>,-,False,False,102,stop,137,stop,131,12.51,33.43,True
+qwen2.5-coder:14b,T1218.011,1,True,True,True,True,True,PASS,,-,False,False,100,stop,104,,0,5.35,33.51,False
+qwen2.5-coder:14b,T1218.011,2,True,True,True,True,True,PASS,,-,False,False,101,stop,112,,0,5.5,33.42,False
+qwen2.5-coder:14b,T1218.011,3,True,True,True,True,True,PASS,,-,False,False,102,stop,111,,0,5.43,33.92,False
+qwen2.5-coder:14b,T1218.005,1,True,True,True,True,True,PASS,,-,False,False,100,stop,99,,0,5.18,34.0,False
+qwen2.5-coder:14b,T1218.005,2,True,True,True,True,True,PASS,,-,False,False,101,stop,108,,0,5.41,32.96,False
+qwen2.5-coder:14b,T1218.005,3,True,True,True,True,True,PASS,,-,False,False,102,stop,101,,0,5.17,33.07,False
+qwen2.5-coder:14b,T1218.010,1,False,False,False,False,False,SYNTAX_ERROR,Unsupported type: <class 'dict'>,-,False,False,100,stop,126,stop,120,11.77,34.1,True
+qwen2.5-coder:14b,T1218.010,2,False,False,False,False,False,SYNTAX_ERROR,Unsupported type: <class 'dict'>,-,False,False,101,stop,125,stop,119,11.63,34.56,True
+qwen2.5-coder:14b,T1218.010,3,False,False,False,False,False,SYNTAX_ERROR,Unsupported type: <class 'dict'>,-,False,False,102,stop,126,stop,120,11.64,34.39,True
+qwen2.5-coder:14b,T1105,1,True,True,True,True,True,PASS,,duplicate_keys,True,False,100,stop,115,,0,5.55,34.55,False
+qwen2.5-coder:14b,T1105,2,False,False,False,False,False,SYNTAX_ERROR,Unsupported type: <class 'dict'>,-,False,False,101,stop,112,stop,109,10.9,34.35,True
+qwen2.5-coder:14b,T1105,3,True,True,True,True,True,PASS,,duplicate_keys,True,False,102,stop,106,,0,5.24,34.64,False
+qwen2.5-coder:14b,T1053.005,1,True,True,True,True,True,PASS,,-,False,False,100,stop,110,,0,5.37,35.2,False
+qwen2.5-coder:14b,T1053.005,2,True,True,True,True,True,PASS,,-,False,False,101,stop,110,,0,5.3,34.5,False
+qwen2.5-coder:14b,T1053.005,3,True,True,True,True,True,PASS,,-,False,False,102,stop,110,,0,5.35,34.13,False
+qwen2.5-coder:14b,T1547.001,1,True,True,True,True,True,PASS,,instance_specific_values,False,False,100,stop,121,,0,5.75,34.66,False
+qwen2.5-coder:14b,T1547.001,2,True,True,True,True,True,PASS,,instance_specific_values,False,False,101,stop,121,,0,5.64,34.48,False
+qwen2.5-coder:14b,T1547.001,3,True,True,True,True,True,PASS,,instance_specific_values,False,False,102,stop,124,,0,5.75,33.99,False
+qwen2.5-coder:14b,T1136.001,1,True,True,True,True,True,PASS,,-,False,False,100,stop,103,,0,5.21,34.68,False
+qwen2.5-coder:14b,T1136.001,2,True,True,True,True,True,PASS,,-,False,False,101,stop,103,,0,5.12,34.31,False
+qwen2.5-coder:14b,T1136.001,3,True,True,True,True,True,PASS,,-,False,False,102,stop,103,,0,5.11,34.46,False
+qwen2.5-coder:14b,T1003.001,1,False,False,False,False,False,SYNTAX_ERROR,Unsupported type: <class 'dict'>,-,False,False,100,stop,112,stop,112,10.99,34.78,True
+qwen2.5-coder:14b,T1003.001,2,False,False,False,False,False,SYNTAX_ERROR,Unsupported type: <class 'dict'>,-,False,False,101,stop,113,stop,113,11.04,34.41,True
+qwen2.5-coder:14b,T1003.001,3,False,False,False,False,False,SYNTAX_ERROR,Unsupported type: <class 'dict'>,-,False,False,102,stop,112,stop,112,10.95,34.48,True
+qwen2.5-coder:14b,T1197,1,True,True,True,True,True,PASS,,-,False,False,100,stop,105,,0,5.29,34.84,False
+qwen2.5-coder:14b,T1197,2,True,True,True,True,True,PASS,,-,False,False,101,stop,105,,0,5.18,34.24,False
+qwen2.5-coder:14b,T1197,3,True,True,True,True,True,PASS,,-,False,False,102,stop,105,,0,5.24,33.56,False
+qwen2.5-coder:14b,T1047,1,True,True,True,True,True,PASS,,-,False,False,100,stop,105,,0,5.22,34.71,False
+qwen2.5-coder:14b,T1047,2,True,True,True,True,True,PASS,,-,False,False,101,stop,105,,0,5.16,34.34,False
+qwen2.5-coder:14b,T1047,3,True,True,True,True,True,PASS,,-,False,False,102,stop,110,,0,5.34,33.93,False
+qwen2.5-coder:14b,T1033,1,True,True,True,True,True,PASS,,-,False,False,100,stop,86,,0,4.64,35.17,False
+qwen2.5-coder:14b,T1033,2,True,True,True,True,True,PASS,,-,False,False,101,stop,86,,0,4.62,34.24,False
+qwen2.5-coder:14b,T1033,3,True,True,True,True,True,PASS,,-,False,False,102,stop,86,,0,4.59,34.5,False

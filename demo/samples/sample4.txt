@@ -1,0 +1,4 @@
+Synthetic example, not real intelligence. The security audit identified network port scanning activity originating from an unmanaged endpoint. Network sensors observed nmap scanning the internal subnet using:
+nmap -sS -p 1-1024 192.168.1.0/24
+This reconnaissance activity performed SYN stealth scanning across common network service ports.
+

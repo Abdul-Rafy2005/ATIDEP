@@ -1,0 +1,18 @@
+{
+  "timestamp": "20261106_151829",
+  "input_text": "Synthetic example, not real intelligence. Security operations detected network lateral movement within the compromised finance subnet. The attacker mounted an administrative network share on the domain controller using the following line:\nnet.exe use \\\\10.0.0.5\\C$ /user:admin Passw0rd\nThis allowed the threat actor to access hidden administrative disk shares across the internal network infrastructure.\n",
+  "model": "qwen2.5-coder:7b",
+  "prompt_version": "v2",
+  "technique": "T1021.002",
+  "extracted_command_line": "net.exe use \\\\10.0.0.5\\C$ /user:admin Passw0rd",
+  "process_image": "C:\\Windows\\System32\\net.exe",
+  "gate_verdict": "FAIL",
+  "gate_reason": "Too narrow: caught extracted line but missed hidden variant",
+  "rule_yaml": "title: Admin Share Mounted With Net Use\nstatus: test\nlogsource:\n    category: process_creation\n    product: windows\ndetection:\n    selection:\n        Image|endswith: '\\net.exe'\n        CommandLine|contains|all:\n            - '\\\\'\n            - '\\C$'\n            - '/user:'\n    condition: selection\nlevel: high\ntags:\n    - attack.persistence\n    - attack.t1021.002",
+  "timings": {
+    "step1_technique_seconds": 3.12,
+    "step2_rule_seconds": 3.69,
+    "step3_gate_seconds": 0.01,
+    "total_seconds": 6.82
+  }
+}

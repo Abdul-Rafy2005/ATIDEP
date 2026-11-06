@@ -1,0 +1,17 @@
+title: Bitsadmin Downloads DLL From Remote Server
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\bitsadmin.exe'
+        CommandLine|contains|windash|all:
+            - '/transfer'
+            - '/download'
+            - '.dll'
+    condition: selection
+level: medium
+tags:
+    - attack.execution
+    - attack.t1197

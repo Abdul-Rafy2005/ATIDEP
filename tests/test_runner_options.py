@@ -46,21 +46,40 @@ def test_repair_hint_is_opt_in():
 
     original = run_experiment.urllib.request.urlopen
     run_experiment.urllib.request.urlopen = fake_urlopen
+    hint = ("A list item in your rule is a key and value pair, but every list item must be plain text. "
+            "Modifiers such as windash belong in the key name (for example CommandLine|contains|windash|all:), "
+            "never as a list item. Write the whole rule again.")
     try:
-        off = run_experiment.build_repair_prompt("p", "r", "bad", False)
-        on = run_experiment.build_repair_prompt("p", "r", "bad", True)
-        run_experiment.ask("http://test", "model", off, 801, 0, None)
-        run_experiment.ask("http://test", "model", on, 801, 0, None)
+        p1 = run_experiment.build_repair_prompt("p", "r", "Unsupported type: <class 'dict'>", False)
+        p2 = run_experiment.build_repair_prompt("p", "r", "other syntax error", True)
+        p3 = run_experiment.build_repair_prompt("p", "r", "Unsupported type: <class 'dict'>", True)
+        run_experiment.ask("http://test", "model", p1, 801, 0, None)
+        run_experiment.ask("http://test", "model", p2, 801, 0, None)
+        run_experiment.ask("http://test", "model", p3, 801, 0, None)
     finally:
         run_experiment.urllib.request.urlopen = original
 
-    hint = "A value in your rule was read as a YAML mapping or has a quoting problem."
     assert hint not in requests[0]
-    assert hint in requests[1]
+    assert hint not in requests[1]
+    assert hint in requests[2]
+
+
+def test_prompt_v2_1_accepted():
+    parser = run_experiment.build_parser()
+    args = parser.parse_args(["--set", "1", "--prompt", "v2_1", "--models", "qwen2.5-coder:7b"])
+    assert args.prompt == "v2_1"
+
+    from generator.generate import TECHNIQUES
+    from llm.compare_models import DESCRIPTIONS
+    prompt_text = run_experiment.prompt_for("v2_1", "T1059.001", TECHNIQUES, DESCRIPTIONS)
+    assert "CommandLine|contains|windash|all:" in prompt_text
+    assert "Example 3" in prompt_text
 
 
 if __name__ == "__main__":
     test_options_reach_request_body()
     test_repair_hint_is_opt_in()
+    test_prompt_v2_1_accepted()
     print("temperature=0.2 seed=103 reached the mocked request body")
     print("repair hint is opt-in")
+    print("prompt v2_1 accepted by run_experiment")

@@ -11,11 +11,32 @@ import yaml
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "validator"))
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "generator"))
 sys.path.insert(0, os.path.dirname(__file__))
-from runner import rule_matches
+from runner import rule_matches, rule_to_sql
 from generate import TECHNIQUES, make_pair
 from techniques_set2 import TECHNIQUES2, make_triple
+from techniques_set3 import TECHNIQUES3, make_triple3
 from compare_models import safe, evaluate
 from compare_set2 import evaluate2
+
+
+def evaluate3(rule_text, tech):
+    out = dict(syntax=False, caught=False, quiet=False, error="")
+    try:
+        rule_to_sql(rule_text)
+        out["syntax"] = True
+    except Exception as e:
+        out["error"] = str(e)[:150]
+        return out
+    mal, var, ben = make_triple3(tech)
+    hit_shown = rule_matches(rule_text, mal)
+    hit_variant = rule_matches(rule_text, var)
+    out["caught"] = hit_shown and hit_variant
+    out["quiet"] = not rule_matches(rule_text, ben)
+    if hit_shown and not hit_variant:
+        out["error"] = "too narrow: caught the shown attack but missed the hidden variant"
+    elif not hit_shown:
+        out["error"] = "missed the shown attack"
+    return out
 
 IPV4 = re.compile(r"\b(?:\d{1,3}\.){3}\d{1,3}\b")
 DRIVE_PATH = re.compile(r"\b[A-Za-z]:\\")
@@ -73,7 +94,12 @@ def copied_ratio(data, shown):
 
 
 def analyze_rule(rule_text, technique, set_number):
-    techniques = TECHNIQUES if set_number == 1 else TECHNIQUES2
+    if set_number == 1:
+        techniques = TECHNIQUES
+    elif set_number == 2:
+        techniques = TECHNIQUES2
+    else:
+        techniques = TECHNIQUES3
     if technique not in techniques:
         raise KeyError(technique)
     if set_number == 1:
@@ -82,9 +108,16 @@ def analyze_rule(rule_text, technique, set_number):
         result = evaluate(rule_text, technique)
         hit_shown = result["caught"]
         hit_benign = not result["quiet"]
-    else:
+    elif set_number == 2:
         shown, variant_event, _ = make_triple(technique)
         result = evaluate2(rule_text, technique)
+        hit_shown = rule_matches(rule_text, shown) if result["syntax"] else False
+        hit_variant = rule_matches(rule_text, variant_event) if result["syntax"] else False
+        hit_benign = not result["quiet"] if result["syntax"] else False
+        variant = variant_event
+    else:
+        shown, variant_event, _ = make_triple3(technique)
+        result = evaluate3(rule_text, technique)
         hit_shown = rule_matches(rule_text, shown) if result["syntax"] else False
         hit_variant = rule_matches(rule_text, variant_event) if result["syntax"] else False
         hit_benign = not result["quiet"] if result["syntax"] else False
@@ -99,7 +132,7 @@ def analyze_rule(rule_text, technique, set_number):
         verdict = "SYNTAX_ERROR"
     elif not hit_shown:
         verdict = "MISSED_SHOWN"
-    elif set_number == 2 and not hit_variant:
+    elif set_number in (2, 3) and not hit_variant:
         verdict = "TOO_NARROW"
     elif hit_benign:
         verdict = "NOISY"
@@ -109,7 +142,7 @@ def analyze_rule(rule_text, technique, set_number):
     values = list(detection_values(detection_block(data)))
     strings = [value for _, value in values]
     padded = any(value != value.strip() for value in strings)
-    if set_number == 2:
+    if set_number in (2, 3):
         specific = any(field == "CommandLine" and value.strip() in shown["CommandLine"]
                        and value.strip() not in variant["CommandLine"]
                        for field, value in values if value.strip())

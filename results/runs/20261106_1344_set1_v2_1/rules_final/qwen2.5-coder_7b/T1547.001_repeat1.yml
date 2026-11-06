@@ -1,0 +1,17 @@
+title: Registry Run Key Modified
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\reg.exe'
+        CommandLine|contains|windash|all:
+            - 'HKCU\Software\Microsoft\Windows\CurrentVersion\Run'
+            - '/v'
+            - '/d'
+    condition: selection
+level: high
+tags:
+    - attack.persistence
+    - attack.t1547.001

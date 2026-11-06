@@ -1,0 +1,17 @@
+title: Admin Share Mounted With Net Use
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\net.exe'
+        CommandLine|contains|all:
+            - '\\'
+            - '\C$'
+            - '/user:'
+    condition: selection
+level: high
+tags:
+    - attack.persistence
+    - attack.t1021.002

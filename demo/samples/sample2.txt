@@ -1,0 +1,4 @@
+Synthetic example, not real intelligence. Threat intelligence reports indicate that the intrusion operator conducted credential harvesting against the target host. Endpoint telemetry recorded the following command invocation:
+procdump.exe -ma lsass.exe lsass.dmp
+The operator utilized Sysinternals Procdump to dump the memory of the Local Security Authority Subsystem Service to extract cached credentials.
+

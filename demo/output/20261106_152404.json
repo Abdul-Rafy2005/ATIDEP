@@ -1,0 +1,18 @@
+{
+  "timestamp": "20261106_152404",
+  "input_text": "Synthetic example, not real intelligence. Threat intelligence reports indicate that the intrusion operator conducted credential harvesting against the target host. Endpoint telemetry recorded the following command invocation:\nprocdump.exe -ma lsass.exe lsass.dmp\nThe operator utilized Sysinternals Procdump to dump the memory of the Local Security Authority Subsystem Service to extract cached credentials.\n",
+  "model": "qwen2.5-coder:7b",
+  "prompt_version": "v2",
+  "technique": "T1003.001",
+  "extracted_command_line": "procdump.exe -ma lsass.exe lsass.dmp",
+  "process_image": "C:\\Tools\\procdump.exe",
+  "gate_verdict": "FAIL",
+  "gate_reason": "Too narrow: caught extracted line but missed hidden variant",
+  "rule_yaml": "title: Memory Dump of Lsass Process\nstatus: test\nlogsource:\n    category: process_creation\n    product: windows\ndetection:\n    selection_img:\n        Image|endswith:\n            - '\\procdump.exe'\n    selection_cli:\n        CommandLine|contains|all:\n            - 'lsass.exe'\n            - '.dmp'\n    condition: all of selection_*\nlevel: high\ntags:\n    - attack.defense_evasion\n    - attack.t1003.001",
+  "timings": {
+    "step1_technique_seconds": 3.06,
+    "step2_rule_seconds": 3.84,
+    "step3_gate_seconds": 0.01,
+    "total_seconds": 6.91
+  }
+}
