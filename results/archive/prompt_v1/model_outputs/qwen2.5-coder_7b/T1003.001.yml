@@ -1,0 +1,14 @@
+title: Memory Dump of Lsass Process
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\procdump.exe'
+        CommandLine|contains: ' -ma lsass.exe '
+    condition: selection
+level: high
+tags:
+    - attack.privilege-escalation
+    - attack.t1003.001

@@ -1,0 +1,18 @@
+title: Local User Account Created With Net.exe
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_img:
+        Image|endswith:
+            - '\net.exe'
+    selection_cli:
+        CommandLine|contains|all:
+            - 'user '
+            - ' /add'
+    condition: all of selection_*
+level: high
+tags:
+    - attack.privilege_escalation
+    - attack.t1136.001

@@ -1,0 +1,41 @@
+model,technique,syntax,caught,quiet,full_pass,pass_after_repair,seconds,tokens_per_sec,error
+qwen2.5-coder:7b,T1218.001,True,False,True,False,False,25.6,67.7,too narrow: caught the shown attack but missed the hidden variant
+qwen2.5-coder:7b,T1021.002,False,False,False,False,False,7.0,64.4,"while parsing a block mapping
+  in ""<unicode string>"", line 8, column 9:
+            Image|endswith: '\net.exe'
+            ^
+expected <block end>, bu"
+qwen2.5-coder:7b,T1560.001,True,False,True,False,False,3.5,64.2,too narrow: caught the shown attack but missed the hidden variant
+qwen2.5-coder:7b,T1222.001,True,False,True,False,False,3.8,66.3,missed the shown attack
+qwen2.5-coder:7b,T1489,True,False,True,False,False,3.6,59.5,too narrow: caught the shown attack but missed the hidden variant
+qwen2.5-coder:7b,T1482,True,False,True,False,False,3.8,59.9,too narrow: caught the shown attack but missed the hidden variant
+qwen2.5-coder:7b,T1218.008,True,False,True,False,False,4.0,60.2,too narrow: caught the shown attack but missed the hidden variant
+qwen2.5-coder:7b,T1546.007,True,True,True,True,True,3.6,63.0,
+qwen2.5-coder:7b,T1090,True,False,True,False,False,3.9,60.8,too narrow: caught the shown attack but missed the hidden variant
+qwen2.5-coder:7b,T1485,True,True,True,True,True,3.6,59.2,
+qwen2.5-coder:7b,T1490,True,False,True,False,False,3.8,61.4,too narrow: caught the shown attack but missed the hidden variant
+qwen2.5-coder:7b,T1059,True,False,True,False,False,3.6,61.6,too narrow: caught the shown attack but missed the hidden variant
+qwen2.5-coder:14b,T1218.001,True,False,True,False,False,9.7,35.3,too narrow: caught the shown attack but missed the hidden variant
+qwen2.5-coder:14b,T1021.002,True,False,True,False,False,5.4,33.8,missed the shown attack
+qwen2.5-coder:14b,T1560.001,True,False,True,False,False,5.0,33.8,too narrow: caught the shown attack but missed the hidden variant
+qwen2.5-coder:14b,T1222.001,True,False,True,False,False,5.6,33.7,missed the shown attack
+qwen2.5-coder:14b,T1489,True,False,True,False,False,5.1,33.9,too narrow: caught the shown attack but missed the hidden variant
+qwen2.5-coder:14b,T1482,True,False,True,False,False,5.6,33.7,missed the shown attack
+qwen2.5-coder:14b,T1218.008,True,False,True,False,False,5.5,33.9,too narrow: caught the shown attack but missed the hidden variant
+qwen2.5-coder:14b,T1546.007,True,True,True,True,True,4.9,33.9,
+qwen2.5-coder:14b,T1090,True,False,True,False,False,6.0,34.0,too narrow: caught the shown attack but missed the hidden variant
+qwen2.5-coder:14b,T1485,True,True,True,True,True,4.9,33.2,
+qwen2.5-coder:14b,T1490,True,False,True,False,False,5.0,33.9,too narrow: caught the shown attack but missed the hidden variant
+qwen2.5-coder:14b,T1059,True,False,True,False,False,5.1,33.7,too narrow: caught the shown attack but missed the hidden variant
+mistral-rules,T1218.001,True,False,True,False,False,35.4,40.5,too narrow: caught the shown attack but missed the hidden variant
+mistral-rules,T1021.002,True,False,True,False,False,22.1,40.4,missed the shown attack
+mistral-rules,T1560.001,True,False,True,False,False,17.9,40.3,too narrow: caught the shown attack but missed the hidden variant
+mistral-rules,T1222.001,True,False,True,False,False,17.2,40.4,too narrow: caught the shown attack but missed the hidden variant
+mistral-rules,T1489,True,False,True,False,False,17.4,40.4,missed the shown attack
+mistral-rules,T1482,True,False,True,False,False,18.7,40.4,too narrow: caught the shown attack but missed the hidden variant
+mistral-rules,T1218.008,True,False,True,False,False,20.4,40.5,too narrow: caught the shown attack but missed the hidden variant
+mistral-rules,T1546.007,True,False,True,False,False,17.8,40.3,too narrow: caught the shown attack but missed the hidden variant
+mistral-rules,T1090,True,False,True,False,False,21.9,39.7,missed the shown attack
+mistral-rules,T1485,True,False,True,False,False,18.3,40.3,missed the shown attack
+mistral-rules,T1490,True,False,True,False,False,18.5,40.4,missed the shown attack
+mistral-rules,T1059,True,False,True,False,False,19.5,40.4,missed the shown attack

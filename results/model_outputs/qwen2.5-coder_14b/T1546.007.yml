@@ -1,0 +1,14 @@
+title: Netsh Helper DLL Addition
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\netsh.exe'
+        CommandLine|contains: ' add helper '
+    condition: selection
+level: high
+tags:
+    - attack.persistence
+    - attack.t1546.007

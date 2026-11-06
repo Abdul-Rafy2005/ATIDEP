@@ -1,0 +1,14 @@
+title: Regsvr32 Loads Remote Script Over HTTP
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\regsvr32.exe'
+        CommandLine|contains: ' /s /u /i:http://'
+    condition: selection
+level: high
+tags:
+    - attack.command_and_control
+    - attack.t1218.010

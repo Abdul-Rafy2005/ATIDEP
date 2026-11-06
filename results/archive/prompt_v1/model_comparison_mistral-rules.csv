@@ -1,0 +1,13 @@
+model,technique,syntax,caught,quiet,full_pass,pass_after_repair,seconds,tokens_per_sec,error
+mistral:7b,T1059.001,False,False,False,False,False,20.5,67.7,The pipe syntax in Sigma conditions has been deprecated and replaced by Sigma correlations. pySigma doesn't supports this syntax.
+mistral:7b,T1218.011,True,False,True,False,False,3.8,65.5,
+mistral:7b,T1218.005,True,True,True,True,True,3.7,65.9,
+mistral:7b,T1218.010,False,False,False,False,False,9.2,64.9,The pipe syntax in Sigma conditions has been deprecated and replaced by Sigma correlations. pySigma doesn't supports this syntax.
+mistral:7b,T1105,False,False,False,False,True,8.1,65.8,The pipe syntax in Sigma conditions has been deprecated and replaced by Sigma correlations. pySigma doesn't supports this syntax.
+mistral:7b,T1053.005,False,False,False,False,False,9.8,65.7,The pipe syntax in Sigma conditions has been deprecated and replaced by Sigma correlations. pySigma doesn't supports this syntax.
+mistral:7b,T1547.001,False,False,False,False,False,10.2,65.7,The pipe syntax in Sigma conditions has been deprecated and replaced by Sigma correlations. pySigma doesn't supports this syntax.
+mistral:7b,T1136.001,True,False,True,False,False,4.2,66.3,
+mistral:7b,T1003.001,False,False,False,False,False,9.8,65.8,The pipe syntax in Sigma conditions has been deprecated and replaced by Sigma correlations. pySigma doesn't supports this syntax.
+mistral:7b,T1197,False,False,False,False,False,9.4,65.6,The pipe syntax in Sigma conditions has been deprecated and replaced by Sigma correlations. pySigma doesn't supports this syntax.
+mistral:7b,T1047,True,True,True,True,True,3.8,65.9,
+mistral:7b,T1033,True,True,True,True,True,3.5,67.8,

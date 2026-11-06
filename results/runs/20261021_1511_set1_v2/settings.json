@@ -1,0 +1,68 @@
+{
+  "models": [
+    "qwen2.5-coder:7b",
+    "qwen2.5-coder:14b"
+  ],
+  "ollama_version": "ollama version is 0.40.6",
+  "model_info": {
+    "qwen2.5-coder:7b": {
+      "name": "qwen2.5-coder:7b",
+      "model": "qwen2.5-coder:7b",
+      "modified_at": "2026-10-19T13:44:40.8415607+05:00",
+      "size": 4683087561,
+      "digest": "dae161e27b0e90dd1856c8bb3209201fd6736d8eb66298e75ed87571486f4364",
+      "details": {
+        "parent_model": "",
+        "format": "gguf",
+        "family": "qwen2",
+        "families": [
+          "qwen2"
+        ],
+        "parameter_size": "7.6B",
+        "quantization_level": "Q4_K_M",
+        "context_length": 32768,
+        "embedding_length": 3584,
+        "runner": "ggml"
+      },
+      "capabilities": [
+        "completion",
+        "tools",
+        "insert"
+      ]
+    },
+    "qwen2.5-coder:14b": {
+      "name": "qwen2.5-coder:14b",
+      "model": "qwen2.5-coder:14b",
+      "modified_at": "2026-10-19T13:49:24.3487438+05:00",
+      "size": 8988124298,
+      "digest": "9ec8897f747e246e970bc5cfdda85d22f1123dc2e3d34978a010a75968716849",
+      "details": {
+        "parent_model": "",
+        "format": "gguf",
+        "family": "qwen2",
+        "families": [
+          "qwen2"
+        ],
+        "parameter_size": "14.8B",
+        "quantization_level": "Q4_K_M",
+        "context_length": 32768,
+        "embedding_length": 5120,
+        "runner": "ggml"
+      },
+      "capabilities": [
+        "completion",
+        "tools",
+        "insert"
+      ]
+    }
+  },
+  "prompt": "v2",
+  "set": 1,
+  "temperature": 0,
+  "num_ctx": 4096,
+  "max_tokens": 800,
+  "repeats": 1,
+  "python": "3.13.5",
+  "gpu": "NVIDIA RTX 4000 Ada Generation",
+  "date": "2026-10-21T15:11:53"
+}

@@ -1,0 +1,14 @@
+title: Suspicious File Download Using Certutil
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\certutil.exe'
+        CommandLine|contains: ' -urlcache -f '
+    condition: selection
+level: high
+tags:
+    - attack.persistence
+    - attack.t1105

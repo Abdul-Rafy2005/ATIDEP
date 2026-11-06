@@ -1,0 +1,14 @@
+title: Remote Help File Access With Hh.exe
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\hh.exe'
+        CommandLine|contains: 'http://'
+    condition: selection
+level: high
+tags:
+    - attack.persistence
+    - attack.t1218.001

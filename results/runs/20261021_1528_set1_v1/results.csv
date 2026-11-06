@@ -1,0 +1,103 @@
+model,technique,repeat,single_pass,strict_pass,single_syntax,single_caught,single_quiet,verdict,error,flags,duplicate_keys,padded_values,seed,seconds,tokens_per_second,repaired
+qwen2.5-coder:7b,T1059.001,1,True,True,True,True,True,PASS,,"instance_specific_values,COPIED",False,False,100,5.89,64.84,False
+qwen2.5-coder:7b,T1059.001,2,True,True,True,True,True,PASS,,"instance_specific_values,COPIED",False,False,101,3.67,65.51,False
+qwen2.5-coder:7b,T1059.001,3,True,True,True,True,True,PASS,,"instance_specific_values,COPIED",False,False,102,3.66,61.94,False
+qwen2.5-coder:7b,T1218.011,1,False,False,False,False,False,SYNTAX_ERROR,"while parsing a block mapping
+  in ""<unicode string>"", line 8, column 9:
+            Image|endswith: '\rundll32.exe'
+            ^
+expected <block end",-,False,False,100,7.66,62.99,True
+qwen2.5-coder:7b,T1218.011,2,False,False,False,False,False,SYNTAX_ERROR,"while parsing a block mapping
+  in ""<unicode string>"", line 8, column 9:
+            Image|endswith: '\rundll32.exe'
+            ^
+expected <block end",-,False,False,101,7.61,62.44,True
+qwen2.5-coder:7b,T1218.011,3,False,False,False,False,False,SYNTAX_ERROR,"while parsing a block mapping
+  in ""<unicode string>"", line 8, column 9:
+            Image|endswith: '\rundll32.exe'
+            ^
+expected <block end",-,False,False,102,7.59,62.82,True
+qwen2.5-coder:7b,T1218.005,1,True,True,True,True,True,PASS,,-,False,False,100,3.38,65.18,False
+qwen2.5-coder:7b,T1218.005,2,True,True,True,True,True,PASS,,-,False,False,101,3.5,61.84,False
+qwen2.5-coder:7b,T1218.005,3,True,True,True,True,True,PASS,,-,False,False,102,3.46,62.67,False
+qwen2.5-coder:7b,T1218.010,1,True,True,True,True,True,PASS,,-,False,False,100,3.77,63.76,False
+qwen2.5-coder:7b,T1218.010,2,True,True,True,True,True,PASS,,padded_values,False,True,101,3.69,61.9,False
+qwen2.5-coder:7b,T1218.010,3,True,True,True,True,True,PASS,,padded_values,False,True,102,3.69,62.42,False
+qwen2.5-coder:7b,T1105,1,True,True,True,True,True,PASS,,padded_values,False,True,100,3.52,62.35,False
+qwen2.5-coder:7b,T1105,2,True,True,True,True,True,PASS,,padded_values,False,True,101,3.5,61.46,False
+qwen2.5-coder:7b,T1105,3,True,True,True,True,True,PASS,,padded_values,False,True,102,3.5,62.25,False
+qwen2.5-coder:7b,T1053.005,1,False,False,False,False,False,SYNTAX_ERROR,"while parsing a block mapping
+  in ""<unicode string>"", line 8, column 9:
+            Image|endswith: '\schtasks.exe'
+            ^
+expected <block end",-,False,False,100,7.67,65.55,True
+qwen2.5-coder:7b,T1053.005,2,True,True,True,True,True,PASS,,instance_specific_values,False,False,101,3.81,59.27,False
+qwen2.5-coder:7b,T1053.005,3,True,True,True,True,True,PASS,,instance_specific_values,False,False,102,3.84,61.47,False
+qwen2.5-coder:7b,T1547.001,1,False,False,False,False,False,SYNTAX_ERROR,"while parsing a block mapping
+  in ""<unicode string>"", line 8, column 9:
+            Image|endswith: '\reg.exe'
+            ^
+expected <block end>, bu",-,False,False,100,7.61,60.66,True
+qwen2.5-coder:7b,T1547.001,2,True,True,True,True,True,PASS,,"padded_values,instance_specific_values",False,True,101,3.7,61.3,False
+qwen2.5-coder:7b,T1547.001,3,True,True,True,True,True,PASS,,"padded_values,instance_specific_values",False,True,102,3.62,60.39,False
+qwen2.5-coder:7b,T1136.001,1,False,False,False,False,False,SYNTAX_ERROR,"while scanning a block scalar
+  in ""<unicode string>"", line 9, column 40:
+     ...  CommandLine|contains: ' user ' |contains: ' /add '
+               ",-,False,False,100,7.29,62.31,True
+qwen2.5-coder:7b,T1136.001,2,False,False,False,False,False,SYNTAX_ERROR,"while scanning a block scalar
+  in ""<unicode string>"", line 9, column 40:
+     ...  CommandLine|contains: ' user ' |contains: ' /add '
+               ",-,False,False,101,7.39,60.68,True
+qwen2.5-coder:7b,T1136.001,3,False,False,False,False,False,SYNTAX_ERROR,"while parsing a block mapping
+  in ""<unicode string>"", line 8, column 9:
+            Image|endswith: '\net.exe'
+            ^
+expected <block end>, bu",-,False,False,102,7.37,62.35,True
+qwen2.5-coder:7b,T1003.001,1,True,True,True,True,True,PASS,,padded_values,False,True,100,3.63,62.83,False
+qwen2.5-coder:7b,T1003.001,2,True,True,True,True,True,PASS,,padded_values,False,True,101,3.67,61.77,False
+qwen2.5-coder:7b,T1003.001,3,True,True,True,True,True,PASS,,padded_values,False,True,102,3.64,61.78,False
+qwen2.5-coder:7b,T1197,1,True,True,True,True,True,PASS,,"duplicate_keys,padded_values",True,True,100,3.84,60.71,False
+qwen2.5-coder:7b,T1197,2,True,True,True,True,True,PASS,,-,False,False,101,3.56,60.67,False
+qwen2.5-coder:7b,T1197,3,True,True,True,True,True,PASS,,"duplicate_keys,padded_values",True,True,102,3.5,60.7,False
+qwen2.5-coder:7b,T1047,1,True,True,True,True,True,PASS,,padded_values,False,True,100,3.42,61.19,False
+qwen2.5-coder:7b,T1047,2,True,True,True,True,True,PASS,,padded_values,False,True,101,3.45,61.13,False
+qwen2.5-coder:7b,T1047,3,True,True,True,True,True,PASS,,padded_values,False,True,102,3.59,60.02,False
+qwen2.5-coder:7b,T1033,1,True,True,True,True,True,PASS,,padded_values,False,True,100,3.45,61.89,False
+qwen2.5-coder:7b,T1033,2,True,True,True,True,True,PASS,,padded_values,False,True,101,3.48,61.12,False
+qwen2.5-coder:7b,T1033,3,True,True,True,True,True,PASS,,padded_values,False,True,102,3.48,60.93,False
+qwen2.5-coder:14b,T1059.001,1,True,True,True,True,True,PASS,,instance_specific_values,False,False,100,8.22,33.72,False
+qwen2.5-coder:14b,T1059.001,2,True,True,True,True,True,PASS,,"padded_values,instance_specific_values",False,True,101,5.54,33.12,False
+qwen2.5-coder:14b,T1059.001,3,True,True,True,True,True,PASS,,"padded_values,instance_specific_values",False,True,102,5.66,32.75,False
+qwen2.5-coder:14b,T1218.011,1,True,True,True,True,True,PASS,,instance_specific_values,False,False,100,5.53,33.5,False
+qwen2.5-coder:14b,T1218.011,2,True,True,True,True,True,PASS,,instance_specific_values,False,False,101,5.39,33.17,False
+qwen2.5-coder:14b,T1218.011,3,True,True,True,True,True,PASS,,instance_specific_values,False,False,102,5.44,33.11,False
+qwen2.5-coder:14b,T1218.005,1,True,True,True,True,True,PASS,,-,False,False,100,5.18,33.43,False
+qwen2.5-coder:14b,T1218.005,2,True,True,True,True,True,PASS,,-,False,False,101,5.12,33.05,False
+qwen2.5-coder:14b,T1218.005,3,True,True,True,True,True,PASS,,-,False,False,102,5.18,33.27,False
+qwen2.5-coder:14b,T1218.010,1,True,True,True,True,True,PASS,,padded_values,False,True,100,5.61,33.5,False
+qwen2.5-coder:14b,T1218.010,2,True,True,True,True,True,PASS,,padded_values,False,True,101,5.5,33.0,False
+qwen2.5-coder:14b,T1218.010,3,True,True,True,True,True,PASS,,padded_values,False,True,102,5.52,32.69,False
+qwen2.5-coder:14b,T1105,1,True,True,True,True,True,PASS,,padded_values,False,True,100,5.27,33.37,False
+qwen2.5-coder:14b,T1105,2,True,True,True,True,True,PASS,,padded_values,False,True,101,5.08,33.19,False
+qwen2.5-coder:14b,T1105,3,True,True,True,True,True,PASS,,padded_values,False,True,102,5.09,33.72,False
+qwen2.5-coder:14b,T1053.005,1,True,True,True,True,True,PASS,,instance_specific_values,False,False,100,5.24,34.35,False
+qwen2.5-coder:14b,T1053.005,2,True,True,True,True,True,PASS,,"duplicate_keys,padded_values,instance_specific_values",True,True,101,5.33,33.64,False
+qwen2.5-coder:14b,T1053.005,3,True,True,True,True,True,PASS,,instance_specific_values,False,False,102,5.33,33.39,False
+qwen2.5-coder:14b,T1547.001,1,True,True,True,True,True,PASS,,"padded_values,instance_specific_values",False,True,100,5.76,33.81,False
+qwen2.5-coder:14b,T1547.001,2,True,True,True,True,True,PASS,,"padded_values,instance_specific_values",False,True,101,5.67,33.52,False
+qwen2.5-coder:14b,T1547.001,3,True,True,True,True,True,PASS,,instance_specific_values,False,False,102,5.31,33.22,False
+qwen2.5-coder:14b,T1136.001,1,False,False,True,False,True,MISSED_SHOWN,,padded_values,False,True,100,5.16,33.62,False
+qwen2.5-coder:14b,T1136.001,2,True,True,True,True,True,PASS,,padded_values,False,True,101,5.11,33.24,False
+qwen2.5-coder:14b,T1136.001,3,True,True,True,True,True,PASS,,padded_values,False,True,102,5.09,33.18,False
+qwen2.5-coder:14b,T1003.001,1,True,True,True,True,True,PASS,,padded_values,False,True,100,5.29,33.74,False
+qwen2.5-coder:14b,T1003.001,2,True,True,True,True,True,PASS,,padded_values,False,True,101,5.25,33.33,False
+qwen2.5-coder:14b,T1003.001,3,True,True,True,True,True,PASS,,padded_values,False,True,102,5.24,33.48,False
+qwen2.5-coder:14b,T1197,1,True,True,True,True,True,PASS,,-,False,False,100,5.35,33.72,False
+qwen2.5-coder:14b,T1197,2,True,True,True,True,True,PASS,,-,False,False,101,5.3,33.17,False
+qwen2.5-coder:14b,T1197,3,True,True,True,True,True,PASS,,-,False,False,102,5.31,33.05,False
+qwen2.5-coder:14b,T1047,1,True,True,True,True,True,PASS,,-,False,False,100,5.1,33.93,False
+qwen2.5-coder:14b,T1047,2,True,True,True,True,True,PASS,,-,False,False,101,5.07,33.43,False
+qwen2.5-coder:14b,T1047,3,True,True,True,True,True,PASS,,-,False,False,102,5.08,33.31,False
+qwen2.5-coder:14b,T1033,1,True,True,True,True,True,PASS,,padded_values,False,True,100,4.87,33.75,False
+qwen2.5-coder:14b,T1033,2,True,True,True,True,True,PASS,,padded_values,False,True,101,4.89,32.71,False
+qwen2.5-coder:14b,T1033,3,True,True,True,True,True,PASS,,padded_values,False,True,102,4.79,33.05,False

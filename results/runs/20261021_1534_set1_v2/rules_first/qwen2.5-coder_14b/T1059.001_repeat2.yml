@@ -1,0 +1,18 @@
+title: PowerShell Downloads and Executes Script from Web
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_img:
+        Image|endswith: '\powershell.exe'
+    selection_cli:
+        CommandLine|contains|all:
+            - windash: '-nop'
+            - windash: '-w hidden'
+            - windash: '-c IEX'
+    condition: all of selection_*
+level: high
+tags:
+    - attack.execution
+    - attack.t1059.001

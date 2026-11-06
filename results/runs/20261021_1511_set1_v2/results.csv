@@ -1,0 +1,25 @@
+model,technique,repeat,single_pass,strict_pass,single_syntax,single_caught,single_quiet,verdict,error,flags,duplicate_keys,padded_values,seconds,tokens_per_second,repaired
+qwen2.5-coder:7b,T1059.001,1,True,True,True,True,True,PASS,,instance_specific_values,False,False,4.56,65.57,False
+qwen2.5-coder:7b,T1218.011,1,True,True,True,True,True,PASS,,-,False,False,3.78,63.73,False
+qwen2.5-coder:7b,T1218.005,1,True,True,True,True,True,PASS,,-,False,False,3.83,64.6,False
+qwen2.5-coder:7b,T1218.010,1,True,True,True,True,True,PASS,,-,False,False,3.9,63.93,False
+qwen2.5-coder:7b,T1105,1,True,True,True,True,True,PASS,,-,False,False,3.64,61.28,False
+qwen2.5-coder:7b,T1053.005,1,True,True,True,True,True,PASS,,-,False,False,3.79,63.77,False
+qwen2.5-coder:7b,T1547.001,1,True,True,True,True,True,PASS,,instance_specific_values,False,False,4.12,64.18,False
+qwen2.5-coder:7b,T1136.001,1,True,True,True,True,True,PASS,,padded_values,False,True,3.77,63.18,False
+qwen2.5-coder:7b,T1003.001,1,True,True,True,True,True,PASS,,-,False,False,3.81,63.36,False
+qwen2.5-coder:7b,T1197,1,True,True,True,True,True,PASS,,-,False,False,3.64,61.86,False
+qwen2.5-coder:7b,T1047,1,True,True,True,True,True,PASS,,-,False,False,3.63,62.43,False
+qwen2.5-coder:7b,T1033,1,True,True,True,True,True,PASS,,-,False,False,3.43,63.37,False
+qwen2.5-coder:14b,T1059.001,1,False,False,False,False,False,SYNTAX_ERROR,Unsupported type: <class 'dict'>,-,False,False,17.72,33.37,True
+qwen2.5-coder:14b,T1218.011,1,True,True,True,True,True,PASS,,-,False,False,5.6,33.4,False
+qwen2.5-coder:14b,T1218.005,1,True,True,True,True,True,PASS,,-,False,False,5.25,33.46,False
+qwen2.5-coder:14b,T1218.010,1,False,False,False,False,False,SYNTAX_ERROR,Unsupported type: <class 'dict'>,-,False,False,12.21,33.08,True
+qwen2.5-coder:14b,T1105,1,False,False,False,False,False,SYNTAX_ERROR,Unsupported type: <class 'dict'>,-,False,False,11.31,33.03,True
+qwen2.5-coder:14b,T1053.005,1,True,True,True,True,True,PASS,,-,False,False,5.72,33.36,False
+qwen2.5-coder:14b,T1547.001,1,True,True,True,True,True,PASS,,instance_specific_values,False,False,5.93,32.76,False
+qwen2.5-coder:14b,T1136.001,1,True,True,True,True,True,PASS,,-,False,False,5.17,33.19,False
+qwen2.5-coder:14b,T1003.001,1,False,False,False,False,False,SYNTAX_ERROR,Unsupported type: <class 'dict'>,-,False,False,11.46,33.01,True
+qwen2.5-coder:14b,T1197,1,True,True,True,True,True,PASS,,-,False,False,5.44,32.59,False
+qwen2.5-coder:14b,T1047,1,True,True,True,True,True,PASS,,-,False,False,5.41,33.06,False
+qwen2.5-coder:14b,T1033,1,True,True,True,True,True,PASS,,-,False,False,4.82,33.8,False

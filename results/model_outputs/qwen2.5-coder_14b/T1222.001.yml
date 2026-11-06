@@ -1,0 +1,17 @@
+title: Take Ownership of Folder with Takeown
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\takeown.exe'
+        CommandLine|contains|all: 
+            - ' /f '
+            - ' /r '
+            - ' /d y '
+    condition: selection
+level: high
+tags:
+    - attack.privilege-escalation
+    - attack.t1222.001

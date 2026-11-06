@@ -1,0 +1,14 @@
+title: Suspicious Bitsadmin Download Activity
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\bitsadmin.exe'
+        CommandLine|contains|all: ['/transfer', '/download', '/priority', 'http://']
+    condition: selection
+level: high
+tags:
+    - attack.persistence
+    - attack.t1197

@@ -1,0 +1,21 @@
+model,technique,repeat,single_pass,strict_pass,single_syntax,single_caught,single_quiet,verdict,error,flags,duplicate_keys,padded_values,seconds,tokens_per_second,repaired
+qwen2.5-coder:7b,T1059.001,1,True,True,True,True,True,PASS,,"instance_specific_values,COPIED",False,False,7.15,64.83,False
+qwen2.5-coder:7b,T1218.011,1,False,False,False,False,False,SYNTAX_ERROR,"while parsing a block mapping
+  in ""<unicode string>"", line 8, column 9:
+            Image|endswith: '\rundll32.exe'
+            ^
+expected <block end",-,False,False,7.52,66.14,True
+qwen2.5-coder:7b,T1218.005,1,True,True,True,True,True,PASS,,-,False,False,3.57,62.58,False
+qwen2.5-coder:7b,T1218.010,1,True,True,True,True,True,PASS,,padded_values,False,True,3.72,62.16,False
+qwen2.5-coder:7b,T1105,1,True,True,True,True,True,PASS,,padded_values,False,True,3.48,64.05,False
+qwen2.5-coder:7b,T1053.005,1,True,True,True,True,True,PASS,,instance_specific_values,False,False,3.79,63.11,False
+qwen2.5-coder:7b,T1547.001,1,True,True,True,True,True,PASS,,"padded_values,instance_specific_values",False,True,3.7,64.02,False
+qwen2.5-coder:7b,T1136.001,1,False,False,False,False,False,SYNTAX_ERROR,"while parsing a block mapping
+  in ""<unicode string>"", line 8, column 9:
+            Image|endswith: '\net.exe'
+            ^
+expected <block end>, bu",-,False,False,7.41,62.38,True
+qwen2.5-coder:7b,T1003.001,1,True,True,True,True,True,PASS,,padded_values,False,True,3.82,65.92,False
+qwen2.5-coder:7b,T1197,1,True,True,True,True,True,PASS,,"duplicate_keys,padded_values",True,True,3.83,65.69,False
+qwen2.5-coder:7b,T1047,1,True,True,True,True,True,PASS,,padded_values,False,True,3.49,65.82,False
+qwen2.5-coder:7b,T1033,1,True,True,True,True,True,PASS,,padded_values,False,True,3.49,66.05,False

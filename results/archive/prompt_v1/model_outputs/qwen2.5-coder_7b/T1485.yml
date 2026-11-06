@@ -1,0 +1,14 @@
+title: Disk Space Overwrite With Cipher
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\cipher.exe'
+        CommandLine|contains: ' /w:'
+    condition: selection
+level: high
+tags:
+    - attack.privilege-escalation
+    - attack.t1485

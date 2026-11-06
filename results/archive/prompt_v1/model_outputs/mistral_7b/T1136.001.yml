@@ -1,0 +1,16 @@
+title: User Account Creation via Command Line (T1136.001)
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\net.exe'
+        CommandLine|contains: ' user '
+        CommandLine|contains: ' P@ssw0rd123 '
+        CommandLine|contains: ' /add '
+    condition: selection
+level: high
+tags:
+    - attack.creation
+    - attack.t1136.001

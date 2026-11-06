@@ -1,0 +1,38 @@
+import csv, os, urllib.request
+
+BASE = "https://raw.githubusercontent.com/SigmaHQ/sigma/master"
+RULE_DIR = "rules/windows/process_creation"
+DATA_DIR = "regression_data/rules/windows/process_creation"
+
+# technique, rule file name (without .yml), rule id, has_test_data
+RULES = [
+    ("T1218.001", "proc_creation_win_hh_chm_remote_download_or_execution", "f57c58b3-ee69-4ef5-9041-455bf39aaa89", False),
+    ("T1021.002", "proc_creation_win_net_use_mount_admin_share", "3abd6094-7027-475f-9630-8ab9be7b9725", False),
+    ("T1560.001", "proc_creation_win_rar_compression_with_password", "faa48cae-6b25-4f00-a094-08947fef582f", False),
+    ("T1222.001", "proc_creation_win_takeown_recursive_own", "554601fb-9b71-4bcc-abf4-21a611be4fde", True),
+    ("T1489",     "proc_creation_win_net_stop_service", "88872991-7445-4a22-90b2-a3adadb0e827", False),
+    ("T1482",     "proc_creation_win_dsquery_domain_trust_discovery", "3bad990e-4848-4a78-9530-b427d854aac0", True),
+    ("T1218.008", "proc_creation_win_odbcconf_register_dll_regsvr", "9f0a8bf3-a65b-440a-8c1e-5cb1547c8e70", False),
+    ("T1546.007", "proc_creation_win_netsh_helper_dll_persistence", "56321594-9087-49d9-bf10-524fe8479452", False),
+    ("T1090",     "proc_creation_win_netsh_port_forwarding_3389", "782d6f3e-4c5d-4b8c-92a3-1d05fed72e63", False),
+    ("T1485",     "proc_creation_win_cipher_overwrite_deleted_data", "4b046706-5789-4673-b111-66f25fe99534", True),
+    ("T1490",     "proc_creation_win_bcdedit_boot_conf_tamper", "1444443e-6757-43e4-9ea4-c8fc705f79a2", False),
+    ("T1059",     "proc_creation_win_forfiles_proxy_execution_", "9aa5106d-bce3-4b13-86df-3a20f1d5cf0b", False),
+]
+
+def get(url, path):
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    urllib.request.urlretrieve(url, path)
+
+os.makedirs("results", exist_ok=True)
+with open("results/techniques_set2.csv", "w", newline="") as f:
+    w = csv.writer(f)
+    w.writerow(["technique", "rule_file", "rule_id", "has_test_data"])
+    for tech, name, rid, has_data in RULES:
+        get(f"{BASE}/{RULE_DIR}/{name}.yml", f"data/sigmahq_rules_set2/{name}.yml")
+        if has_data:
+            for ext in ("json", "evtx"):
+                get(f"{BASE}/{DATA_DIR}/{name}/{rid}.{ext}", f"data/sigmahq_test_logs_set2/{name}/{rid}.{ext}")
+        w.writerow([tech, name + ".yml", rid, has_data])
+        print("ok", tech, name)
+print("done")

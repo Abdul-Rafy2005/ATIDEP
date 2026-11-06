@@ -1,0 +1,19 @@
+title: Process Launched Using Wmic
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_img:
+        Image|endswith:
+            - '\wmic.exe'
+    selection_cli:
+        CommandLine|contains|all:
+            - 'process call create'
+            - 'cmd.exe'
+            - '/c'
+    condition: all of selection_*
+level: high
+tags:
+    - attack.execution
+    - attack.t1047

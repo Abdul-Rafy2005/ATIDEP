@@ -1,0 +1,6 @@
+run_id,date,set,prompt,models
+20261021_1510_set1_v1,2026-10-21T15:10:05,1,v1,qwen2.5-coder:7b
+20261021_1510_01_set1_v1,2026-10-21T15:10:45,1,v1,qwen2.5-coder:7b
+20261021_1511_set1_v2,2026-10-21T15:11:53,1,v2,qwen2.5-coder:7b;qwen2.5-coder:14b
+20261021_1528_set1_v1,2026-10-21T15:28:28,1,v1,qwen2.5-coder:7b;qwen2.5-coder:14b
+20261104_1503_set1_v2,2026-11-04T15:03:33,1,v2,qwen2.5-coder:7b;qwen2.5-coder:14b

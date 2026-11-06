@@ -1,0 +1,17 @@
+title: Certutil Downloads File From Internet
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\certutil.exe'
+        CommandLine|contains|all:
+            - windash: '-urlcache'
+            - windash: '-f'
+            - 'http://'
+    condition: selection
+level: medium
+tags:
+    - attack.execution
+    - attack.t1105

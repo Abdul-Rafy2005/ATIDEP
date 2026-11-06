@@ -1,0 +1,21 @@
+title: Bitsadmin Downloading DLL
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\bitsadmin.exe'
+        CommandLine|contains: ' /transfer '
+        CommandLine|contains: ' job'
+        CommandLine|contains: ' /download '
+        CommandLine|contains: ' /priority '
+        CommandLine|contains: ' high '
+        CommandLine|contains: ' http://'
+        CommandLine|contains: 'evil.dll'
+        CommandLine|contains: ' C:\Users\student\evil.dll'
+    condition: selection
+level: high
+tags:
+    - attack.command_and_control
+    - attack.t1197

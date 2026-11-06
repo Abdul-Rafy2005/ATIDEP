@@ -1,0 +1,14 @@
+title: DLL Registration With Odbcconf
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\odbcconf.exe'
+        CommandLine|contains|all: ['/S', '/A', '{REGSVR', 'C:\\']
+    condition: selection
+level: high
+tags:
+    - attack.persistence
+    - attack.t1218.008

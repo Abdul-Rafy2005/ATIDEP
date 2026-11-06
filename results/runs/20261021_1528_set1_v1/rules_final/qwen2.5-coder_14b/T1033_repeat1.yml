@@ -1,0 +1,14 @@
+title: Privilege Escalation Detection With Whoami
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\whoami.exe'
+        CommandLine|contains: ' /priv'
+    condition: selection
+level: medium
+tags:
+    - attack.privilege-escalation
+    - attack.t1033

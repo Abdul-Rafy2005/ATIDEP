@@ -1,0 +1,15 @@
+title: Disk Space Wipe With Cipher
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\cipher.exe'
+        CommandLine|contains: ' /w:'
+        OriginalFileName|contains: 'C:\Users\student'
+    condition: selection
+level: high
+tags:
+    - attack.defense-evasion
+    - attack.t1485

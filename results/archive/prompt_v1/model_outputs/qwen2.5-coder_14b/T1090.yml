@@ -1,0 +1,17 @@
+title: Port Forwarding with Netsh for Remote Desktop
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\netsh.exe'
+        CommandLine|contains|all: 
+            - 'interface portproxy add v4tov4'
+            - 'listenport=3389'
+            - 'connectport=3389'
+    condition: selection
+level: high
+tags:
+    - attack.credential-access
+    - attack.t1090

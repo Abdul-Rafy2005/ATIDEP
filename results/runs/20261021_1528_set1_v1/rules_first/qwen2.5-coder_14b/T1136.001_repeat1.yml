@@ -1,0 +1,16 @@
+title: New Local User Account Created With Net
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\net.exe'
+        CommandLine|contains|all: 
+            - ' user '
+            - ' /add '
+    condition: selection
+level: high
+tags:
+    - attack.credential-access
+    - attack.t1136.001

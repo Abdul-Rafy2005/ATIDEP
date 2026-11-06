@@ -1,0 +1,16 @@
+title: Folder Ownership Changed With Takeown
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\takeown.exe'
+        CommandLine|contains: ' /f '
+        CommandLine|contains: ' /r '
+        CommandLine|contains: ' /d '
+    condition: all of selection
+level: high
+tags:
+    - attack.defense-evasion
+    - attack.t1222.001

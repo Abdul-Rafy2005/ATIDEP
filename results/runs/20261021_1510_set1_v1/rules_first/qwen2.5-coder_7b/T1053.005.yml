@@ -1,0 +1,14 @@
+title: Suspicious Scheduled Task Creation in Temp Folder
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\schtasks.exe'
+        CommandLine|contains|all: ['/create', '/tr', 'C:\\Users\\student\\AppData\\Local\\Temp\\']
+    condition: selection
+level: high
+tags:
+    - attack.persistence
+    - attack.t1053.005

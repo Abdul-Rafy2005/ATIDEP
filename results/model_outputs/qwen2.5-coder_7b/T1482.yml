@@ -1,0 +1,14 @@
+title: Domain Trust Relationships Discovery With Dsquery
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\dsquery.exe'
+        CommandLine|contains: ' * -filter "(objectClass=trustedDomain)" -attr *'
+    condition: selection
+level: high
+tags:
+    - attack.discovery
+    - attack.t1482

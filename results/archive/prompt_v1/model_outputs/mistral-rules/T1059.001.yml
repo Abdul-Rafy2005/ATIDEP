@@ -1,0 +1,16 @@
+title: PowerShell Download And Run Script From Web
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\powershell.exe'
+        CommandLine|contains: ' -nop -w hidden -c IEX '
+        CommandLine|contains: 'New-Object Net.WebClient).DownloadString('
+        CommandLine|contains: 'http://10.0.0.5/a.ps1'
+    condition: selection
+level: high
+tags:
+    - attack.command_and_control
+    - attack.t1059.001

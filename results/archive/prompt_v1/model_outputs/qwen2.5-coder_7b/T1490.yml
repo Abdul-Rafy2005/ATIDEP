@@ -1,0 +1,14 @@
+title: Windows Recovery Options Disabled With Bcdedit
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\bcdedit.exe'
+        CommandLine|contains: ' /set {default} recoveryenabled no'
+    condition: selection
+level: high
+tags:
+    - attack.privilege-escalation
+    - attack.t1490

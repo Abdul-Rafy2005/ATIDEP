@@ -1,0 +1,17 @@
+title: PowerShell Download and Execute Script
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\powershell.exe'
+        CommandLine|contains|all:
+            - ' -nop '
+            - ' -w hidden '
+            - ' IEX (New-Object Net.WebClient).DownloadString('
+    condition: selection
+level: high
+tags:
+    - attack.execution
+    - attack.t1059.001
