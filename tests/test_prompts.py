@@ -18,11 +18,20 @@ def test_v1_matches_set1():
 
 
 def test_v1_matches_set2():
-    import compare_set2
-    for tech in TECHNIQUES2:
-        expected = compare_set2.cm.build_prompt(tech)
-        actual = v1.build_prompt(tech, TECHNIQUES2, DESCRIPTIONS2)
-        assert actual == expected, tech
+    orig_tech = list(compare_models.TECHNIQUES)
+    orig_desc = dict(compare_models.DESCRIPTIONS)
+    orig_eval = compare_models.evaluate
+    try:
+        import compare_set2
+        compare_set2.point_at_set2()
+        for tech in TECHNIQUES2:
+            expected = compare_set2.cm.build_prompt(tech)
+            actual = v1.build_prompt(tech, TECHNIQUES2, DESCRIPTIONS2)
+            assert actual == expected, tech
+    finally:
+        compare_models.TECHNIQUES = orig_tech
+        compare_models.DESCRIPTIONS = orig_desc
+        compare_models.evaluate = orig_eval
 
 
 if __name__ == "__main__":

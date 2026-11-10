@@ -68,7 +68,7 @@ class TestDemoMocked(unittest.TestCase):
     def test_read_frozen_config(self):
         config = read_frozen_config()
         self.assertEqual(config["model"], "qwen2.5-coder:7b")
-        self.assertEqual(config["prompt_version"], "v2")
+        self.assertEqual(config["prompt_version"], "v2_1")
         self.assertEqual(config["seed"], 100)
 
     def test_load_supported_techniques(self):

@@ -32,12 +32,14 @@ def evaluate2(rule_text, tech):
         out["error"] = "missed the shown attack"
     return out
 
-# Point the comparison script at set 2
-cm.TECHNIQUES = TECHNIQUES2
-cm.DESCRIPTIONS = DESCRIPTIONS2
-cm.evaluate = evaluate2
+def point_at_set2():
+    # Point the comparison script at set 2
+    cm.TECHNIQUES = TECHNIQUES2
+    cm.DESCRIPTIONS = DESCRIPTIONS2
+    cm.evaluate = evaluate2
 
 if __name__ == "__main__":
+    point_at_set2()
     cm.main()
     src = "results/model_comparison.csv"
     if os.path.exists(src):

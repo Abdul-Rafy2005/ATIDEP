@@ -12,11 +12,12 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "validator"))
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "generator"))
 sys.path.insert(0, os.path.dirname(__file__))
 from runner import rule_matches, rule_to_sql
-from generate import TECHNIQUES, make_pair
+from generate import TECHNIQUES, make_pair, make_triple as make_triple_set1
 from techniques_set2 import TECHNIQUES2, make_triple
 from techniques_set3 import TECHNIQUES3, make_triple3
 from compare_models import safe, evaluate
 from compare_set2 import evaluate2
+from scoring import score_rule
 
 
 def evaluate3(rule_text, tech):
@@ -96,48 +97,24 @@ def copied_ratio(data, shown):
 def analyze_rule(rule_text, technique, set_number):
     if set_number == 1:
         techniques = TECHNIQUES
+        shown, variant_event, _ = make_triple_set1(technique)
     elif set_number == 2:
         techniques = TECHNIQUES2
+        shown, variant_event, _ = make_triple(technique)
     else:
         techniques = TECHNIQUES3
+        shown, variant_event, _ = make_triple3(technique)
     if technique not in techniques:
         raise KeyError(technique)
-    if set_number == 1:
-        shown, _ = make_pair(technique)
-        variant = None
-        result = evaluate(rule_text, technique)
-        hit_shown = result["caught"]
-        hit_benign = not result["quiet"]
-    elif set_number == 2:
-        shown, variant_event, _ = make_triple(technique)
-        result = evaluate2(rule_text, technique)
-        hit_shown = rule_matches(rule_text, shown) if result["syntax"] else False
-        hit_variant = rule_matches(rule_text, variant_event) if result["syntax"] else False
-        hit_benign = not result["quiet"] if result["syntax"] else False
-        variant = variant_event
-    else:
-        shown, variant_event, _ = make_triple3(technique)
-        result = evaluate3(rule_text, technique)
-        hit_shown = rule_matches(rule_text, shown) if result["syntax"] else False
-        hit_variant = rule_matches(rule_text, variant_event) if result["syntax"] else False
-        hit_benign = not result["quiet"] if result["syntax"] else False
-        variant = variant_event
+    variant = variant_event
+
+    sc = score_rule(set_number, technique, rule_text)
+    verdict = sc.verdict
 
     try:
         data, duplicates = inspect_yaml(rule_text)
     except Exception:
         data, duplicates = {}, []
-
-    if not result["syntax"]:
-        verdict = "SYNTAX_ERROR"
-    elif not hit_shown:
-        verdict = "MISSED_SHOWN"
-    elif set_number in (2, 3) and not hit_variant:
-        verdict = "TOO_NARROW"
-    elif hit_benign:
-        verdict = "NOISY"
-    else:
-        verdict = "PASS"
 
     values = list(detection_values(detection_block(data)))
     strings = [value for _, value in values]
@@ -153,7 +130,7 @@ def analyze_rule(rule_text, technique, set_number):
     ratio = copied_ratio(data, shown["CommandLine"])
     return {
         "verdict": verdict,
-        "error": result["error"],
+        "error": sc.error,
         "duplicate_keys": duplicates,
         "invented_metadata": sorted(set(data) & METADATA) if isinstance(data, dict) else [],
         "padded_values": padded,

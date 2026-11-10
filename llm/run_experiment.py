@@ -22,6 +22,7 @@ from techniques_set2 import TECHNIQUES2, DESCRIPTIONS2, make_triple
 from techniques_set3 import TECHNIQUES3, DESCRIPTIONS3, make_triple3
 from compare_models import ask_ollama, extract_yaml, safe, DESCRIPTIONS
 from analyze_results import analyze_rule, format_flags
+from scoring import score_rule
 from prompts import v1, v2, v2_1
 
 
@@ -78,31 +79,21 @@ def build_repair_prompt(prompt, rule, error, repair_hint=False):
 
 
 def single_score(rule_text, tech, set_number):
-    try:
-        rule_to_sql(rule_text)
-    except Exception as error:
-        return {"syntax": False, "caught": False, "quiet": False, "error": str(error)[:150], "pass": False}
-    if set_number == 1:
-        shown, benign = make_pair(tech)
-    elif set_number == 2:
-        shown, _, benign = make_triple(tech)
-    else:
-        shown, _, benign = make_triple3(tech)
-    caught = rule_matches(rule_text, shown)
-    quiet = not rule_matches(rule_text, benign)
-    return {"syntax": True, "caught": caught, "quiet": quiet, "error": "",
-            "pass": caught and quiet}
+    sc = score_rule(set_number, tech, rule_text)
+    return {"syntax": sc.syntax_ok, "caught": sc.fires_shown, "quiet": not sc.fires_benign,
+            "error": sc.error, "pass": sc.single_pass}
 
 
 def result_row(model, tech, repeat, rule_first, rule_final, seconds, tokens_per_second, set_number, row_seed,
                first_done_reason, first_eval_count, repair_done_reason, repair_eval_count):
     single = single_score(rule_first, tech, set_number)
     strict = analyze_rule(rule_first, tech, set_number)
+    score = score_rule(set_number, tech, rule_first)
     return {
         "model": model, "technique": tech, "repeat": repeat,
-        "single_pass": single["pass"], "strict_pass": strict["verdict"] == "PASS",
-        "single_syntax": single["syntax"], "single_caught": single["caught"],
-        "single_quiet": single["quiet"], "verdict": strict["verdict"],
+        "single_pass": score.single_pass, "strict_pass": score.strict_pass,
+        "single_syntax": score.syntax_ok, "single_caught": score.fires_shown,
+        "single_quiet": not score.fires_benign, "verdict": score.verdict,
         "error": strict["error"], "flags": format_flags(strict),
         "duplicate_keys": bool(strict["duplicate_keys"]),
         "padded_values": strict["padded_values"],
@@ -168,12 +159,13 @@ def build_parser():
     parser.add_argument("--allow-validation-set", action="store_true")
     parser.add_argument("--final", action="store_true")
     parser.add_argument("--reason")
+    parser.add_argument("--results-dir", default=None, help="Custom results directory (for testing)")
     return parser
 
 
-def main():
+def main(argv=None):
     parser = build_parser()
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
     if args.repeats < 1:
         parser.error("--repeats must be at least 1")
     if args.set == 2 and (not args.allow_validation_set or not args.reason):
@@ -207,11 +199,12 @@ def main():
     else:
         techniques = TECHNIQUES3
         descriptions = DESCRIPTIONS3
+    results_base = args.results_dir if args.results_dir else "results"
     run_id = datetime.datetime.now().strftime("%Y%m%d_%H%M")
-    folder = os.path.join("results", "runs", f"{run_id}_set{args.set}_{args.prompt}")
+    folder = os.path.join(results_base, "runs", f"{run_id}_set{args.set}_{args.prompt}")
     suffix = 1
     while os.path.exists(folder):
-        folder = os.path.join("results", "runs", f"{run_id}_{suffix:02d}_set{args.set}_{args.prompt}")
+        folder = os.path.join(results_base, "runs", f"{run_id}_{suffix:02d}_set{args.set}_{args.prompt}")
         suffix += 1
     os.makedirs(folder)
     for directory in ("rules_first", "rules_final"):
@@ -238,13 +231,13 @@ def main():
                 raw, seconds, tokens_per_second, first_done_reason, first_eval_count = ask(
                     args.url, model, prompt, args.max_tokens, args.temperature, row_seed)
                 rule_first = extract_yaml(raw)
-                first_score = single_score(rule_first, tech, args.set)
+                first_score = score_rule(args.set, tech, rule_first)
                 rule_final = rule_first
                 repaired = False
                 repair_done_reason = ""
                 repair_eval_count = 0
-                if not first_score["syntax"]:
-                    repair_prompt = build_repair_prompt(prompt, rule_first, first_score["error"], args.repair_hint)
+                if not first_score.syntax_ok:
+                    repair_prompt = build_repair_prompt(prompt, rule_first, first_score.error, args.repair_hint)
                     raw_final, repair_seconds, _, repair_done_reason, repair_eval_count = ask(
                         args.url, model, repair_prompt, args.max_tokens, args.temperature, row_seed)
                     rule_final = extract_yaml(raw_final)
@@ -274,20 +267,20 @@ def main():
     write_summary(os.path.join(folder, "summary.md"), rows)
     write_report(os.path.join(folder, "report.md"), rows)
 
-    os.makedirs("results", exist_ok=True)
-    with open("results/run_log.csv", "a", newline="", encoding="utf-8") as output:
+    os.makedirs(results_base, exist_ok=True)
+    with open(os.path.join(results_base, "run_log.csv"), "a", newline="", encoding="utf-8") as output:
         writer = csv.writer(output)
         if output.tell() == 0:
             writer.writerow(["run_id", "date", "set", "prompt", "models"])
         writer.writerow([os.path.basename(folder), settings["date"], args.set, args.prompt, ";".join(args.models)])
     if args.set == 2:
-        with open("results/set2_use_log.csv", "a", newline="", encoding="utf-8") as output:
+        with open(os.path.join(results_base, "set2_use_log.csv"), "a", newline="", encoding="utf-8") as output:
             writer = csv.writer(output)
             if output.tell() == 0:
                 writer.writerow(["date", "models", "prompt", "reason"])
             writer.writerow([settings["date"], ";".join(args.models), args.prompt, args.reason])
     if args.set == 3:
-        with open("results/set3_use_log.csv", "a", newline="", encoding="utf-8") as output:
+        with open(os.path.join(results_base, "set3_use_log.csv"), "a", newline="", encoding="utf-8") as output:
             writer = csv.writer(output)
             if output.tell() == 0:
                 writer.writerow(["date", "models", "prompt", "reason"])

@@ -1,19 +1,35 @@
 # ATIDEP Frozen Configuration
 
-Date: 2026-11-06
+Date: 2026-11-10 (originally frozen 2026-11-06; decision redone 2026-11-10 following strict gate fix)
 
 ## Selected Models and Prompts
 
+### Selection Decision Table (Set 1, Temperature 0.2, Repeats 3)
+
+| Model | Prompt Candidate | First-try Strict Pass | First-try Syntax Errors | First-try Single Pass | Chosen |
+| --- | --- | ---: | ---: | ---: | --- |
+| qwen2.5-coder:7b | v2 (run 20261104_1503) | 9/36 | 0 | 36/36 | No |
+| qwen2.5-coder:7b | v2_1 (run 20261106_1344) | 11/36 | 0 | 36/36 | **Yes** (higher strict pass: 11 > 9) |
+| qwen2.5-coder:14b | v2 (run 20261104_1503) | 8/36 | 10 | 26/36 | No |
+| qwen2.5-coder:14b | v2_1 (run 20261106_1344) | 8/36 | 0 | 36/36 | **Yes** (tie on strict pass 8 vs 8; fewer syntax errors: 0 < 10) |
+
+Primary model choice:
+- qwen2.5-coder:7b under chosen prompt v2_1: 11/36 first-try strict pass.
+- qwen2.5-coder:14b under chosen prompt v2_1: 8/36 first-try strict pass.
+- Selection: qwen2.5-coder:7b is selected as primary model (higher first-try strict pass: 11 > 8).
+
+### Frozen Configuration
+
 - Primary model: qwen2.5-coder:7b
-  - Chosen prompt: v2
+  - Chosen prompt: v2_1
   - Quantization: Q4_K_M
-  - Selection rationale: In the complete temperature 0.2, 3-repeat set 1 evaluation, qwen2.5-coder:7b scored 36/36 first-try strict passes under both prompt v2 and v2_1 with 0 syntax errors. Following the fixed tie-breaker rule (prefer v2), prompt v2 is selected. qwen2.5-coder:7b achieved 36/36 first-try strict passes, tying with qwen2.5-coder:14b, and is chosen as the primary model by the tie-breaker rule (faster execution).
+  - Selection rationale: In the complete temperature 0.2, 3-repeat set 1 evaluation under the true strict gate, qwen2.5-coder:7b scored 11/36 first-try strict passes under prompt v2_1 versus 9/36 under prompt v2 (both 0 syntax errors). Under v2, rules overfit to the shown command line and fail the hidden variant (TOO_NARROW). Prompt v2_1 provides explicit guidance against overfitting, resulting in higher generalisation. qwen2.5-coder:7b achieved 11/36 strict passes compared to 8/36 for qwen2.5-coder:14b, so it is selected as the primary model.
 - Comparison model: qwen2.5-coder:14b
   - Chosen prompt: v2_1
   - Quantization: Q4_K_M
-  - Selection rationale: In the complete temperature 0.2, 3-repeat set 1 evaluation, qwen2.5-coder:14b scored 36/36 first-try strict passes under prompt v2_1 (0 syntax errors) versus 26/36 under prompt v2 (10 syntax errors). Following the fixed rule (higher first-try strict pass), prompt v2_1 is selected.
+  - Selection rationale: In the complete temperature 0.2, 3-repeat set 1 evaluation, qwen2.5-coder:14b tied on first-try strict passes (8/36 on both v2 and v2_1), but prompt v2_1 completely eliminated first-try syntax errors (0 under v2_1 versus 10 under v2). Following the fixed tie-breaker rule (fewer syntax errors), prompt v2_1 is selected.
 
-The final evaluation on test set 3 compares prompt v1 with the frozen prompt for each model (v1 vs v2 for qwen2.5-coder:7b; v1 vs v2_1 for qwen2.5-coder:14b).
+The final evaluation on test set 3 compares prompt v1 with the frozen prompt for each model (v1 vs v2_1 for qwen2.5-coder:7b; v1 vs v2_1 for qwen2.5-coder:14b).
 
 ## Runtime Parameters
 
@@ -46,6 +62,10 @@ The final evaluation on test set 3 compares prompt v1 with the frozen prompt for
 | generator/generate.py | 2dce9a88ebbb79187ed558c3e9ffd0cf8170733ff7dcce2376e20468b00f8700 |
 | generator/techniques_set2.py | 8577581a4d9d1e3524d1bae28e850f26e23f714f7ef8c5d4c101979044b74acf |
 | generator/techniques_set3.py | c86d7307e124309f0824e3dd844673d381f0275cdd333ec6d57dabdb575179f8 |
-set 3 file updated after review on 2026-11-10, reason: fairness fixes before lock
-| llm/analyze_results.py | a314792406b02524194d7f1e78fb338c4305493241af19df679f72bd01c2df20 |
-| llm/run_experiment.py | 7baaea439b6eb89ea2313ebcfeef1af8aa4b79e734796e79458de1bf540005a9 |
+| llm/analyze_results.py | d0627fdb2870beb7152607f0a1a60fd91e1b393fe845b0356c1ac41e4598c2e3 |
+| llm/run_experiment.py | db4cb085de96804cb56f346b0fb405e394a217a7437411c8b8ee1598031a1241 |
+| llm/scoring.py | 193c272d45fa23c6f5daf5f50bfbfcdeeb89b896f99425e42a358685b336385c |
+
+## Superseded decision (used single-gate numbers by mistake)
+
+On 2026-11-06, qwen2.5-coder:7b was assigned prompt v2 under the assumption that both v2 and v2_1 scored 36/36 first-try strict passes on set 1, triggering the tie-breaker to pick v2. However, the pipeline at that time evaluated only the single gate for set 1 (checking shown line and benign line, but omitting the hidden variant). Under the true strict gate checking the hidden variant, prompt v2 scores only 9/36 while prompt v2_1 scores 11/36. Thus, prompt v2_1 is selected for qwen2.5-coder:7b without needing a tie-breaker.

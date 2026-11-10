@@ -115,3 +115,23 @@ Antigravity started on 2026-11-06
   - results/RESULTS_SUMMARY.md (regenerated with 13 columns)
   - PROGRESS.md (updated)
 - WARN lines: none
+
+### 2026-11-10: Task 3c: fix strict gate in run pipeline, rescore, and redo freeze decision
+- Status: DONE
+- Files created or changed:
+  - llm/scoring.py (created unified scoring module with score_rule supporting sets 1, 2, and 3)
+  - llm/run_experiment.py (routed single_score, result_row, and repairs through score_rule; added --results-dir)
+  - llm/analyze_results.py (routed analyze_rule through score_rule for all sets)
+  - llm/compare_set2.py (encapsulated global state mutation in point_at_set2)
+  - llm/build_results_summary.py (updated columns to standard format, scored rules directly from disk using score_rule)
+  - tools/rescore_all.py (created rescore utility)
+  - results/rescore_strict_all.md (created full rescore report for complete runs and archives with regression assertions)
+  - results/archive/RESULTS_SUMMARY_before_task3c.md (archived previous summary)
+  - results/RESULTS_SUMMARY.md (regenerated with true strict gate numbers and updated footnote)
+  - FROZEN.md (redone freeze decision to prompt v2_1 for both models; updated hashes for run_experiment.py, analyze_results.py, and added scoring.py)
+  - AGENTS.md (updated set 1 numbers with true strict numbers, added working rule 8, recorded known bug fixed)
+  - tests/test_scoring_pipeline.py (created pipeline test suite covering sets 1, 2, and 3 with mocked Ollama and isolated results dir)
+  - tests/test_demo.py (updated test_read_frozen_config to expect prompt v2_1)
+  - tests/test_prompts.py (isolated global state mutation during set 2 test)
+  - PROGRESS.md (updated)
+- WARN lines: none

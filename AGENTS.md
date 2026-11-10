@@ -94,12 +94,13 @@ Remaining: freeze prompt and model, build and run set 3 once, end-to-end demo, c
 Out of scope for FYP-1: dashboard, Kafka, Spring Boot, malware sandbox and LSTM, prioritisation, YARA, other log types, automatic log generation from ATT&CK, training our own model, real SIEM use.
 
 ## Results so far (our own runs)
-- Set 1, temperature 0.2, 3 repeats, 36 rules per row, first-try strict gate: qwen 7b prompt v1 28, v2 36 (syntax errors 8, then 0). qwen 14b v1 35, v2 26 (syntax errors 0, then 10).
+- Set 1, temperature 0.2, 3 repeats, 36 rules per row, first-try strict gate (corrected 2026-11-10): qwen 7b prompt v1 7/36, v2 9/36, v2_1 11/36 (first-try single gate: 28, 36, 36). qwen 14b prompt v1 3/36, v2 8/36, v2_1 8/36 (first-try single gate: 35, 26, 36). Run 20261106_1338 (qwen 14b, v2 with repair hint): first-try strict 8/36, final strict 11/36.
 - Cause of the 14b v2 failures: it wrote windash as a list item inside a contains|all list (error "Unsupported type: <class 'dict'>"). The right form is CommandLine|contains|windash|all: with a plain list. The retry could not fix it because the error gives no clue.
-- Set 1 variants are easy: a copy of the whole shown line fails all 12, a short keyword rule passes all 12. Set 1 cannot show generalisation.
+- The test suite now verifies that a copy of the shown line gives TOO_NARROW, and the corrected strict gate separates prompt versions on set 1.
 - Set 2 (prompt v1, strict gate): qwen 7b 2/12, qwen 14b 2/12, mistral-rules 0/12. A gate checking only the shown line would have approved 10, 9 and 6. Most failures: rules that depend on details of the one example. Some set 2 variants need outside knowledge (T1489 net1.exe, T1090, T1490, T1059). Known, and not to be fixed by editing set 2.
 - mistral-rules and mistral:7b are dropped as candidates (kept for the report). Models in use: qwen2.5-coder:7b (working model) and qwen2.5-coder:14b (comparison).
 - Known bug in RESULTS_SUMMARY.md: the "final pass after repair" column could be lower than the first-try pass. Correct definition: final pass = first-try passes + repairs that fixed a first-try syntax failure.
+- Known bug fixed 2026-11-10: set 1 strict gate was not applied in run summaries before this fix. Rescored in results/rescore_strict_all.md.
 
 ## Protocol
 - Set 1 = development set (strict gate). Set 2 = baseline for prompt v1 only, never run again. Set 3 = the only clean final test: build it, do not run it, until Task 7.
@@ -114,6 +115,7 @@ Out of scope for FYP-1: dashboard, Kafka, Spring Boot, malware sandbox and LSTM,
 5. Do not install anything without asking. Allowed: standard library, PyYAML, pySigma, pysigma-backend-sqlite.
 6. Commands are for Windows PowerShell and Python 3.13. Do not push to git. No destructive commands.
 7. After every task: run the tests, print a self-check table (EXPECTED, ACTUAL, PASS or WARN), and update PROGRESS.md. A WARN does not stop the task, but never hide it.
+8. A metric counts only if a test drives the same code path that produces the reported numbers. For every gate, a copy-the-line rule must come out TOO_NARROW in the pipeline's own run summary.
 
 ## STOP RULES (ask me in chat and wait)
 - A model is missing in "ollama list".
