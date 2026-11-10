@@ -135,3 +135,12 @@ Antigravity started on 2026-11-06
   - tests/test_prompts.py (isolated global state mutation during set 2 test)
   - PROGRESS.md (updated)
 - WARN lines: none
+
+### 2026-11-10: Task 3d - Set 1 failure analysis
+- Status: DONE
+- Files created or changed:
+  - llm/analyze_failure_modes.py (created: extracts line differences, finds blocking conditions, classifies failure modes)
+  - results/set1_strict_summary.md (created: strict summary tables and technique breakdown across all complete set 1 evaluations)
+  - results/set1_failure_modes.md (created: 3 sections covering technique changes, classification tables, and extra observations)
+  - PROGRESS.md (updated)
+- WARN lines: none
