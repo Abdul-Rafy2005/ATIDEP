@@ -21,9 +21,10 @@ TECHNIQUES3 = {
     "T1003.002": {
         "image": r"C:\tools\pypykatz.exe",
         "malicious": r"C:\tools\pypykatz.exe live registry",
-        "variant": r"C:\tools\pypykatz.exe registry live",
+        "variant": r"D:\ops\pypykatz.exe live registry",
+        "variant_image": r"D:\ops\pypykatz.exe",
         "benign": r"C:\tools\pypykatz.exe live lsa",
-        "variant_type": "order_or_prefix",
+        "variant_type": "values",
         "rule_file": "proc_creation_win_hktl_pypykatz.yml",
         "rule_id": "a29808fd-ef50-49ff-9c7a-59a9b040b404",
     },
@@ -35,15 +36,6 @@ TECHNIQUES3 = {
         "variant_type": "order_or_prefix",
         "rule_file": "proc_creation_win_hktl_evil_winrm.yml",
         "rule_id": "a197e378-d31b-41c0-9635-cfdf1c1bb423",
-    },
-    "T1036": {
-        "image": rf"{SYS32}\chcp.com",
-        "malicious": rf"{SYS32}\chcp.com 936",
-        "variant": rf"{SYS32}\chcp.com 1258",
-        "benign": rf"{SYS32}\chcp.com 437",
-        "variant_type": "values",
-        "rule_file": "proc_creation_win_chcp_codepage_switch.yml",
-        "rule_id": "c7942406-33dd-4377-a564-0f62db0593a3",
     },
     "T1040": {
         "image": r"C:\Program Files\Wireshark\tshark.exe",
@@ -57,9 +49,9 @@ TECHNIQUES3 = {
     "T1053.002": {
         "image": rf"{SYS32}\at.exe",
         "malicious": rf"{SYS32}\at.exe 12:00 /interactive cmd.exe",
-        "variant": rf"{SYS32}\at.exe /interactive 12:00 cmd.exe",
+        "variant": rf"{SYS32}\at.exe 23:15 /interactive cmd.exe",
         "benign": rf"{SYS32}\at.exe 12:00 cmd.exe",
-        "variant_type": "order_or_prefix",
+        "variant_type": "values",
         "rule_file": "proc_creation_win_at_interactive_execution.yml",
         "rule_id": "60fc936d-2eb0-4543-8a13-911c750a1dfc",
     },
@@ -84,7 +76,7 @@ TECHNIQUES3 = {
     "T1113": {
         "image": rf"{SYS32}\Psr.exe",
         "malicious": rf"{SYS32}\Psr.exe /start /output C:\temp\screen.zip",
-        "variant": rf"{SYS32}\Psr.exe -start /output C:\temp\screen.zip",
+        "variant": rf"{SYS32}\Psr.exe /output C:\temp\screen.zip /start",
         "benign": rf"{SYS32}\Psr.exe /stop",
         "variant_type": "order_or_prefix",
         "rule_file": "proc_creation_win_psr_capture_screenshots.yml",
@@ -98,15 +90,6 @@ TECHNIQUES3 = {
         "variant_type": "values",
         "rule_file": "proc_creation_win_soundrecorder_audio_capture.yml",
         "rule_id": "83865853-59aa-449e-9600-74b9d89a6d6e",
-    },
-    "T1127": {
-        "image": r"C:\Windows\Microsoft.NET\Framework64\v4.0.30319\aspnet_compiler.exe",
-        "malicious": r"C:\Windows\Microsoft.NET\Framework64\v4.0.30319\aspnet_compiler.exe -v none -p C:\Users\Public\web",
-        "variant": r"C:\Windows\Microsoft.NET\Framework64\v4.0.30319\aspnet_compiler.exe -v none -p C:\Windows\Temp\web",
-        "benign": r"C:\Windows\Microsoft.NET\Framework64\v4.0.30319\aspnet_compiler.exe -v none -p C:\inetpub\wwwroot",
-        "variant_type": "values",
-        "rule_file": "proc_creation_win_aspnet_compiler_susp_paths.yml",
-        "rule_id": "9f50fe98-fe5c-4a2d-86c7-fad7f63ed622",
     },
     "T1176.001": {
         "image": r"C:\Program Files\Google\Chrome\Application\chrome.exe",
@@ -135,6 +118,15 @@ TECHNIQUES3 = {
         "rule_file": "proc_creation_win_lolbin_runscripthelper.yml",
         "rule_id": "eca49c87-8a75-4f13-9c73-a5a29e845f03",
     },
+    "T1218": {
+        "image": rf"{SYS32}\dsacls.exe",
+        "malicious": rf'{SYS32}\dsacls.exe "CN=Users,DC=lab,DC=local" /user:svc01 /passwd:Spring2026',
+        "variant": rf'{SYS32}\dsacls.exe "CN=Computers,DC=corp,DC=example" /user:backup /passwd:Autumn2025',
+        "benign": rf'{SYS32}\dsacls.exe "CN=Users,DC=lab,DC=local"',
+        "variant_type": "values",
+        "rule_file": "proc_creation_win_dsacls_password_spray.yml",
+        "rule_id": "bac9fb54-2da7-44e9-988f-11e9a5edbc0c",
+    },
     "T1219.002": {
         "image": r"C:\Program Files\Amazon\SSM\amazon-ssm-agent.exe",
         "malicious": r'C:\Program Files\Amazon\SSM\amazon-ssm-agent.exe -register -code "code1" -id "id1" -region "us-east-1"',
@@ -156,11 +148,20 @@ TECHNIQUES3 = {
     "T1529": {
         "image": rf"{SYS32}\shutdown.exe",
         "malicious": rf"{SYS32}\shutdown.exe /r /t 0",
-        "variant": rf"{SYS32}\shutdown.exe /t 0 /r ",
+        "variant": rf"{SYS32}\shutdown.exe /r /t 30",
         "benign": rf"{SYS32}\shutdown.exe /a",
-        "variant_type": "order_or_prefix",
+        "variant_type": "values",
         "rule_file": "proc_creation_win_shutdown_execution.yml",
         "rule_id": "34ebb878-1b15-4895-b352-ca2eeb99b274",
+    },
+    "T1563.002": {
+        "image": rf"{SYS32}\mstsc.exe",
+        "malicious": rf"{SYS32}\mstsc.exe /v:10.0.0.5 /shadow:2 /noconsentprompt",
+        "variant": rf"{SYS32}\mstsc.exe /noconsentprompt /shadow:2 /v:10.0.0.5",
+        "benign": rf"{SYS32}\mstsc.exe /v:10.0.0.5",
+        "variant_type": "order_or_prefix",
+        "rule_file": "proc_creation_win_mstsc_rdp_hijack_shadowing.yml",
+        "rule_id": "6ba5a05f-b095-4f0a-8654-b825f4f16334",
     },
     "T1564.004": {
         "image": rf"{SYS32}\spool\tools\PrintBrm.exe",
@@ -174,7 +175,7 @@ TECHNIQUES3 = {
     "T1572": {
         "image": rf"{SYS32}\OpenSSH\ssh.exe",
         "malicious": rf"{SYS32}\OpenSSH\ssh.exe -R 8080:localhost:80 user@10.0.0.1",
-        "variant": rf"{SYS32}\OpenSSH\ssh.exe /R 8080:localhost:80 user@10.0.0.1",
+        "variant": rf"{SYS32}\OpenSSH\ssh.exe user@10.0.0.1 -R 8080:localhost:80",
         "benign": rf"{SYS32}\OpenSSH\ssh.exe user@10.0.0.1",
         "variant_type": "order_or_prefix",
         "rule_file": "proc_creation_win_ssh_port_forward.yml",
@@ -203,20 +204,20 @@ TECHNIQUES3 = {
 DESCRIPTIONS3 = {
     "T1003.002": "An attacker dumps credentials from the SAM registry hive using pypykatz.",
     "T1021.006": "An attacker establishes a remote WinRM session using Evil-WinRM.",
-    "T1036": "An attacker changes the active console code page using chcp.",
     "T1040": "An attacker captures network traffic on a network interface using tshark.",
     "T1053.002": "An attacker schedules an interactive command prompt job using at.",
     "T1082": "An attacker dumps live kernel memory using DTrace.",
     "T1112": "An attacker installs an arbitrary driver INF using VirtualBox driver installer.",
     "T1113": "An attacker records screen activity and user interactions using Problem Steps Recorder.",
     "T1123": "An attacker records audio from the microphone using Windows Sound Recorder.",
-    "T1127": "An attacker compiles malicious ASP.NET code located in a temporary directory.",
     "T1176.001": "An attacker launches a Chromium browser with an unpacked custom extension.",
     "T1185": "An attacker launches Firefox with a remote debugging server enabled.",
     "T1202": "An attacker executes an arbitrary script using the Runscripthelper utility.",
+    "T1218": "An attacker tries passwords against a domain account using dsacls.",
     "T1219.002": "An attacker registers an unauthorized machine with an Amazon SSM agent.",
     "T1220": "An attacker executes remote XSL transformation scripts using msxsl.",
     "T1529": "An attacker initiates an immediate system reboot using shutdown.",
+    "T1563.002": "An attacker views another user's remote desktop session without asking for consent, using mstsc.",
     "T1564.004": "An attacker creates a printer backup zip file using PrintBrm.",
     "T1572": "An attacker sets up a reverse port forwarding tunnel using OpenSSH.",
     "T1574": "An attacker loads an arbitrary DLL using the Register-cimprovider utility.",
@@ -226,9 +227,9 @@ DESCRIPTIONS3 = {
 
 def make_triple3(tech):
     t = TECHNIQUES3[tech]
+    variant_image = t.get("variant_image", t["image"])
     return (
         build_event(t["image"], t["malicious"]),
-        build_event(t["image"], t["variant"]),
+        build_event(variant_image, t["variant"]),
         build_event(t["image"], t["benign"]),
     )
-

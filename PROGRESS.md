@@ -99,3 +99,19 @@ Antigravity started on 2026-11-06
   - tests/test_demo.py (created)
   - PROGRESS.md (updated)
 - WARN lines: none
+
+### 2026-11-10: Task 3b - Fix Set 3 after review, and tidy
+- Status: DONE
+- Files created or changed:
+  - results/archive/set3_before_review/ (created archive of techniques_set3.py, download_rules_set3.py, SET3_REVIEW.md, techniques_set3.csv)
+  - download_rules_set3.py (replaced T1036 and T1127 with T1563.002 and T1218)
+  - data/sigmahq_rules_set3/proc_creation_win_mstsc_rdp_hijack_shadowing.yml (added)
+  - data/sigmahq_rules_set3/proc_creation_win_dsacls_password_spray.yml (added)
+  - results/techniques_set3.csv (regenerated)
+  - generator/techniques_set3.py (updated techniques, added variant_image support to make_triple3, 12 values / 8 order_or_prefix)
+  - SET3_REVIEW.md (regenerated with review reasons for all 9 modified techniques)
+  - FROZEN.md (updated techniques_set3.py sha256 hash, added review update note, added Q4_K_M quantizations from ollama show)
+  - llm/build_results_summary.py (added final strict pass after repair column, renamed single gate column, updated superseded row)
+  - results/RESULTS_SUMMARY.md (regenerated with 13 columns)
+  - PROGRESS.md (updated)
+- WARN lines: none
