@@ -76,10 +76,27 @@ def test_prompt_v2_1_accepted():
     assert "Example 3" in prompt_text
 
 
+def test_prompts_v3a_v3b_accepted():
+    parser = run_experiment.build_parser()
+    args_3a = parser.parse_args(["--set", "1", "--prompt", "v3a", "--models", "qwen2.5-coder:7b"])
+    assert args_3a.prompt == "v3a"
+    args_3b = parser.parse_args(["--set", "1", "--prompt", "v3b", "--models", "qwen2.5-coder:7b"])
+    assert args_3b.prompt == "v3b"
+
+    from generator.generate import TECHNIQUES
+    from llm.compare_models import DESCRIPTIONS
+    p3a = run_experiment.prompt_for("v3a", "T1059.001", TECHNIQUES, DESCRIPTIONS)
+    assert "-type=txt" in p3a
+    p3b = run_experiment.prompt_for("v3b", "T1059.001", TECHNIQUES, DESCRIPTIONS)
+    assert "# keep:" in p3b
+
+
 if __name__ == "__main__":
     test_options_reach_request_body()
     test_repair_hint_is_opt_in()
     test_prompt_v2_1_accepted()
+    test_prompts_v3a_v3b_accepted()
     print("temperature=0.2 seed=103 reached the mocked request body")
     print("repair hint is opt-in")
     print("prompt v2_1 accepted by run_experiment")
+    print("prompts v3a and v3b accepted by run_experiment")

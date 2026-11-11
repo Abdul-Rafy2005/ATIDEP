@@ -1,0 +1,19 @@
+# keep: add, /v, /d
+# ignore: HKCU\Software\Microsoft\Windows\CurrentVersion\Run, Updater, C:\Users\student\x.exe
+title: Registry Key Modified To Add Run Key
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\reg.exe'
+        CommandLine|contains|windash|all:
+            - 'add'
+            - '/v'
+            - '/d'
+    condition: selection
+level: medium
+tags:
+    - attack.persistence
+    - attack.t1547.001

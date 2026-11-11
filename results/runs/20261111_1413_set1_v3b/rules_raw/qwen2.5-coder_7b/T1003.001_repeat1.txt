@@ -1,0 +1,16 @@
+# keep: -ma
+# ignore: lsass.exe, lsass.dmp
+title: Procdump Used To Dump Memory
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\procdump.exe'
+        CommandLine|contains|windash: '-ma'
+    condition: selection
+level: high
+tags:
+    - attack.persistence
+    - attack.t1003.001

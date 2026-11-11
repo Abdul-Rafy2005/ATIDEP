@@ -1,0 +1,17 @@
+title: Bitsadmin Used To Download DLL
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\bitsadmin.exe'
+        CommandLine|contains|all:
+            - '/download'
+            - '/priority'
+            - 'http://10.0.0.5/'
+    condition: selection
+level: high
+tags:
+    - attack.execution
+    - attack.t1197

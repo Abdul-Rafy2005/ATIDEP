@@ -31,6 +31,8 @@ RUNS_3REPEAT = [
     ("v1", "20261021_1528_set1_v1", 0.2, 3),
     ("v2", "20261104_1503_set1_v2", 0.2, 3),
     ("v2_1", "20261106_1344_set1_v2_1", 0.2, 3),
+    ("v3a", "20261111_1403_set1_v3a", 0.2, 3),
+    ("v3b", "20261111_1413_set1_v3b", 0.2, 3),
 ]
 
 RUNS_SINGLE = [
@@ -332,6 +334,8 @@ def step2_technique_changes():
 def step3_and_step4_failure_modes():
     """Analyze failure modes, extract blocking conditions and extra counts."""
     configs = [
+        ("v3b", "20261111_1413_set1_v3b"),
+        ("v3a", "20261111_1403_set1_v3a"),
         ("v2_1", "20261106_1344_set1_v2_1"),
         ("v2", "20261104_1503_set1_v2"),
         ("v1", "20261021_1528_set1_v1"),
@@ -525,6 +529,8 @@ def write_failure_modes_document(changes, analysis, extra_counts):
 
         # Tables for v2_1, then v2, then v1
         prompt_groups = [
+            ("Prompt v3b (Run 20261111_1413, Temp 0.2, 3 Repeats)", ["v3b"]),
+            ("Prompt v3a (Run 20261111_1403, Temp 0.2, 3 Repeats)", ["v3a"]),
             ("Prompt v2_1 (Frozen Candidates, Run 20261106_1344, Temp 0.2, 3 Repeats)", ["v2_1"]),
             ("Prompt v2 (Run 20261104_1503, Temp 0.2, 3 Repeats)", ["v2"]),
             ("Prompt v1 (Baseline, Run 20261021_1528, Temp 0.2, 3 Repeats)", ["v1"]),
@@ -578,7 +584,7 @@ def write_failure_modes_document(changes, analysis, extra_counts):
         out.write("Count of TOO_NARROW rules that used the `windash` modifier anywhere in their YAML:\n\n")
         out.write("| Model | Prompt | Total TOO_NARROW | Uses Windash | Percentage |\n")
         out.write("| --- | --- | ---: | ---: | ---: |\n")
-        for p_ver in ["v2_1", "v2", "v1"]:
+        for p_ver in ["v3b", "v3a", "v2_1", "v2", "v1"]:
             for model in MODELS:
                 cfg = analysis.get((model, p_ver))
                 tot = cfg["total_tn"] if cfg else 0
@@ -590,7 +596,7 @@ def write_failure_modes_document(changes, analysis, extra_counts):
         out.write("Count of all rules in the run having at least one selection value that starts or ends with a space:\n\n")
         out.write("| Model | Prompt | Total Rules | Rules with Padded Value | Percentage |\n")
         out.write("| --- | --- | ---: | ---: | ---: |\n")
-        for p_ver in ["v2_1", "v2", "v1"]:
+        for p_ver in ["v3b", "v3a", "v2_1", "v2", "v1"]:
             for model in MODELS:
                 p_cnt = extra_counts["padded_space"][(model, p_ver)]
                 pct = f"{(p_cnt / 36 * 100):.1f}%"
@@ -600,7 +606,7 @@ def write_failure_modes_document(changes, analysis, extra_counts):
         out.write("Rules that use only an Image check plus a single CommandLine keyword value, and their strict pass rate:\n\n")
         out.write("| Model | Prompt | Total Rules | Keyword-Only Rules | Strict Passes | Strict Pass Rate |\n")
         out.write("| --- | --- | ---: | ---: | ---: | ---: |\n")
-        for p_ver in ["v2_1", "v2", "v1"]:
+        for p_ver in ["v3b", "v3a", "v2_1", "v2", "v1"]:
             for model in MODELS:
                 kw_cnt = extra_counts["keyword_only_rules"][(model, p_ver)]
                 kw_pass = extra_counts["keyword_only_strict_pass"][(model, p_ver)]
@@ -625,7 +631,7 @@ def main():
     write_failure_modes_document(changes, analysis, extra_counts)
 
     print("\n=== SUMMARY OF KEY FINDINGS ===")
-    for p_ver in ["v2_1", "v2", "v1"]:
+    for p_ver in ["v3b", "v3a", "v2_1", "v2", "v1"]:
         for model in MODELS:
             cfg = analysis.get((model, p_ver))
             if not cfg:

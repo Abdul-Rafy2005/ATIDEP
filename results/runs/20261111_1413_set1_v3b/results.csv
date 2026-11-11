@@ -1,0 +1,73 @@
+model,technique,repeat,single_pass,strict_pass,single_syntax,single_caught,single_quiet,verdict,error,flags,duplicate_keys,padded_values,seed,first_done_reason,first_eval_count,repair_done_reason,repair_eval_count,seconds,tokens_per_second,repaired
+qwen2.5-coder:7b,T1059.001,1,True,False,True,True,True,TOO_NARROW,too narrow: caught the shown attack but missed the hidden variant,-,False,False,100,stop,146,,0,15.39,18.4,False
+qwen2.5-coder:7b,T1059.001,2,True,False,True,True,True,TOO_NARROW,too narrow: caught the shown attack but missed the hidden variant,-,False,False,101,stop,146,,0,4.39,63.28,False
+qwen2.5-coder:7b,T1059.001,3,True,False,True,True,True,TOO_NARROW,too narrow: caught the shown attack but missed the hidden variant,-,False,False,102,stop,146,,0,7.15,29.31,False
+qwen2.5-coder:7b,T1218.011,1,True,False,True,True,True,TOO_NARROW,too narrow: caught the shown attack but missed the hidden variant,instance_specific_values,False,False,100,stop,132,,0,6.83,27.98,False
+qwen2.5-coder:7b,T1218.011,2,True,False,True,True,True,TOO_NARROW,too narrow: caught the shown attack but missed the hidden variant,"instance_specific_values,COPIED",False,False,101,stop,132,,0,6.96,27.28,False
+qwen2.5-coder:7b,T1218.011,3,True,False,True,True,True,TOO_NARROW,too narrow: caught the shown attack but missed the hidden variant,instance_specific_values,False,False,102,stop,132,,0,7.46,24.81,False
+qwen2.5-coder:7b,T1218.005,1,True,True,True,True,True,PASS,,-,False,False,100,stop,102,,0,5.14,33.62,False
+qwen2.5-coder:7b,T1218.005,2,True,True,True,True,True,PASS,,-,False,False,101,stop,105,,0,4.85,37.75,False
+qwen2.5-coder:7b,T1218.005,3,True,True,True,True,True,PASS,,-,False,False,102,stop,106,,0,3.71,64.81,False
+qwen2.5-coder:7b,T1218.010,1,True,True,True,True,True,PASS,,-,False,False,100,stop,145,,0,4.67,56.38,False
+qwen2.5-coder:7b,T1218.010,2,True,True,True,True,True,PASS,,-,False,False,101,stop,145,,0,4.64,56.72,False
+qwen2.5-coder:7b,T1218.010,3,True,True,True,True,True,PASS,,-,False,False,102,stop,142,,0,4.61,56.22,False
+qwen2.5-coder:7b,T1105,1,True,True,True,True,True,PASS,,-,False,False,100,stop,121,,0,4.2,57.84,False
+qwen2.5-coder:7b,T1105,2,True,True,True,True,True,PASS,,-,False,False,101,stop,121,,0,4.29,55.32,False
+qwen2.5-coder:7b,T1105,3,True,True,True,True,True,PASS,,-,False,False,102,stop,121,,0,4.27,56.16,False
+qwen2.5-coder:7b,T1053.005,1,False,False,True,True,False,NOISY,fired on harmless benign line,-,False,False,100,stop,145,,0,4.67,57.9,False
+qwen2.5-coder:7b,T1053.005,2,True,True,True,True,True,PASS,,-,False,False,101,stop,140,,0,4.58,56.02,False
+qwen2.5-coder:7b,T1053.005,3,False,False,True,True,False,NOISY,fired on harmless benign line,-,False,False,102,stop,145,,0,4.62,56.87,False
+qwen2.5-coder:7b,T1547.001,1,False,False,True,True,False,NOISY,fired on harmless benign line,-,False,False,100,stop,110,,0,4.04,57.25,False
+qwen2.5-coder:7b,T1547.001,2,False,False,True,True,False,NOISY,fired on harmless benign line,-,False,False,101,stop,110,,0,4.0,57.56,False
+qwen2.5-coder:7b,T1547.001,3,False,False,True,True,False,NOISY,fired on harmless benign line,-,False,False,102,stop,110,,0,4.06,55.03,False
+qwen2.5-coder:7b,T1136.001,1,True,False,True,True,True,TOO_NARROW,too narrow: caught the shown attack but missed the hidden variant,-,False,False,100,stop,107,,0,4.0,57.4,False
+qwen2.5-coder:7b,T1136.001,2,True,False,True,True,True,TOO_NARROW,too narrow: caught the shown attack but missed the hidden variant,-,False,False,101,stop,107,,0,3.82,61.86,False
+qwen2.5-coder:7b,T1136.001,3,True,False,True,True,True,TOO_NARROW,too narrow: caught the shown attack but missed the hidden variant,-,False,False,102,stop,107,,0,3.82,62.3,False
+qwen2.5-coder:7b,T1003.001,1,False,False,True,True,False,NOISY,fired on harmless benign line,-,False,False,100,stop,104,,0,3.77,63.64,False
+qwen2.5-coder:7b,T1003.001,2,False,False,True,True,False,NOISY,fired on harmless benign line,-,False,False,101,stop,112,,0,3.9,61.98,False
+qwen2.5-coder:7b,T1003.001,3,False,False,True,True,False,NOISY,fired on harmless benign line,-,False,False,102,stop,108,,0,3.84,61.02,False
+qwen2.5-coder:7b,T1197,1,True,False,True,True,True,TOO_NARROW,too narrow: caught the shown attack but missed the hidden variant,instance_specific_values,False,False,100,stop,135,,0,4.29,63.15,False
+qwen2.5-coder:7b,T1197,2,True,False,True,True,True,TOO_NARROW,too narrow: caught the shown attack but missed the hidden variant,-,False,False,101,stop,122,,0,4.03,62.2,False
+qwen2.5-coder:7b,T1197,3,True,False,True,True,True,TOO_NARROW,too narrow: caught the shown attack but missed the hidden variant,instance_specific_values,False,False,102,stop,135,,0,4.27,62.03,False
+qwen2.5-coder:7b,T1047,1,True,True,True,True,True,PASS,,-,False,False,100,stop,100,,0,3.78,61.18,False
+qwen2.5-coder:7b,T1047,2,True,True,True,True,True,PASS,,-,False,False,101,stop,100,,0,4.27,46.07,False
+qwen2.5-coder:7b,T1047,3,True,False,True,True,True,TOO_NARROW,too narrow: caught the shown attack but missed the hidden variant,-,False,False,102,stop,94,,0,5.47,27.74,False
+qwen2.5-coder:7b,T1033,1,True,True,True,True,True,PASS,,-,False,False,100,stop,93,,0,5.9,24.47,False
+qwen2.5-coder:7b,T1033,2,True,True,True,True,True,PASS,,-,False,False,101,stop,94,,0,5.9,24.91,False
+qwen2.5-coder:7b,T1033,3,True,True,True,True,True,PASS,,-,False,False,102,stop,93,,0,5.99,23.71,False
+qwen2.5-coder:14b,T1059.001,1,True,False,True,True,True,TOO_NARROW,too narrow: caught the shown attack but missed the hidden variant,-,False,False,100,stop,134,,0,14.1,12.68,False
+qwen2.5-coder:14b,T1059.001,2,True,False,True,True,True,TOO_NARROW,too narrow: caught the shown attack but missed the hidden variant,-,False,False,101,stop,134,,0,11.38,14.46,False
+qwen2.5-coder:14b,T1059.001,3,True,False,True,True,True,TOO_NARROW,too narrow: caught the shown attack but missed the hidden variant,-,False,False,102,stop,134,,0,12.07,13.45,False
+qwen2.5-coder:14b,T1218.011,1,True,True,True,True,True,PASS,,-,False,False,100,stop,120,,0,11.53,12.86,False
+qwen2.5-coder:14b,T1218.011,2,True,True,True,True,True,PASS,,-,False,False,101,stop,120,,0,9.79,15.5,False
+qwen2.5-coder:14b,T1218.011,3,True,True,True,True,True,PASS,,-,False,False,102,stop,118,,0,14.7,9.51,False
+qwen2.5-coder:14b,T1218.005,1,True,True,True,True,True,PASS,,-,False,False,100,stop,114,,0,5.97,30.16,False
+qwen2.5-coder:14b,T1218.005,2,True,True,True,True,True,PASS,,-,False,False,101,stop,107,,0,5.67,29.83,False
+qwen2.5-coder:14b,T1218.005,3,True,True,True,True,True,PASS,,-,False,False,102,stop,114,,0,5.89,30.1,False
+qwen2.5-coder:14b,T1218.010,1,True,True,True,True,True,PASS,,-,False,False,100,stop,145,,0,7.07,29.99,False
+qwen2.5-coder:14b,T1218.010,2,True,True,True,True,True,PASS,,-,False,False,101,stop,145,,0,7.07,29.27,False
+qwen2.5-coder:14b,T1218.010,3,True,True,True,True,True,PASS,,-,False,False,102,stop,145,,0,6.97,29.79,False
+qwen2.5-coder:14b,T1105,1,True,True,True,True,True,PASS,,-,False,False,100,stop,122,,0,6.29,29.95,False
+qwen2.5-coder:14b,T1105,2,True,True,True,True,True,PASS,,-,False,False,101,stop,122,,0,5.85,32.4,False
+qwen2.5-coder:14b,T1105,3,True,True,True,True,True,PASS,,-,False,False,102,stop,123,,0,5.87,32.71,False
+qwen2.5-coder:14b,T1053.005,1,False,False,True,True,False,NOISY,fired on harmless benign line,-,False,False,100,stop,129,,0,6.17,33.08,False
+qwen2.5-coder:14b,T1053.005,2,False,False,True,True,False,NOISY,fired on harmless benign line,-,False,False,101,stop,129,,0,6.02,33.02,False
+qwen2.5-coder:14b,T1053.005,3,False,False,True,True,False,NOISY,fired on harmless benign line,-,False,False,102,stop,129,,0,6.12,32.27,False
+qwen2.5-coder:14b,T1547.001,1,False,False,True,True,False,NOISY,fired on harmless benign line,-,False,False,100,stop,136,,0,6.38,32.97,False
+qwen2.5-coder:14b,T1547.001,2,False,False,True,True,False,NOISY,fired on harmless benign line,-,False,False,101,stop,136,,0,13.31,12.11,False
+qwen2.5-coder:14b,T1547.001,3,False,False,True,True,False,NOISY,fired on harmless benign line,-,False,False,102,stop,137,,0,13.11,12.52,False
+qwen2.5-coder:14b,T1136.001,1,True,False,True,True,True,TOO_NARROW,too narrow: caught the shown attack but missed the hidden variant,-,False,False,100,stop,108,,0,10.78,12.56,False
+qwen2.5-coder:14b,T1136.001,2,True,False,True,True,True,TOO_NARROW,too narrow: caught the shown attack but missed the hidden variant,-,False,False,101,stop,110,,0,6.68,24.36,False
+qwen2.5-coder:14b,T1136.001,3,True,False,True,True,True,TOO_NARROW,too narrow: caught the shown attack but missed the hidden variant,-,False,False,102,stop,110,,0,11.13,12.28,False
+qwen2.5-coder:14b,T1003.001,1,True,False,True,True,True,TOO_NARROW,too narrow: caught the shown attack but missed the hidden variant,-,False,False,100,stop,118,,0,11.49,12.63,False
+qwen2.5-coder:14b,T1003.001,2,True,False,True,True,True,TOO_NARROW,too narrow: caught the shown attack but missed the hidden variant,-,False,False,101,stop,118,,0,11.07,13.29,False
+qwen2.5-coder:14b,T1003.001,3,True,False,True,True,True,TOO_NARROW,too narrow: caught the shown attack but missed the hidden variant,-,False,False,102,stop,118,,0,8.47,18.65,False
+qwen2.5-coder:14b,T1197,1,True,True,True,True,True,PASS,,-,False,False,100,stop,135,,0,9.3,18.87,False
+qwen2.5-coder:14b,T1197,2,True,True,True,True,True,PASS,,-,False,False,101,stop,135,,0,6.69,29.53,False
+qwen2.5-coder:14b,T1197,3,True,True,True,True,True,PASS,,-,False,False,102,stop,135,,0,6.68,29.61,False
+qwen2.5-coder:14b,T1047,1,True,True,True,True,True,PASS,,-,False,False,100,stop,100,,0,5.51,30.23,False
+qwen2.5-coder:14b,T1047,2,True,True,True,True,True,PASS,,-,False,False,101,stop,100,,0,5.41,30.11,False
+qwen2.5-coder:14b,T1047,3,True,True,True,True,True,PASS,,-,False,False,102,stop,100,,0,5.41,30.13,False
+qwen2.5-coder:14b,T1033,1,True,True,True,True,True,PASS,,-,False,False,100,stop,93,,0,5.29,30.11,False
+qwen2.5-coder:14b,T1033,2,True,True,True,True,True,PASS,,-,False,False,101,stop,93,,0,5.18,30.22,False
+qwen2.5-coder:14b,T1033,3,True,True,True,True,True,PASS,,-,False,False,102,stop,93,,0,5.16,30.24,False

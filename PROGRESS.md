@@ -144,3 +144,24 @@ Antigravity started on 2026-11-06
   - results/set1_failure_modes.md (created: 3 sections covering technique changes, classification tables, and extra observations)
   - PROGRESS.md (updated)
 - WARN lines: none
+
+### 2026-11-11: Task 3e - Prompt round 3 on set 1, failure analysis, and freeze update
+- Status: DONE
+- Files created or changed:
+  - results/set1_v2_1_failure_examples.md (created: repeat 1 detection blocks, marked blockers, shown and variant lines for 6 techniques)
+  - llm/prompts/v3a.py (created: minimal concise instructions with 2 examples)
+  - llm/prompts/v3b.py (created: chain-of-thought instructions with keep/ignore scratchpad comments)
+  - tests/test_prompts_v3.py (created: unit tests for v3 prompts covering all 3 sets, pySigma validity, quietness, sensitive values, program names, diff)
+  - llm/run_experiment.py (updated to accept --prompt v3a and --prompt v3b, save raw responses to rules_raw)
+  - tests/test_runner_options.py (updated: added test_prompts_v3a_v3b_accepted)
+  - results/runs/20261111_1403_set1_v3a/ (created: run outputs for prompt v3a on set 1)
+  - results/runs/20261111_1413_set1_v3b/ (created: run outputs for prompt v3b on set 1)
+  - llm/analyze_failure_modes.py (updated to include v3a and v3b in failure mode analysis)
+  - results/set1_strict_summary.md (regenerated with v3a and v3b strict metrics)
+  - results/set1_failure_modes.md (regenerated with v3a and v3b failure mode breakdowns)
+  - results/set1_prompt_round3.md (created: comprehensive comparison across prompt versions v1, v2, v2_1, v3a, v3b)
+  - FROZEN.md (updated: freeze decision to qwen2.5-coder:14b under v3b as primary model and qwen2.5-coder:7b under v3a as comparison model; added v3a.py and v3b.py hashes)
+  - AGENTS.md (updated: added dated prompt round 3 results and closing statement for set 1 tuning)
+  - tests/test_demo.py (updated: test_read_frozen_config updated for new primary model and prompt)
+  - PROGRESS.md (updated)
+- WARN lines: none

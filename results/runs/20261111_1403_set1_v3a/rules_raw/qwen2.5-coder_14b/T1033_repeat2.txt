@@ -1,0 +1,16 @@
+```yaml
+title: Whoami Used To List Privileges
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\whoami.exe'
+        CommandLine|contains|windash: '/priv'
+    condition: selection
+level: low
+tags:
+    - attack.discovery
+    - attack.t1033
+```

@@ -1,0 +1,15 @@
+title: Rundll32 Executes Code From .sys File
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\rundll32.exe'
+        CommandLine|contains|all:
+            - ',Run'
+    condition: selection
+level: high
+tags:
+    - attack.execution
+    - attack.t1218.011

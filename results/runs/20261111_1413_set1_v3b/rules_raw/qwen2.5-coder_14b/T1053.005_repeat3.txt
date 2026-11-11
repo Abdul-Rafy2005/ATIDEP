@@ -1,0 +1,18 @@
+# keep: /create, /tr
+# ignore: Updater, C:\Users\student\AppData\Local\Temp\x.exe, 12:00
+title: Scheduled Task Creation From Temp Folder
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\schtasks.exe'
+        CommandLine|contains|windash|all:
+            - '/create'
+            - '/tr'
+    condition: selection
+level: high
+tags:
+    - attack.persistence
+    - attack.t1053.005

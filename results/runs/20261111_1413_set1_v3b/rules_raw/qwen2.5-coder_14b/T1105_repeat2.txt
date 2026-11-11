@@ -1,0 +1,18 @@
+# keep: -urlcache, -f
+# ignore: http://10.0.0.5/payload.exe, payload.exe
+title: Certutil Used To Download File
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\certutil.exe'
+        CommandLine|contains|windash|all:
+            - '-urlcache'
+            - '-f'
+    condition: selection
+level: medium
+tags:
+    - attack.command-and-control
+    - attack.t1105

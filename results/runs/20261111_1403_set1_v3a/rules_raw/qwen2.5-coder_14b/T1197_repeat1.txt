@@ -1,0 +1,19 @@
+```yaml
+title: Bitsadmin Used To Download DLL File
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\bitsadmin.exe'
+        CommandLine|contains|windash|all:
+            - '/transfer'
+            - '/download'
+            - '/priority high'
+    condition: selection
+level: medium
+tags:
+    - attack.execution
+    - attack.t1197
+```

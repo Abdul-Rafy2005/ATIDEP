@@ -23,7 +23,7 @@ from techniques_set3 import TECHNIQUES3, DESCRIPTIONS3, make_triple3
 from compare_models import ask_ollama, extract_yaml, safe, DESCRIPTIONS
 from analyze_results import analyze_rule, format_flags
 from scoring import score_rule
-from prompts import v1, v2, v2_1
+from prompts import v1, v2, v2_1, v3a, v3b
 
 
 def tags(url):
@@ -47,7 +47,7 @@ def command_output(command):
 
 
 def prompt_for(version, tech, techniques, descriptions):
-    module = {"v1": v1, "v2": v2, "v2_1": v2_1}[version]
+    module = {"v1": v1, "v2": v2, "v2_1": v2_1, "v3a": v3a, "v3b": v3b}[version]
     return module.build_prompt(tech, techniques, descriptions)
 
 
@@ -148,7 +148,7 @@ def write_report(path, rows):
 def build_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument("--set", type=int, choices=(1, 2, 3), required=True)
-    parser.add_argument("--prompt", choices=("v1", "v2", "v2_1"), required=True)
+    parser.add_argument("--prompt", choices=("v1", "v2", "v2_1", "v3a", "v3b"), required=True)
     parser.add_argument("--models", nargs="+", required=True)
     parser.add_argument("--repeats", type=int, default=1)
     parser.add_argument("--max-tokens", type=int, default=800)
@@ -207,7 +207,7 @@ def main(argv=None):
         folder = os.path.join(results_base, "runs", f"{run_id}_{suffix:02d}_set{args.set}_{args.prompt}")
         suffix += 1
     os.makedirs(folder)
-    for directory in ("rules_first", "rules_final"):
+    for directory in ("rules_first", "rules_final", "rules_raw"):
         for model in args.models:
             os.makedirs(os.path.join(folder, directory, safe(model)))
 
@@ -243,6 +243,10 @@ def main(argv=None):
                     rule_final = extract_yaml(raw_final)
                     seconds += repair_seconds
                     repaired = True
+                raw_filename = f"{tech}_repeat{repeat}.txt"
+                raw_path = os.path.join(folder, "rules_raw", safe(model), raw_filename)
+                with open(raw_path, "w", encoding="utf-8") as output:
+                    output.write(raw)
                 first_path = os.path.join(folder, "rules_first", safe(model), tech + ".yml")
                 final_path = os.path.join(folder, "rules_final", safe(model), tech + ".yml")
                 if args.repeats > 1:

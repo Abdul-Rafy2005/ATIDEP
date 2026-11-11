@@ -1,0 +1,19 @@
+# keep: add, /v, /d
+# ignore: HKCU\Software\Microsoft\Windows\CurrentVersion\Run, Updater, C:\Users\student\x.exe
+title: Registry Key Modification For Persistent Execution
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\reg.exe'
+        CommandLine|contains|windash|all:
+            - 'add'
+            - '/v'
+            - '/d'
+    condition: selection
+level: high
+tags:
+    - attack.persistence
+    - attack.t1547.001

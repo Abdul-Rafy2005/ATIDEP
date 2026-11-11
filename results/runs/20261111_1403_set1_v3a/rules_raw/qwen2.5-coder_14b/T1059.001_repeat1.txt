@@ -1,0 +1,19 @@
+```yaml
+title: PowerShell Used To Download And Execute Script
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\powershell.exe'
+        CommandLine|contains|windash|all:
+            - '-nop'
+            - '-w hidden'
+            - '-c IEX'
+    condition: selection
+level: high
+tags:
+    - attack.execution
+    - attack.t1059.001
+```
