@@ -1,0 +1,20 @@
+# keep: evil-winrm.rb, -i, -u, -p
+# ignore: 10.0.0.1, admin, Password123
+title: Evil-WinRM Used To Establish Remote WinRM Session
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\ruby.exe'
+        CommandLine|contains|windash|all:
+            - 'evil-winrm.rb'
+            - '-i'
+            - '-u'
+            - '-p'
+    condition: selection
+level: high
+tags:
+    - attack.execution
+    - attack.t1021.006

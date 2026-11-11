@@ -1,0 +1,15 @@
+title: Msxsl Used To Execute Remote XSL Transformation
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\msxsl.exe'
+        CommandLine|contains|windash|all:
+            - 'http://'
+    condition: selection
+level: medium
+tags:
+    - attack.execution
+    - attack.t1220

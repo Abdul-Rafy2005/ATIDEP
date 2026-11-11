@@ -1,0 +1,16 @@
+title: Remote XSL Transformation Using Msxsl
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\msxsl.exe'
+        CommandLine|contains|all:
+            - 'http://'
+            - '.xsl'
+    condition: selection
+level: high
+tags:
+    - attack.execution
+    - attack.t1220

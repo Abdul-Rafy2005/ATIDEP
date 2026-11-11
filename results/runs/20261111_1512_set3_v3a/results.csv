@@ -1,0 +1,61 @@
+model,technique,repeat,single_pass,strict_pass,single_syntax,single_caught,single_quiet,verdict,error,flags,duplicate_keys,padded_values,seed,first_done_reason,first_eval_count,repair_done_reason,repair_eval_count,seconds,tokens_per_second,repaired
+qwen2.5-coder:14b,T1003.002,1,True,True,True,True,True,PASS,,-,False,False,100,stop,106,,0,8.78,30.03,False
+qwen2.5-coder:14b,T1003.002,2,True,True,True,True,True,PASS,,-,False,False,101,stop,106,,0,6.01,27.48,False
+qwen2.5-coder:14b,T1003.002,3,True,True,True,True,True,PASS,,-,False,False,102,stop,106,,0,6.02,27.52,False
+qwen2.5-coder:14b,T1021.006,1,True,True,True,True,True,PASS,,-,False,False,100,stop,114,,0,6.67,26.32,False
+qwen2.5-coder:14b,T1021.006,2,True,True,True,True,True,PASS,,-,False,False,101,stop,112,,0,6.11,28.38,False
+qwen2.5-coder:14b,T1021.006,3,True,True,True,True,True,PASS,,-,False,False,102,stop,111,,0,5.64,31.43,False
+qwen2.5-coder:14b,T1040,1,True,True,True,True,True,PASS,,-,False,False,100,stop,97,,0,5.35,31.77,False
+qwen2.5-coder:14b,T1040,2,True,True,True,True,True,PASS,,-,False,False,101,stop,97,,0,5.17,32.23,False
+qwen2.5-coder:14b,T1040,3,True,True,True,True,True,PASS,,-,False,False,102,stop,97,,0,5.41,30.07,False
+qwen2.5-coder:14b,T1053.002,1,True,True,True,True,True,PASS,,-,False,False,100,stop,99,,0,5.32,31.65,False
+qwen2.5-coder:14b,T1053.002,2,True,True,True,True,True,PASS,,-,False,False,101,stop,99,,0,5.7,27.54,False
+qwen2.5-coder:14b,T1053.002,3,True,True,True,True,True,PASS,,-,False,False,102,stop,99,,0,5.44,29.93,False
+qwen2.5-coder:14b,T1082,1,True,True,True,True,True,PASS,,-,False,False,100,stop,96,,0,5.4,31.03,False
+qwen2.5-coder:14b,T1082,2,True,True,True,True,True,PASS,,-,False,False,101,stop,96,,0,5.18,32.17,False
+qwen2.5-coder:14b,T1082,3,True,True,True,True,True,PASS,,-,False,False,102,stop,96,,0,5.26,31.05,False
+qwen2.5-coder:14b,T1112,1,True,True,True,True,True,PASS,,-,False,False,100,stop,99,,0,5.37,32.62,False
+qwen2.5-coder:14b,T1112,2,True,True,True,True,True,PASS,,-,False,False,101,stop,96,,0,5.68,26.88,False
+qwen2.5-coder:14b,T1112,3,True,True,True,True,True,PASS,,-,False,False,102,stop,96,,0,5.73,26.43,False
+qwen2.5-coder:14b,T1113,1,True,True,True,True,True,PASS,,-,False,False,100,stop,96,,0,5.98,25.7,False
+qwen2.5-coder:14b,T1113,2,True,True,True,True,True,PASS,,-,False,False,101,stop,96,,0,5.98,25.05,False
+qwen2.5-coder:14b,T1113,3,True,True,True,True,True,PASS,,-,False,False,102,stop,96,,0,5.47,28.63,False
+qwen2.5-coder:14b,T1123,1,True,True,True,True,True,PASS,,-,False,False,100,stop,85,,0,5.12,30.16,False
+qwen2.5-coder:14b,T1123,2,True,True,True,True,True,PASS,,-,False,False,101,stop,85,,0,5.03,29.46,False
+qwen2.5-coder:14b,T1123,3,True,True,True,True,True,PASS,,-,False,False,102,stop,85,,0,5.44,26.13,False
+qwen2.5-coder:14b,T1176.001,1,True,True,True,True,True,PASS,,-,False,False,100,stop,91,,0,5.68,26.73,False
+qwen2.5-coder:14b,T1176.001,2,True,True,True,True,True,PASS,,-,False,False,101,stop,91,,0,5.41,27.56,False
+qwen2.5-coder:14b,T1176.001,3,True,True,True,True,True,PASS,,-,False,False,102,stop,91,,0,5.47,27.02,False
+qwen2.5-coder:14b,T1185,1,True,True,True,True,True,PASS,,-,False,False,100,stop,92,,0,5.75,26.5,False
+qwen2.5-coder:14b,T1185,2,True,True,True,True,True,PASS,,-,False,False,101,stop,92,,0,5.57,26.65,False
+qwen2.5-coder:14b,T1185,3,True,True,True,True,True,PASS,,-,False,False,102,stop,92,,0,5.56,26.89,False
+qwen2.5-coder:14b,T1202,1,True,True,True,True,True,PASS,,-,False,False,100,stop,92,,0,5.61,27.67,False
+qwen2.5-coder:14b,T1202,2,True,True,True,True,True,PASS,,-,False,False,101,stop,92,,0,5.55,26.84,False
+qwen2.5-coder:14b,T1202,3,True,True,True,True,True,PASS,,-,False,False,102,stop,92,,0,5.54,27.35,False
+qwen2.5-coder:14b,T1218,1,True,True,True,True,True,PASS,,-,False,False,100,stop,99,,0,5.86,27.96,False
+qwen2.5-coder:14b,T1218,2,True,True,True,True,True,PASS,,-,False,False,101,stop,98,,0,5.71,27.53,False
+qwen2.5-coder:14b,T1218,3,True,True,True,True,True,PASS,,-,False,False,102,stop,99,,0,5.71,27.67,False
+qwen2.5-coder:14b,T1219.002,1,True,True,True,True,True,PASS,,-,False,False,100,stop,112,,0,6.33,27.95,False
+qwen2.5-coder:14b,T1219.002,2,True,True,True,True,True,PASS,,-,False,False,101,stop,112,,0,6.22,27.61,False
+qwen2.5-coder:14b,T1219.002,3,True,True,True,True,True,PASS,,-,False,False,102,stop,112,,0,6.15,27.77,False
+qwen2.5-coder:14b,T1220,1,True,True,True,True,True,PASS,,-,False,False,100,stop,95,,0,5.76,27.11,False
+qwen2.5-coder:14b,T1220,2,False,False,True,False,True,MISSED_SHOWN,missed the shown attack,-,False,False,101,stop,101,,0,5.82,27.49,False
+qwen2.5-coder:14b,T1220,3,False,False,True,False,True,MISSED_SHOWN,missed the shown attack,-,False,False,102,stop,101,,0,5.8,27.64,False
+qwen2.5-coder:14b,T1529,1,True,False,True,True,True,TOO_NARROW,too narrow: caught the shown attack but missed the hidden variant,instance_specific_values,False,False,100,stop,95,,0,5.68,27.37,False
+qwen2.5-coder:14b,T1529,2,True,False,True,True,True,TOO_NARROW,too narrow: caught the shown attack but missed the hidden variant,instance_specific_values,False,False,101,stop,95,,0,5.56,27.94,False
+qwen2.5-coder:14b,T1529,3,True,False,True,True,True,TOO_NARROW,too narrow: caught the shown attack but missed the hidden variant,instance_specific_values,False,False,102,stop,95,,0,5.69,26.82,False
+qwen2.5-coder:14b,T1563.002,1,True,True,True,True,True,PASS,,-,False,False,100,stop,112,,0,6.31,27.98,False
+qwen2.5-coder:14b,T1563.002,2,True,True,True,True,True,PASS,,-,False,False,101,stop,112,,0,6.19,27.54,False
+qwen2.5-coder:14b,T1563.002,3,True,True,True,True,True,PASS,,-,False,False,102,stop,110,,0,6.03,28.0,False
+qwen2.5-coder:14b,T1564.004,1,True,True,True,True,True,PASS,,-,False,False,100,stop,103,,0,5.95,28.09,False
+qwen2.5-coder:14b,T1564.004,2,True,True,True,True,True,PASS,,-,False,False,101,stop,103,,0,5.85,27.71,False
+qwen2.5-coder:14b,T1564.004,3,True,True,True,True,True,PASS,,-,False,False,102,stop,103,,0,5.84,27.81,False
+qwen2.5-coder:14b,T1572,1,True,True,True,True,True,PASS,,-,False,False,100,stop,88,,0,5.46,27.75,False
+qwen2.5-coder:14b,T1572,2,True,True,True,True,True,PASS,,-,False,False,101,stop,88,,0,5.29,27.67,False
+qwen2.5-coder:14b,T1572,3,True,True,True,True,True,PASS,,-,False,False,102,stop,88,,0,5.39,26.97,False
+qwen2.5-coder:14b,T1574,1,True,True,True,True,True,PASS,,-,False,False,100,stop,90,,0,5.09,31.54,False
+qwen2.5-coder:14b,T1574,2,True,True,True,True,True,PASS,,-,False,False,101,stop,90,,0,5.1,29.99,False
+qwen2.5-coder:14b,T1574,3,True,True,True,True,True,PASS,,-,False,False,102,stop,90,,0,5.21,28.84,False
+qwen2.5-coder:14b,T1615,1,True,True,True,True,True,PASS,,-,False,False,100,stop,99,,0,6.03,26.48,False
+qwen2.5-coder:14b,T1615,2,True,True,True,True,True,PASS,,-,False,False,101,stop,99,,0,5.98,25.86,False
+qwen2.5-coder:14b,T1615,3,True,True,True,True,True,PASS,,-,False,False,102,stop,99,,0,5.9,26.43,False

@@ -1,0 +1,14 @@
+title: Audio Recording With Sound Recorder
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\SoundRecorder.exe'
+        CommandLine|contains: ' /FILE '
+    condition: selection
+level: medium
+tags:
+    - attack.credential-access
+    - attack.t1123

@@ -1,0 +1,14 @@
+title: Unpacked Custom Extension Loaded in Chromium
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\chrome.exe'
+        CommandLine|contains: '--load-extension='
+    condition: selection
+level: high
+tags:
+    - attack.persistence
+    - attack.t1176.001

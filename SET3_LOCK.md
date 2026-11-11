@@ -1,0 +1,30 @@
+# Test Set 3 Lock
+
+This file locks the ground truth artifacts for Test Set 3.
+
+| File | SHA-256 |
+| --- | --- |
+| generator/techniques_set3.py | c86d7307e124309f0824e3dd844673d381f0275cdd333ec6d57dabdb575179f8 |
+| results/techniques_set3.csv | 40db449272e61b94781fd47207b7fd4563dfe7bd027e69e93da5e00a6ecae9d7 |
+| data/sigmahq_rules_set3/proc_creation_win_aspnet_compiler_susp_paths.yml | 130b30e44af117be791ee00893a9878c3b3a59c9e07bfa113137de6ad0e0b2bd |
+| data/sigmahq_rules_set3/proc_creation_win_at_interactive_execution.yml | a2ebd67a3f1acace23dd4a32275b3d6327ad6b3f8aa90c5418c66f2ac27af7e6 |
+| data/sigmahq_rules_set3/proc_creation_win_browsers_chromium_load_extension.yml | cac7f07b1334d7e66fcfeea535d7243fb547b3ac09cd292e6f4effb68c9ddbc2 |
+| data/sigmahq_rules_set3/proc_creation_win_browsers_remote_debugging.yml | 716b427a1354e772ef0fff3a7d623b93f19d96a4972e573f4ac6091689fa139e |
+| data/sigmahq_rules_set3/proc_creation_win_chcp_codepage_switch.yml | f8e154cb65821a73053668335ac5c9a698dfb803db8f37510e330c7c064595db |
+| data/sigmahq_rules_set3/proc_creation_win_dsacls_password_spray.yml | fc99bdbd798a117a13863978cefce03b85dcb509665623e69210b53259b5c6f7 |
+| data/sigmahq_rules_set3/proc_creation_win_dtrace_kernel_dump.yml | eb5b30c19f08b8c7b518ab12672403b41df8ab3c88da06b435d75c4833caf961 |
+| data/sigmahq_rules_set3/proc_creation_win_gpresult_execution.yml | b8bda339b93e260e7f2e2b6bc82e5d18d130eaf3efb768642b3789e80598296c |
+| data/sigmahq_rules_set3/proc_creation_win_hktl_evil_winrm.yml | 55ee7c047f08714aef7e8d867b8832c330a370744951286ed5e3ef13344835f9 |
+| data/sigmahq_rules_set3/proc_creation_win_hktl_pypykatz.yml | 36f7b3a60daa510a75cc63c7dda2486004ead49d22b1707f1925a0efe1a25672 |
+| data/sigmahq_rules_set3/proc_creation_win_lolbin_printbrm.yml | 407072c6ce753d356146c5f3f89433723c3e95aa48aba31960b18965cbcbcfbd |
+| data/sigmahq_rules_set3/proc_creation_win_lolbin_runscripthelper.yml | d3475ab6d1b926539558b1976328d54d9dfbd1e04f3287854c0fbc3bb5d06220 |
+| data/sigmahq_rules_set3/proc_creation_win_mstsc_rdp_hijack_shadowing.yml | 5ee428e9ecfb4a897249ad1a53d1b7cc23382cb71efa79cd57423e94613b416a |
+| data/sigmahq_rules_set3/proc_creation_win_msxsl_remote_execution.yml | 5a3611eed383821871e48ff3830a21ad7cb144f3a2226db424de8d2dac88b12c |
+| data/sigmahq_rules_set3/proc_creation_win_psr_capture_screenshots.yml | 8cd2116b7b864fc6c39ffde9868280d8a00b29606dc243e66313de1940410e58 |
+| data/sigmahq_rules_set3/proc_creation_win_registry_cimprovider_dll_load.yml | c11a9101fc26ad98e9042355711286b1deb98e0a6d785825ad67b935cf9c11c6 |
+| data/sigmahq_rules_set3/proc_creation_win_shutdown_execution.yml | 63be1f9fb865ee784a3a8a265278e8bc364b3e182eb06a348e326fa379f27848 |
+| data/sigmahq_rules_set3/proc_creation_win_soundrecorder_audio_capture.yml | b75cab0ef06c31dab47173e806fe27b5ef01fb5bd826256e9d1986884cffd077 |
+| data/sigmahq_rules_set3/proc_creation_win_ssh_port_forward.yml | fc5dbfcf61ab95349e55ca21766503b90ac23c7581511adf6a31881c3b90d55c |
+| data/sigmahq_rules_set3/proc_creation_win_ssm_agent_abuse.yml | 058a8b121ba9ad758944643cb750262d7ac0eb157cfbf6aebb23c2f383940bc2 |
+| data/sigmahq_rules_set3/proc_creation_win_susp_network_sniffing.yml | 81a639feaf1368f9115c5932a85848c8cfe9279dd4a7efe1011c1eb14421d5d4 |
+| data/sigmahq_rules_set3/proc_creation_win_virtualbox_vboxdrvinst_execution.yml | d78e7fd3bdc1bd5d489e728ec33cc01a907ea227fa5aac1f518aaccb20d00714 |

@@ -1,0 +1,6 @@
+date,models,prompt,reason
+2026-11-11T14:49:56,qwen2.5-coder:14b;qwen2.5-coder:7b,v1,final test: v1 baseline both models
+2026-11-11T15:00:07,qwen2.5-coder:14b,v3b,final test: 14b primary v3b
+2026-11-11T15:07:14,qwen2.5-coder:7b,v3a,final test: 7b primary v3a
+2026-11-11T15:12:16,qwen2.5-coder:14b,v3a,final test: 14b exploratory v3a
+2026-11-11T15:18:55,qwen2.5-coder:7b,v3b,final test: 7b exploratory v3b

@@ -1,0 +1,16 @@
+title: Problem Steps Recorder Used To Record Screen Activity
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\Psr.exe'
+        CommandLine|contains|windash|all:
+            - '/start'
+            - '/output'
+    condition: selection
+level: high
+tags:
+    - attack.persistence
+    - attack.t1113

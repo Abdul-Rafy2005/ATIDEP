@@ -1,0 +1,16 @@
+# keep: --load-extension
+# ignore: "C:\temp\myext"
+title: Chromium Launched With Unpacked Custom Extension
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\chrome.exe'
+        CommandLine|contains|windash: '--load-extension'
+    condition: selection
+level: medium
+tags:
+    - attack.execution
+    - attack.t1176.001

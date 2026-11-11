@@ -1,0 +1,16 @@
+title: At.exe Schedules Interactive Command Prompt Job
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\at.exe'
+        CommandLine|contains|windash|all:
+            - '/interactive'
+            - 'cmd.exe'
+    condition: selection
+level: medium
+tags:
+    - attack.execution
+    - attack.t1053.002

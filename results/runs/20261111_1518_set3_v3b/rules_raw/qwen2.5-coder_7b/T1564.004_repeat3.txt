@@ -1,0 +1,18 @@
+# keep: -b, -f
+# ignore: C:\temp\backup.zip
+title: PrintBrm Used To Create Printer Backup
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\PrintBrm.exe'
+        CommandLine|contains|windash|all:
+            - '-b'
+            - '-f'
+    condition: selection
+level: low
+tags:
+    - attack.persistence
+    - attack.t1564.004

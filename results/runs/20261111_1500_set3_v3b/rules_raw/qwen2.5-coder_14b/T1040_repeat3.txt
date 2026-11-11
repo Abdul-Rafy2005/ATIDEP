@@ -1,0 +1,18 @@
+# keep: -i, -w
+# ignore: 1, C:\temp\sniff.pcap
+title: Tshark Used To Capture Network Traffic
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\tshark.exe'
+        CommandLine|contains|windash|all:
+            - '-i'
+            - '-w'
+    condition: selection
+level: medium
+tags:
+    - attack.collection
+    - attack.t1040

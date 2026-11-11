@@ -1,0 +1,16 @@
+```yaml
+title: Printer Backup Creation With PrintBrm
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\PrintBrm.exe'
+        CommandLine|contains: ' -b -f '
+    condition: selection
+level: high
+tags:
+    - attack.defense-evasion
+    - attack.t1564.004
+```

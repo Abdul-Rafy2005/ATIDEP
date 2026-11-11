@@ -1,0 +1,16 @@
+# keep: /interactive
+# ignore: 12:00, cmd.exe
+title: At Used To Schedule Interactive Command Prompt Job
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\at.exe'
+        CommandLine|contains|windash: '/interactive'
+    condition: selection
+level: medium
+tags:
+    - attack.execution
+    - attack.t1053.002

@@ -1,0 +1,16 @@
+title: Remote Desktop Session Without Consent
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\mstsc.exe'
+        CommandLine|contains: ' /v:'
+        CommandLine|contains: ' /shadow:'
+        CommandLine|contains: ' /noconsentprompt'
+    condition: selection
+level: high
+tags:
+    - attack.privilege-escalation
+    - attack.t1563.002

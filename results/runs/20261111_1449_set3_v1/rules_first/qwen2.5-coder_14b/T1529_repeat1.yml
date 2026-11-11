@@ -1,0 +1,16 @@
+title: Immediate System Reboot Initiated With Shutdown
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\shutdown.exe'
+        CommandLine|contains|all: 
+            - ' /r '
+            - ' /t 0 '
+    condition: selection
+level: high
+tags:
+    - attack.execution
+    - attack.t1529

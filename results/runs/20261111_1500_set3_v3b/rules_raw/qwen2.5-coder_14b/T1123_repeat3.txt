@@ -1,0 +1,16 @@
+# keep: /FILE
+# ignore: C:\temp\recording.wav
+title: SoundRecorder Used To Record Audio
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\SoundRecorder.exe'
+        CommandLine|contains|windash: '/FILE'
+    condition: selection
+level: medium
+tags:
+    - attack.collection
+    - attack.t1123

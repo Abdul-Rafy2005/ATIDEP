@@ -83,3 +83,15 @@ Superseded on 2026-11-11 by prompt round 3 results where prompt v3a scored 16/36
 ### Superseded decision 1 (2026-11-06: used single-gate numbers by mistake)
 
 On 2026-11-06, qwen2.5-coder:7b was assigned prompt v2 under the assumption that both v2 and v2_1 scored 36/36 first-try strict passes on set 1, triggering the tie-breaker to pick v2. However, the pipeline at that time evaluated only the single gate for set 1 (checking shown line and benign line, but omitting the hidden variant). Under the true strict gate checking the hidden variant, prompt v2 scores only 9/36 while prompt v2_1 scores 11/36. Thus, prompt v2_1 is selected for qwen2.5-coder:7b without needing a tie-breaker.
+
+## Pre-registration for the final test on set 3 (written 2026-11-11 14:45 PKT, before any run)
+
+Primary comparison: for each model, its frozen prompt against prompt v1. Primary metric: first-try strict pass out of 60 (20 techniques x 3 repeats). Also reported: techniques passed (at least 2 of 3 repeats strict) out of 20, and the paired comparison per technique (improved, same, worse).
+Exploratory (labelled as such in every table): the other v3 prompt for each model.
+Exactly these runs, set 3, --final, temperature 0.2, 3 repeats, seed from this file:
+1. prompt v1, qwen2.5-coder:14b and qwen2.5-coder:7b
+2. prompt v3b, qwen2.5-coder:14b (primary)
+3. prompt v3a, qwen2.5-coder:7b (primary)
+4. prompt v3a, qwen2.5-coder:14b (exploratory)
+5. prompt v3b, qwen2.5-coder:7b (exploratory)
+The test is run once. If a run crashes it may be repeated only into a new folder with the same settings, and the crash must be written down. No other runs, no tuning, no edits after seeing results.

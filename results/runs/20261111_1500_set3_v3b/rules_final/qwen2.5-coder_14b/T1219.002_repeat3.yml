@@ -1,0 +1,17 @@
+title: Unauthorized Registration of Amazon SSM Agent
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\amazon-ssm-agent.exe'
+        CommandLine|contains|windash|all:
+            - '-register'
+            - '-code'
+            - '-id'
+    condition: selection
+level: high
+tags:
+    - attack.persistence
+    - attack.t1219.002

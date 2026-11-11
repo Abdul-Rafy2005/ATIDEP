@@ -1,0 +1,16 @@
+```yaml
+title: Credential Dumping with PyKatz
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\pypykatz.exe'
+        CommandLine|contains: ' live registry'
+    condition: selection
+level: high
+tags:
+    - attack.credential-access
+    - attack.t1003.002
+```

@@ -1,0 +1,16 @@
+# keep: -start-debugger-server
+# ignore: 6000
+title: Firefox Launched With Remote Debugging Enabled
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\firefox.exe'
+        CommandLine|contains|windash: '-start-debugger-server'
+    condition: selection
+level: high
+tags:
+    - attack.execution
+    - attack.t1185

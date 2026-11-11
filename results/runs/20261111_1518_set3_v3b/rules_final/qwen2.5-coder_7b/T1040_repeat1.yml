@@ -1,0 +1,16 @@
+title: Tshark Used To Capture Network Traffic
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\tshark.exe'
+        CommandLine|contains|windash|all:
+            - '-i'
+            - '-w'
+    condition: selection
+level: high
+tags:
+    - attack.network-scan
+    - attack.t1040

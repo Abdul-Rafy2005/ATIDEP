@@ -1,0 +1,17 @@
+```yaml
+title: Remote Desktop Session Without Consent Prompt
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\mstsc.exe'
+        CommandLine|contains: ' /shadow:'
+        CommandLine|contains: ' /noconsentprompt'
+    condition: selection
+level: high
+tags:
+    - attack.privilege-escalation
+    - attack.t1563.002
+```

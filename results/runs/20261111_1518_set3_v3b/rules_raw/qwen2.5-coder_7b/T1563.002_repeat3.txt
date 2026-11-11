@@ -1,0 +1,19 @@
+# keep: /v, /shadow, /noconsentprompt
+# ignore: 10.0.0.5, 2
+title: Remote Desktop Session Without Consent
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\mstsc.exe'
+        CommandLine|contains|all:
+            - '/v'
+            - '/shadow'
+            - '/noconsentprompt'
+    condition: selection
+level: high
+tags:
+    - attack.privilege-escalation
+    - attack.t1563.002

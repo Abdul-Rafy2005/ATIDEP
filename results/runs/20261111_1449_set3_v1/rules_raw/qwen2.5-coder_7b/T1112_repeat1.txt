@@ -1,0 +1,16 @@
+```yaml
+title: Arbitrary Driver INF Installation With VBoxDrvInst
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\VBoxDrvInst.exe'
+        CommandLine|contains: ' driver executeinf '
+    condition: selection
+level: high
+tags:
+    - attack.privilege-escalation
+    - attack.t1112
+```

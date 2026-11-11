@@ -1,0 +1,16 @@
+title: Arbitrary Driver Installation Using VirtualBox Driver Installer
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\VBoxDrvInst.exe'
+        CommandLine|contains|all:
+            - 'driver'
+            - 'executeinf'
+    condition: selection
+level: high
+tags:
+    - attack.persistence
+    - attack.t1112

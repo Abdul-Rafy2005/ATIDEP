@@ -1,0 +1,16 @@
+# keep: executeinf
+# ignore: C:\temp\vbox.inf
+title: VirtualBox Driver Installer Used To Execute INF
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\VBoxDrvInst.exe'
+        CommandLine|contains|windash: 'executeinf'
+    condition: selection
+level: high
+tags:
+    - attack.persistence
+    - attack.t1112

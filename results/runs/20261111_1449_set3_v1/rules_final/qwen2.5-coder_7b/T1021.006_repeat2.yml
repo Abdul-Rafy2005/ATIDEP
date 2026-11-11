@@ -1,0 +1,17 @@
+title: Remote WinRM Session Establishment With Evil-WinRM
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\ruby.exe'
+        CommandLine|contains: ' evil-winrm.rb '
+        CommandLine|contains: ' -i '
+        CommandLine|contains: ' -u '
+        CommandLine|contains: ' -p '
+    condition: selection
+level: high
+tags:
+    - attack.execution
+    - attack.t1021.006

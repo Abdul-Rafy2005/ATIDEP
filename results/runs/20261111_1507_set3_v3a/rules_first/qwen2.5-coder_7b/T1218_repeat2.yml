@@ -1,0 +1,16 @@
+title: Dsacls Used To Set Password
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\dsacls.exe'
+        CommandLine|contains|all:
+            - '/user:'
+            - '/passwd:'
+    condition: selection
+level: high
+tags:
+    - attack.privilege-escalation
+    - attack.t1218

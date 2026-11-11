@@ -1,0 +1,14 @@
+title: Gpresult Inspects Applied Group Policy
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\gpresult.exe'
+        CommandLine|contains|windash: '/z'
+    condition: selection
+level: low
+tags:
+    - attack.privilege-escalation
+    - attack.t1615

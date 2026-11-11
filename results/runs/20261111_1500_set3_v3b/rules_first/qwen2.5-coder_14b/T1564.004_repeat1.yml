@@ -1,0 +1,16 @@
+title: PrintBrm Used To Create Printer Backup
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\PrintBrm.exe'
+        CommandLine|contains|windash|all:
+            - '-b'
+            - '-f'
+    condition: selection
+level: medium
+tags:
+    - attack.data-exfiltration
+    - attack.t1564.004

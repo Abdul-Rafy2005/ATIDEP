@@ -1,0 +1,16 @@
+# keep: /start
+# ignore: /output, C:\temp\screen.zip
+title: Problem Steps Recorder Used To Record Screen Activity
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\Psr.exe'
+        CommandLine|contains|windash: '/start'
+    condition: selection
+level: medium
+tags:
+    - attack.collection
+    - attack.t1113

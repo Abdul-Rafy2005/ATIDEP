@@ -120,18 +120,29 @@ class TestCoverageFakeRun(unittest.TestCase):
 class TestCoverageRealData(unittest.TestCase):
     """Test coverage output against actual repository data and rules."""
 
-    def test_24_rows_for_sets_1_and_2(self):
+    def test_rows_count(self):
         rows, config_keys, _ = build_coverage_table()
-        self.assertEqual(len(rows), 24, f"Expected exactly 24 rows, got {len(rows)}")
+        runs = find_complete_runs()
+        sets_with_runs = {s.get("set") for _, s, _ in runs}
+        if 3 in sets_with_runs:
+            self.assertEqual(len(rows), 44, f"Expected 44 rows with set 3, got {len(rows)}")
+        else:
+            self.assertEqual(len(rows), 24, f"Expected exactly 24 rows, got {len(rows)}")
 
-    def test_no_set_3_results_shown(self):
+    def test_set_3_results_consistency(self):
         rows, config_keys, _ = build_coverage_table()
-        for row in rows:
-            self.assertFalse(row["technique_id"].startswith("T1003.002"),
-                            "Set 3 technique should not be present")
-        for ck in config_keys:
-            self.assertFalse(ck.endswith("|3"),
-                            f"Configuration {ck} should not be for set 3")
+        runs = find_complete_runs()
+        sets_with_runs = {s.get("set") for _, s, _ in runs}
+        if 3 in sets_with_runs:
+            has_set3 = any(row["technique_id"].startswith("T1003.002") for row in rows)
+            self.assertTrue(has_set3, "Set 3 techniques should be present now that set 3 was run")
+        else:
+            for row in rows:
+                self.assertFalse(row["technique_id"].startswith("T1003.002"),
+                                "Set 3 technique should not be present")
+            for ck in config_keys:
+                self.assertFalse(ck.endswith("|3"),
+                                f"Configuration {ck} should not be for set 3")
 
     def test_all_set1_and_set2_techniques_present(self):
         rows, _, _ = build_coverage_table()

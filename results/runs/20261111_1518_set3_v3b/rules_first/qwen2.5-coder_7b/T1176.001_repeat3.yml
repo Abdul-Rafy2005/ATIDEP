@@ -1,0 +1,14 @@
+title: Chromium Browser Launches With Unpacked Extension
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\chrome.exe'
+        CommandLine|contains|windash: '--load-extension'
+    condition: selection
+level: high
+tags:
+    - attack.persistence
+    - attack.t1176.001

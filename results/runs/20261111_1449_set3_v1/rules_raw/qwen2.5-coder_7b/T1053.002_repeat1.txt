@@ -1,0 +1,14 @@
+title: Interactive Command Prompt Scheduled With At
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\at.exe'
+        CommandLine|contains: ' /interactive '
+    condition: selection
+level: high
+tags:
+    - attack.privilege-escalation
+    - attack.t1053.002

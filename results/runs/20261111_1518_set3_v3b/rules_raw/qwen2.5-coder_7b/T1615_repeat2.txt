@@ -1,0 +1,18 @@
+# keep: /z, /user
+# ignore: admin
+title: Gpresult Inspects Applied Group Policy Settings
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\gpresult.exe'
+        CommandLine|contains|all:
+            - '/z'
+            - '/user'
+    condition: selection
+level: low
+tags:
+    - attack.privilege-escalation
+    - attack.t1615

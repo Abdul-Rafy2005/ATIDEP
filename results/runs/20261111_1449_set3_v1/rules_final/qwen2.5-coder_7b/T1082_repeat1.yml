@@ -1,0 +1,14 @@
+title: Kernel Memory Dump With DTrace
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\dtrace.exe'
+        CommandLine|contains: ' -w -n "BEGIN { lkd(0); }"'
+    condition: selection
+level: critical
+tags:
+    - attack.persistence
+    - attack.t1082

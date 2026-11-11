@@ -1,0 +1,14 @@
+title: Reverse Port Forwarding with OpenSSH
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\ssh.exe'
+        CommandLine|contains: ' -R '
+    condition: selection
+level: high
+tags:
+    - attack.credential-access
+    - attack.t1572

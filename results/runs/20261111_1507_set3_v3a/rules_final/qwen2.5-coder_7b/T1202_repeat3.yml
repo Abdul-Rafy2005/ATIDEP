@@ -1,0 +1,15 @@
+title: Runscripthelper Used To Execute Arbitrary Script
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\Runscripthelper.exe'
+        CommandLine|contains|all:
+            - 'surfacecheck'
+    condition: selection
+level: high
+tags:
+    - attack.execution
+    - attack.t1202

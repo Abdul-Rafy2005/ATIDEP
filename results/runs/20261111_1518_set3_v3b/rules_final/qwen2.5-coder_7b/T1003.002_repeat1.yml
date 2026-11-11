@@ -1,0 +1,16 @@
+title: Pypykatz Used To Dump Credentials
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\pypykatz.exe'
+        CommandLine|contains|all:
+            - 'live'
+            - 'registry'
+    condition: selection
+level: high
+tags:
+    - attack.credential-access
+    - attack.t1003.002

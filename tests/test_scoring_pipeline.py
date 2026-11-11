@@ -86,14 +86,18 @@ SET1_KEYWORD_RULES = {
 class TestScoringPipeline(unittest.TestCase):
     def setUp(self):
         self.temp_dir = tempfile.mkdtemp(prefix="atidep_pipe_test_")
-        # Ensure real set2_use_log and set3_use_log do not exist beforehand
+        # Ensure real set2_use_log and set3_use_log are not modified
         self.real_set2_log = os.path.join(REPO_ROOT, "results", "set2_use_log.csv")
         self.real_set3_log = os.path.join(REPO_ROOT, "results", "set3_use_log.csv")
+        self.set3_log_mtime = os.path.getmtime(self.real_set3_log) if os.path.exists(self.real_set3_log) else None
 
     def tearDown(self):
         shutil.rmtree(self.temp_dir, ignore_errors=True)
         self.assertFalse(os.path.exists(self.real_set2_log), "Real set2_use_log.csv was touched!")
-        self.assertFalse(os.path.exists(self.real_set3_log), "Real set3_use_log.csv was touched!")
+        if self.set3_log_mtime is not None:
+            self.assertEqual(os.path.getmtime(self.real_set3_log), self.set3_log_mtime, "Real set3_use_log.csv was touched!")
+        else:
+            self.assertFalse(os.path.exists(self.real_set3_log), "Real set3_use_log.csv was touched!")
 
     def _run_pipeline(self, set_id, mock_rule_fn, prompt="v2"):
         """Run run_experiment.main with patched ask and custom results-dir."""

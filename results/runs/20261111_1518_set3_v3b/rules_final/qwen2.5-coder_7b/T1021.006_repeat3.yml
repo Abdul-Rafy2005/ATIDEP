@@ -1,0 +1,17 @@
+title: Remote WinRM Session Established Using Evil-WinRM
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\ruby.exe'
+        CommandLine|contains|all:
+            - '-i'
+            - '-u'
+            - '-p'
+    condition: selection
+level: high
+tags:
+    - attack.execution
+    - attack.t1021.006

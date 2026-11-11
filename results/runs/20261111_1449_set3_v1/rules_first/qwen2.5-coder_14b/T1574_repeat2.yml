@@ -1,0 +1,14 @@
+title: Arbitrary DLL Loading via Register-CimProvider
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\register-cimprovider.exe'
+        CommandLine|contains: ' -path '
+    condition: selection
+level: high
+tags:
+    - attack.persistence
+    - attack.t1574

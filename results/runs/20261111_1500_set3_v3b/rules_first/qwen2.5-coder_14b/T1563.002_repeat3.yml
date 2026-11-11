@@ -1,0 +1,16 @@
+title: MSTSC Used To View Remote Desktop Without Consent
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\mstsc.exe'
+        CommandLine|contains|windash|all:
+            - '/shadow'
+            - '/noconsentprompt'
+    condition: selection
+level: high
+tags:
+    - attack.credential-access
+    - attack.t1563.002

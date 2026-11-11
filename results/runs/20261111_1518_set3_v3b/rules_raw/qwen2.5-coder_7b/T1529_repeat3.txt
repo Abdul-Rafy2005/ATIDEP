@@ -1,0 +1,18 @@
+# keep: /r, /t:0
+# ignore: 0
+title: Immediate System Reboot Initiated
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\shutdown.exe'
+        CommandLine|contains|all:
+            - '/r'
+            - '/t:0'
+    condition: selection
+level: critical
+tags:
+    - attack.privilege-escalation
+    - attack.t1529
