@@ -175,20 +175,79 @@ class TestCoverageRealData(unittest.TestCase):
 
     def test_totals_match_results_summary(self):
         rows, config_keys, config_summaries = build_coverage_table()
-        # Verify strict pass totals match RESULTS_SUMMARY.md
+        # Verify strict pass totals match RESULTS_SUMMARY.md and Set 3 final report
         expected_passes = {
-            "qwen2.5-coder:7b|v1|1": 28,
-            "qwen2.5-coder:14b|v1|1": 35,
-            "qwen2.5-coder:7b|v2|1": 36,
-            "qwen2.5-coder:14b|v2|1": 26,
-            "qwen2.5-coder:7b|v2_1|1": 36,
-            "qwen2.5-coder:14b|v2_1|1": 36,
+            "qwen2.5-coder:7b|v1|1": 7,
+            "qwen2.5-coder:14b|v1|1": 3,
+            "qwen2.5-coder:7b|v2|1": 9,
+            "qwen2.5-coder:14b|v2|1": 8,
+            "qwen2.5-coder:7b|v2_1|1": 11,
+            "qwen2.5-coder:14b|v2_1|1": 8,
+            "qwen2.5-coder:7b|v3a|1": 16,
+            "qwen2.5-coder:14b|v3a|1": 19,
+            "qwen2.5-coder:7b|v3b|1": 15,
+            "qwen2.5-coder:14b|v3b|1": 21,
+            "qwen2.5-coder:7b|v1|2": 2,
+            "qwen2.5-coder:14b|v1|2": 2,
+            "mistral-rules|v1|2": 0,
+            "qwen2.5-coder:7b|v1|3": 35,
+            "qwen2.5-coder:14b|v1|3": 47,
+            "qwen2.5-coder:7b|v3a|3": 58,
+            "qwen2.5-coder:14b|v3a|3": 55,
+            "qwen2.5-coder:7b|v3b|3": 54,
+            "qwen2.5-coder:14b|v3b|3": 57,
         }
         for ck, expected in expected_passes.items():
             self.assertIn(ck, config_summaries, f"Config {ck} not found")
             actual = config_summaries[ck]["passes"]
             self.assertEqual(actual, expected,
                              f"Config {ck}: expected {expected} passes, got {actual}")
+
+    def test_set2_baseline_numbers(self):
+        rows, config_keys, config_summaries = build_coverage_table()
+        self.assertIn("qwen2.5-coder:7b|v1|2", config_summaries)
+        self.assertEqual(config_summaries["qwen2.5-coder:7b|v1|2"]["passes"], 2)
+        self.assertEqual(config_summaries["qwen2.5-coder:7b|v1|2"]["attempts"], 12)
+
+        self.assertIn("qwen2.5-coder:14b|v1|2", config_summaries)
+        self.assertEqual(config_summaries["qwen2.5-coder:14b|v1|2"]["passes"], 2)
+        self.assertEqual(config_summaries["qwen2.5-coder:14b|v1|2"]["attempts"], 12)
+
+        self.assertIn("mistral-rules|v1|2", config_summaries)
+        self.assertEqual(config_summaries["mistral-rules|v1|2"]["passes"], 0)
+        self.assertEqual(config_summaries["mistral-rules|v1|2"]["attempts"], 12)
+
+    def test_dynamic_header_in_html(self):
+        html_path = os.path.join(ROOT, "coverage", "coverage.html")
+        self.assertTrue(os.path.exists(html_path))
+        with open(html_path, encoding="utf-8") as f:
+            content = f.read()
+        self.assertNotIn("has not been run", content)
+        self.assertIn("sets 1, 2, and 3", content)
+        self.assertIn("Sets with results:", content)
+
+    def test_no_all_not_tested_rows(self):
+        rows, config_keys, _ = build_coverage_table()
+        for r in rows:
+            tech = r["technique_id"]
+            verdicts = [r.get(ck) for ck in config_keys]
+            has_tested = any(v != "NOT_TESTED" for v in verdicts)
+            self.assertTrue(has_tested, f"Technique {tech} has NOT_TESTED in all columns")
+
+    def test_multi_tactic_metadata(self):
+        # T1033 has Privilege Escalation and Discovery
+        rule_p = os.path.join(ROOT, "data", "sigmahq_rules", "proc_creation_win_whoami_priv_discovery.yml")
+        _, tactic = read_rule_metadata(rule_p)
+        self.assertIn(";", tactic)
+        self.assertIn("Privilege Escalation", tactic)
+        self.assertIn("Discovery", tactic)
+
+        # T1003.001 has Defense Evasion and Credential Access
+        rule_p2 = os.path.join(ROOT, "data", "sigmahq_rules", "proc_creation_win_sysinternals_procdump_lsass.yml")
+        _, tactic2 = read_rule_metadata(rule_p2)
+        self.assertIn(";", tactic2)
+        self.assertIn("Defense Evasion", tactic2)
+        self.assertIn("Credential Access", tactic2)
 
 
 if __name__ == "__main__":

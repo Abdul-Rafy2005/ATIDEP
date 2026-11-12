@@ -29,8 +29,8 @@ tfoot td { font-weight: bold; background: #eee; border-top: 2px solid #333; }
 <h1>ATIDEP ATT&amp;CK Coverage Grid</h1>
 <p class='subtitle'>Automated Threat-Informed Detection Engineering Platform</p>
 <div class='totals'>
-<strong>Coverage Summary:</strong> 32 of 44 techniques have at least one configuration that passes.<br>
-Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
+<strong>Coverage Summary:</strong> 29 of 44 techniques covered (at least one configuration passes all repeats).<br>
+Sets included: sets 1, 2, and 3 (44 techniques total). Sets with results: 1, 2, 3. Date: 2026-11-12.
 </div>
 <div class='legend'>
 <strong>Legend:</strong>
@@ -47,7 +47,9 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <th>Tactic</th>
 <th>Reference Rule</th>
 <th style='text-align:center;'>Reference Status</th>
+<th class='config-header'>mistral-rules<br>prompt v1<br>set 2 baseline</th>
 <th class='config-header'>qwen2.5-coder:14b<br>prompt v1<br>set 1</th>
+<th class='config-header'>qwen2.5-coder:14b<br>prompt v1<br>set 2 baseline</th>
 <th class='config-header'>qwen2.5-coder:14b<br>prompt v1<br>set 3</th>
 <th class='config-header'>qwen2.5-coder:14b<br>prompt v2_1<br>set 1</th>
 <th class='config-header'>qwen2.5-coder:14b<br>prompt v2<br>set 1</th>
@@ -56,6 +58,7 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <th class='config-header'>qwen2.5-coder:14b<br>prompt v3b<br>set 1</th>
 <th class='config-header'>qwen2.5-coder:14b<br>prompt v3b<br>set 3</th>
 <th class='config-header'>qwen2.5-coder:7b<br>prompt v1<br>set 1</th>
+<th class='config-header'>qwen2.5-coder:7b<br>prompt v1<br>set 2 baseline</th>
 <th class='config-header'>qwen2.5-coder:7b<br>prompt v1<br>set 3</th>
 <th class='config-header'>qwen2.5-coder:7b<br>prompt v2_1<br>set 1</th>
 <th class='config-header'>qwen2.5-coder:7b<br>prompt v2<br>set 1</th>
@@ -70,18 +73,21 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='tactic'>Execution</td>
 <td class='title' title='Suspicious PowerShell Download and Execute Pattern'>Suspicious PowerShell Download and Execute Pattern</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
-<td class='verdict' style='background:#4caf50;'>3/3</td>
-<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
-<td class='verdict' style='background:#4caf50;'>3/3</td>
-<td class='verdict' style='background:#f44336;'>0/3</td>
-<td class='verdict' style='background:#f44336;'>0/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#f44336;'>0/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
-<td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
-<td class='verdict' style='background:#4caf50;'>3/3</td>
-<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#f44336;'>0/3</td>
+<td class='verdict' style='background:#f44336;'>0/3</td>
+<td class='verdict' style='background:#f44336;'>0/3</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#f44336;'>0/3</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#f44336;'>0/3</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#f44336;'>0/3</td>
+<td class='verdict' style='background:#f44336;'>0/3</td>
 <td class='verdict' style='background:#f44336;'>0/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#f44336;'>0/3</td>
@@ -92,18 +98,21 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='tactic'>Defense Evasion</td>
 <td class='title' title='Suspicious Rundll32 Activity Invoking Sys File'>Suspicious Rundll32 Activity Invoking Sys File</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
-<td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
-<td class='verdict' style='background:#4caf50;'>3/3</td>
-<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#f44336;'>0/3</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#f44336;'>0/3</td>
+<td class='verdict' style='background:#ff9800;'>2/3</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#f44336;'>0/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
-<td class='verdict' style='background:#4caf50;'>3/3</td>
-<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#f44336;'>0/3</td>
+<td class='verdict' style='background:#f44336;'>0/3</td>
 <td class='verdict' style='background:#f44336;'>0/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#f44336;'>0/3</td>
@@ -114,18 +123,21 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='tactic'>Defense Evasion</td>
 <td class='title' title='Suspicious JavaScript Execution Via Mshta.EXE'>Suspicious JavaScript Execution Via Mshta.EXE</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#f44336;'>0/3</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#f44336;'>0/3</td>
+<td class='verdict' style='background:#f44336;'>0/3</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
-<td class='verdict' style='background:#4caf50;'>3/3</td>
-<td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
-<td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
-<td class='verdict' style='background:#4caf50;'>3/3</td>
-<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#f44336;'>0/3</td>
+<td class='verdict' style='background:#f44336;'>0/3</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
@@ -136,7 +148,9 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='tactic'>Defense Evasion</td>
 <td class='title' title='Potentially Suspicious Regsvr32 HTTP IP Pattern'>Potentially Suspicious Regsvr32 HTTP IP Pattern</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#f44336;'>0/3</td>
@@ -144,7 +158,8 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
-<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#ff9800;'>1/3</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
@@ -155,21 +170,24 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 </tr>
 <tr>
 <td class='tech-id'>T1105</td>
-<td class='tactic'>Defense Evasion</td>
+<td class='tactic'>Defense Evasion; Command and Control</td>
 <td class='title' title='Suspicious Download Via Certutil.EXE'>Suspicious Download Via Certutil.EXE</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#f44336;'>0/3</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#ff9800;'>1/3</td>
+<td class='verdict' style='background:#f44336;'>0/3</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#f44336;'>0/3</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#ff9800;'>2/3</td>
-<td class='verdict' style='background:#4caf50;'>3/3</td>
-<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
-<td class='verdict' style='background:#4caf50;'>3/3</td>
-<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
-<td class='verdict' style='background:#4caf50;'>3/3</td>
-<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
-<td class='verdict' style='background:#4caf50;'>3/3</td>
-<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#f44336;'>0/3</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
@@ -177,18 +195,21 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 </tr>
 <tr>
 <td class='tech-id'>T1053.005</td>
-<td class='tactic'>Privilege Escalation</td>
+<td class='tactic'>Privilege Escalation; Execution; Persistence</td>
 <td class='title' title='Suspicious Scheduled Task Creation Involving Temp Folder'>Suspicious Scheduled Task Creation Involving Temp Folder</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
-<td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
-<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#f44336;'>0/3</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#ff9800;'>1/3</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#ff9800;'>2/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#f44336;'>0/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
-<td class='verdict' style='background:#ff9800;'>2/3</td>
+<td class='verdict' style='background:#f44336;'>0/3</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
@@ -199,21 +220,24 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 </tr>
 <tr>
 <td class='tech-id'>T1547.001</td>
-<td class='tactic'>Privilege Escalation</td>
+<td class='tactic'>Privilege Escalation; Persistence</td>
 <td class='title' title='Potential Persistence Attempt Via Run Keys Using Reg.EXE'>Potential Persistence Attempt Via Run Keys Using Reg.EXE</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
-<td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
-<td class='verdict' style='background:#4caf50;'>3/3</td>
-<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#f44336;'>0/3</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#f44336;'>0/3</td>
+<td class='verdict' style='background:#f44336;'>0/3</td>
 <td class='verdict' style='background:#f44336;'>0/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#f44336;'>0/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
-<td class='verdict' style='background:#ff9800;'>2/3</td>
+<td class='verdict' style='background:#f44336;'>0/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
-<td class='verdict' style='background:#4caf50;'>3/3</td>
-<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#f44336;'>0/3</td>
+<td class='verdict' style='background:#f44336;'>0/3</td>
 <td class='verdict' style='background:#f44336;'>0/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#f44336;'>0/3</td>
@@ -224,18 +248,21 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='tactic'>Persistence</td>
 <td class='title' title='New User Created Via Net.EXE'>New User Created Via Net.EXE</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
-<td class='verdict' style='background:#ff9800;'>2/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
-<td class='verdict' style='background:#4caf50;'>3/3</td>
-<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#f44336;'>0/3</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#f44336;'>0/3</td>
+<td class='verdict' style='background:#f44336;'>0/3</td>
 <td class='verdict' style='background:#f44336;'>0/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#f44336;'>0/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#f44336;'>0/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
-<td class='verdict' style='background:#4caf50;'>3/3</td>
-<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#f44336;'>0/3</td>
+<td class='verdict' style='background:#f44336;'>0/3</td>
 <td class='verdict' style='background:#f44336;'>0/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#f44336;'>0/3</td>
@@ -243,21 +270,24 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 </tr>
 <tr>
 <td class='tech-id'>T1003.001</td>
-<td class='tactic'>Defense Evasion</td>
+<td class='tactic'>Defense Evasion; Credential Access</td>
 <td class='title' title='Potential LSASS Process Dump Via Procdump'>Potential LSASS Process Dump Via Procdump</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
-<td class='verdict' style='background:#4caf50;'>3/3</td>
-<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
-<td class='verdict' style='background:#4caf50;'>3/3</td>
-<td class='verdict' style='background:#f44336;'>0/3</td>
-<td class='verdict' style='background:#f44336;'>0/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#f44336;'>0/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
-<td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
-<td class='verdict' style='background:#4caf50;'>3/3</td>
-<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#f44336;'>0/3</td>
+<td class='verdict' style='background:#f44336;'>0/3</td>
+<td class='verdict' style='background:#f44336;'>0/3</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#f44336;'>0/3</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#f44336;'>0/3</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#f44336;'>0/3</td>
+<td class='verdict' style='background:#f44336;'>0/3</td>
 <td class='verdict' style='background:#f44336;'>0/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#f44336;'>0/3</td>
@@ -265,21 +295,24 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 </tr>
 <tr>
 <td class='tech-id'>T1197</td>
-<td class='tactic'>Persistence</td>
+<td class='tactic'>Persistence; Execution; Defense Evasion; Command and Control</td>
 <td class='title' title='File With Suspicious Extension Downloaded Via Bitsadmin'>File With Suspicious Extension Downloaded Via Bitsadmin</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
-<td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
-<td class='verdict' style='background:#4caf50;'>3/3</td>
-<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#f44336;'>0/3</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#f44336;'>0/3</td>
+<td class='verdict' style='background:#f44336;'>0/3</td>
 <td class='verdict' style='background:#ff9800;'>1/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
-<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#f44336;'>0/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
-<td class='verdict' style='background:#4caf50;'>3/3</td>
-<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#f44336;'>0/3</td>
+<td class='verdict' style='background:#f44336;'>0/3</td>
 <td class='verdict' style='background:#ff9800;'>1/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#f44336;'>0/3</td>
@@ -290,18 +323,21 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='tactic'>Execution</td>
 <td class='title' title='Process Creation Attempt via Wmic.EXE'>Process Creation Attempt via Wmic.EXE</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
-<td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
-<td class='verdict' style='background:#4caf50;'>3/3</td>
-<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#f44336;'>0/3</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#f44336;'>0/3</td>
+<td class='verdict' style='background:#f44336;'>0/3</td>
 <td class='verdict' style='background:#ff9800;'>1/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
-<td class='verdict' style='background:#4caf50;'>3/3</td>
-<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#f44336;'>0/3</td>
+<td class='verdict' style='background:#f44336;'>0/3</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#ff9800;'>2/3</td>
@@ -309,10 +345,12 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 </tr>
 <tr>
 <td class='tech-id'>T1033</td>
-<td class='tactic'>Privilege Escalation</td>
+<td class='tactic'>Privilege Escalation; Discovery</td>
 <td class='title' title='Security Privileges Enumeration Via Whoami.EXE'>Security Privileges Enumeration Via Whoami.EXE</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
-<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#f44336;'>0/3</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
@@ -320,7 +358,8 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
-<td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#f44336;'>0/3</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
@@ -334,6 +373,9 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='tactic'>Defense Evasion</td>
 <td class='title' title='Remote CHM File Download/Execution Via HH.EXE'>Remote CHM File Download/Execution Via HH.EXE</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
+<td class='verdict' style='background:#ff9800;'>NARROW</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#ff9800;'>NARROW</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -342,7 +384,7 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
-<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#ff9800;'>NARROW</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -356,6 +398,9 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='tactic'>Lateral Movement</td>
 <td class='title' title='Windows Admin Share Mount Via Net.EXE'>Windows Admin Share Mount Via Net.EXE</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
+<td class='verdict' style='background:#f44336;'>MISSED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#f44336;'>MISSED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -364,7 +409,7 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
-<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9c27b0;'>SYNTAX</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -378,6 +423,9 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='tactic'>Collection</td>
 <td class='title' title='Rar Usage with Password and Compression Level'>Rar Usage with Password and Compression Level</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
+<td class='verdict' style='background:#ff9800;'>NARROW</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#ff9800;'>NARROW</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -386,7 +434,7 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
-<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#ff9800;'>NARROW</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -400,6 +448,9 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='tactic'>Defense Evasion</td>
 <td class='title' title='Suspicious Recursive Takeown'>Suspicious Recursive Takeown</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
+<td class='verdict' style='background:#ff9800;'>NARROW</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#f44336;'>MISSED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -408,7 +459,7 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
-<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#f44336;'>MISSED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -422,6 +473,9 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='tactic'>Impact</td>
 <td class='title' title='Stop Windows Service Via Net.EXE'>Stop Windows Service Via Net.EXE</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
+<td class='verdict' style='background:#f44336;'>MISSED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#ff9800;'>NARROW</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -430,7 +484,7 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
-<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#ff9800;'>NARROW</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -444,6 +498,9 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='tactic'>Discovery</td>
 <td class='title' title='Domain Trust Discovery Via Dsquery'>Domain Trust Discovery Via Dsquery</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
+<td class='verdict' style='background:#ff9800;'>NARROW</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#f44336;'>MISSED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -452,7 +509,7 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
-<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#ff9800;'>NARROW</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -466,6 +523,9 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='tactic'>Defense Evasion</td>
 <td class='title' title='New DLL Registered Via Odbcconf.EXE'>New DLL Registered Via Odbcconf.EXE</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
+<td class='verdict' style='background:#ff9800;'>NARROW</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#ff9800;'>NARROW</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -474,7 +534,7 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
-<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#ff9800;'>NARROW</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -485,9 +545,12 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 </tr>
 <tr>
 <td class='tech-id'>T1546.007</td>
-<td class='tactic'>Privilege Escalation</td>
+<td class='tactic'>Privilege Escalation; Persistence</td>
 <td class='title' title='Potential Persistence Via Netsh Helper DLL'>Potential Persistence Via Netsh Helper DLL</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
+<td class='verdict' style='background:#ff9800;'>NARROW</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#4caf50;'>PASS</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -496,7 +559,7 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
-<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#4caf50;'>PASS</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -507,9 +570,12 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 </tr>
 <tr>
 <td class='tech-id'>T1090</td>
-<td class='tactic'>Lateral Movement</td>
+<td class='tactic'>Lateral Movement; Command and Control</td>
 <td class='title' title='RDP Port Forwarding Rule Added Via Netsh.EXE'>RDP Port Forwarding Rule Added Via Netsh.EXE</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
+<td class='verdict' style='background:#f44336;'>MISSED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#ff9800;'>NARROW</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -518,7 +584,7 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
-<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#ff9800;'>NARROW</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -532,6 +598,9 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='tactic'>Impact</td>
 <td class='title' title='Deleted Data Overwritten Via Cipher.EXE'>Deleted Data Overwritten Via Cipher.EXE</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
+<td class='verdict' style='background:#f44336;'>MISSED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#4caf50;'>PASS</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -540,7 +609,7 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
-<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#4caf50;'>PASS</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -554,6 +623,9 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='tactic'>Impact</td>
 <td class='title' title='Boot Configuration Tampering Via Bcdedit.EXE'>Boot Configuration Tampering Via Bcdedit.EXE</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
+<td class='verdict' style='background:#f44336;'>MISSED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#ff9800;'>NARROW</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -562,7 +634,7 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
-<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#ff9800;'>NARROW</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -576,6 +648,9 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='tactic'>Execution</td>
 <td class='title' title='Forfiles Command Execution'>Forfiles Command Execution</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
+<td class='verdict' style='background:#f44336;'>MISSED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#ff9800;'>NARROW</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -584,7 +659,7 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
-<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#ff9800;'>NARROW</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -599,6 +674,8 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='title' title='HackTool - Pypykatz Credentials Dumping Activity'>HackTool - Pypykatz Credentials Dumping Activity</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -606,6 +683,7 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#f44336;'>0/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -621,6 +699,8 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='title' title='HackTool - WinRM Access Via Evil-WinRM'>HackTool - WinRM Access Via Evil-WinRM</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -628,6 +708,7 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#ff9800;'>1/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -639,10 +720,12 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 </tr>
 <tr>
 <td class='tech-id'>T1040</td>
-<td class='tactic'>Credential Access</td>
+<td class='tactic'>Credential Access; Discovery</td>
 <td class='title' title='Potential Network Sniffing Activity Using Network Tools'>Potential Network Sniffing Activity Using Network Tools</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -650,6 +733,7 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -661,9 +745,11 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 </tr>
 <tr>
 <td class='tech-id'>T1053.002</td>
-<td class='tactic'>Persistence</td>
+<td class='tactic'>Persistence; Execution; Privilege Escalation</td>
 <td class='title' title='Interactive AT Job'>Interactive AT Job</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#f44336;'>0/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -672,6 +758,7 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -687,6 +774,8 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='title' title='Suspicious Kernel Dump Using Dtrace'>Suspicious Kernel Dump Using Dtrace</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#f44336;'>0/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -694,6 +783,7 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#f44336;'>0/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -705,10 +795,12 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 </tr>
 <tr>
 <td class='tech-id'>T1112</td>
-<td class='tactic'>Persistence</td>
+<td class='tactic'>Persistence; Defense Evasion</td>
 <td class='title' title='Suspicious VBoxDrvInst.exe Parameters'>Suspicious VBoxDrvInst.exe Parameters</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -716,6 +808,7 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -731,6 +824,8 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='title' title='Screen Capture Activity Via Psr.EXE'>Screen Capture Activity Via Psr.EXE</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -738,6 +833,7 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#f44336;'>0/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -753,6 +849,8 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='title' title='Audio Capture via SoundRecorder'>Audio Capture via SoundRecorder</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -760,6 +858,7 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -775,6 +874,8 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='title' title='Chromium Browser Instance Executed With Custom Extension'>Chromium Browser Instance Executed With Custom Extension</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -782,6 +883,7 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -793,10 +895,12 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 </tr>
 <tr>
 <td class='tech-id'>T1185</td>
-<td class='tactic'>Credential Access</td>
+<td class='tactic'>Credential Access; Collection</td>
 <td class='title' title='Browser Started with Remote Debugging'>Browser Started with Remote Debugging</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -804,6 +908,7 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -815,9 +920,11 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 </tr>
 <tr>
 <td class='tech-id'>T1202</td>
-<td class='tactic'>Execution</td>
+<td class='tactic'>Execution; Defense Evasion</td>
 <td class='title' title='Suspicious Runscripthelper.exe'>Suspicious Runscripthelper.exe</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#f44336;'>0/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -826,6 +933,7 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#f44336;'>0/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -841,6 +949,8 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='title' title='Potential Password Spraying Attempt Using Dsacls.EXE'>Potential Password Spraying Attempt Using Dsacls.EXE</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -848,6 +958,7 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -859,10 +970,12 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 </tr>
 <tr>
 <td class='tech-id'>T1219.002</td>
-<td class='tactic'>Command and Control</td>
+<td class='tactic'>Command and Control; Persistence</td>
 <td class='title' title='Potential Amazon SSM Agent Hijacking'>Potential Amazon SSM Agent Hijacking</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -870,6 +983,7 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -885,6 +999,8 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='title' title='Remote XSL Execution Via Msxsl.EXE'>Remote XSL Execution Via Msxsl.EXE</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -892,6 +1008,7 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='verdict' style='background:#ff9800;'>1/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#ff9800;'>1/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -907,6 +1024,8 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='title' title='Suspicious Execution of Shutdown'>Suspicious Execution of Shutdown</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#f44336;'>0/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -914,6 +1033,7 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='verdict' style='background:#f44336;'>0/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#f44336;'>0/3</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#f44336;'>0/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -929,6 +1049,8 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='title' title='Potential MSTSC Shadowing Activity'>Potential MSTSC Shadowing Activity</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -936,6 +1058,7 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -947,10 +1070,12 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 </tr>
 <tr>
 <td class='tech-id'>T1564.004</td>
-<td class='tactic'>Command and Control</td>
+<td class='tactic'>Command and Control; Defense Evasion</td>
 <td class='title' title='PrintBrm ZIP Creation of Extraction'>PrintBrm ZIP Creation of Extraction</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -958,6 +1083,7 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#f44336;'>0/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -969,10 +1095,12 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 </tr>
 <tr>
 <td class='tech-id'>T1572</td>
-<td class='tactic'>Command and Control</td>
+<td class='tactic'>Command and Control; Lateral Movement</td>
 <td class='title' title='Port Forwarding Activity Via SSH.EXE'>Port Forwarding Activity Via SSH.EXE</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -980,6 +1108,7 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -991,10 +1120,12 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 </tr>
 <tr>
 <td class='tech-id'>T1574</td>
-<td class='tactic'>Privilege Escalation</td>
+<td class='tactic'>Privilege Escalation; Persistence; Execution; Defense Evasion</td>
 <td class='title' title='DLL Execution Via Register-cimprovider.exe'>DLL Execution Via Register-cimprovider.exe</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -1002,6 +1133,7 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -1017,6 +1149,8 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='title' title='Gpresult Display Group Policy Information'>Gpresult Display Group Policy Information</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#ff9800;'>2/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -1024,6 +1158,7 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 <td class='verdict' style='background:#4caf50;'>3/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#4caf50;'>3/3</td>
+<td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
 <td class='verdict' style='background:#f44336;'>0/3</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -1036,18 +1171,21 @@ Sets included: sets 1 and 2 (44 techniques total). Set 3 has not been run.
 </tbody>
 <tfoot><tr>
 <td colspan='4' style='text-align:right;'>Strict Pass Total (matches RESULTS_SUMMARY.md):</td>
-<td style='text-align:center;'>35/36</td>
+<td style='text-align:center;'>0/12</td>
+<td style='text-align:center;'>3/36</td>
+<td style='text-align:center;'>2/12</td>
 <td style='text-align:center;'>47/60</td>
-<td style='text-align:center;'>36/36</td>
-<td style='text-align:center;'>26/36</td>
+<td style='text-align:center;'>8/36</td>
+<td style='text-align:center;'>8/36</td>
 <td style='text-align:center;'>19/36</td>
 <td style='text-align:center;'>55/60</td>
 <td style='text-align:center;'>21/36</td>
 <td style='text-align:center;'>57/60</td>
-<td style='text-align:center;'>28/36</td>
+<td style='text-align:center;'>7/36</td>
+<td style='text-align:center;'>2/12</td>
 <td style='text-align:center;'>35/60</td>
-<td style='text-align:center;'>36/36</td>
-<td style='text-align:center;'>36/36</td>
+<td style='text-align:center;'>11/36</td>
+<td style='text-align:center;'>9/36</td>
 <td style='text-align:center;'>16/36</td>
 <td style='text-align:center;'>58/60</td>
 <td style='text-align:center;'>15/36</td>

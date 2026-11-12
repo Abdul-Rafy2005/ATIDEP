@@ -193,3 +193,15 @@ Antigravity started on 2026-11-06
   - tests/test_scoring_pipeline.py (updated: preserved set3_use_log.csv mtime during pipeline tests)
   - PROGRESS.md (updated)
 - WARN lines: none
+
+### 2026-11-12: Task 9 - Fix the ATT&CK coverage grid
+- Status: DONE
+- Files created or changed:
+  - coverage/build_coverage.py (updated: scores rules directly from rules_first and archive using score_rule, never reads stored strict_pass flag, loads Set 2 baseline from archive, dynamically formats header, maps multi-tactic tags)
+  - coverage/coverage.csv (regenerated with true strict pass verdicts and Set 2 baseline columns)
+  - coverage/coverage.html (regenerated with dynamic header, true strict numbers, and Set 2 baseline)
+  - coverage/COVERAGE.md (created: detailed coverage metrics, covered techniques breakdown, never-covered list, and configuration totals)
+  - coverage/README.md (updated with coverage definition, summary metrics, and never-covered list)
+  - tests/test_coverage.py (updated with assertions for strict totals, Set 2 baseline numbers, dynamic header, no all-NOT_TESTED rows, and multi-tactic formatting)
+  - PROGRESS.md (updated)
+- WARN lines: none

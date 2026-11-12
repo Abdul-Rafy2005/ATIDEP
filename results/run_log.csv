@@ -8,3 +8,8 @@ run_id,date,set,prompt,models
 20261106_1344_set1_v2_1,2026-11-06T13:44:20,1,v2_1,qwen2.5-coder:7b;qwen2.5-coder:14b
 20261111_1403_set1_v3a,2026-11-11T14:03:56,1,v3a,qwen2.5-coder:7b;qwen2.5-coder:14b
 20261111_1413_set1_v3b,2026-11-11T14:13:49,1,v3b,qwen2.5-coder:7b;qwen2.5-coder:14b
+20261111_1449_set3_v1,2026-11-11T14:49:56,3,v1,qwen2.5-coder:14b;qwen2.5-coder:7b
+20261111_1500_set3_v3b,2026-11-11T15:00:07,3,v3b,qwen2.5-coder:14b
+20261111_1507_set3_v3a,2026-11-11T15:07:14,3,v3a,qwen2.5-coder:7b
+20261111_1512_set3_v3a,2026-11-11T15:12:16,3,v3a,qwen2.5-coder:14b
+20261111_1518_set3_v3b,2026-11-11T15:18:55,3,v3b,qwen2.5-coder:7b
