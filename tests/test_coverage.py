@@ -11,6 +11,7 @@ import unittest
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "coverage"))
 from build_coverage import (
     build_coverage_table,
+    compute_frozen_stats,
     find_complete_runs,
     format_verdict,
     read_rule_metadata,
@@ -248,6 +249,56 @@ class TestCoverageRealData(unittest.TestCase):
         self.assertIn(";", tactic2)
         self.assertIn("Defense Evasion", tactic2)
         self.assertIn("Credential Access", tactic2)
+
+    def test_t1529_reason_contains_flaw(self):
+        cov_md_path = os.path.join(ROOT, "coverage", "COVERAGE.md")
+        self.assertTrue(os.path.exists(cov_md_path))
+        with open(cov_md_path, encoding="utf-8") as f:
+            md_content = f.read()
+        self.assertIn("T1529", md_content)
+        t1529_lines = [line for line in md_content.splitlines() if "T1529" in line and "flaw" in line]
+        self.assertTrue(len(t1529_lines) > 0, "T1529 reason in COVERAGE.md does not contain 'flaw'")
+
+        html_path = os.path.join(ROOT, "coverage", "coverage.html")
+        self.assertTrue(os.path.exists(html_path))
+        with open(html_path, encoding="utf-8") as f:
+            html_content = f.read()
+        self.assertIn("flaw", html_content)
+        self.assertIn("T1529", html_content)
+
+    def test_no_generated_file_contains_overfit(self):
+        for fn in ["coverage.csv", "coverage.html", "COVERAGE.md", "README.md"]:
+            p = os.path.join(ROOT, "coverage", fn)
+            self.assertTrue(os.path.exists(p), f"Generated file {fn} missing")
+            with open(p, encoding="utf-8") as f:
+                content = f.read().lower()
+            self.assertNotIn("overfit", content, f"Generated file {fn} contains the word 'overfit'")
+
+    def test_frozen_configurations_section_numbers(self):
+        rows, config_keys, _ = build_coverage_table()
+        frozen_stats = compute_frozen_stats(rows)
+        self.assertEqual(frozen_stats[("qwen2.5-coder:14b", "v3b", 3)], (19, 20))
+        self.assertEqual(frozen_stats[("qwen2.5-coder:14b", "v3b", 1)], (7, 12))
+        self.assertEqual(frozen_stats[("qwen2.5-coder:7b", "v3a", 3)], (18, 20))
+        self.assertEqual(frozen_stats[("qwen2.5-coder:7b", "v3a", 1)], (5, 12))
+
+        cov_md_path = os.path.join(ROOT, "coverage", "COVERAGE.md")
+        with open(cov_md_path, encoding="utf-8") as f:
+            md_content = f.read()
+        self.assertIn("19 of 20", md_content)
+        self.assertIn("7 of 12", md_content)
+        self.assertIn("18 of 20", md_content)
+        self.assertIn("5 of 12", md_content)
+        self.assertIn("clean final test", md_content)
+        self.assertIn("practice set used for tuning", md_content)
+
+        html_path = os.path.join(ROOT, "coverage", "coverage.html")
+        with open(html_path, encoding="utf-8") as f:
+            html_content = f.read()
+        self.assertIn("19 of 20", html_content)
+        self.assertIn("7 of 12", html_content)
+        self.assertIn("18 of 20", html_content)
+        self.assertIn("5 of 12", html_content)
 
 
 if __name__ == "__main__":

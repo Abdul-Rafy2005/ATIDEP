@@ -6,9 +6,15 @@
 <style>
 body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; margin: 24px; color: #222; }
 h1 { font-size: 1.5em; margin-bottom: 8px; }
+h2 { font-size: 1.2em; margin-top: 24px; margin-bottom: 8px; }
+h3 { font-size: 1.05em; margin-top: 16px; margin-bottom: 6px; }
 p.subtitle { color: #666; margin-top: 0; margin-bottom: 16px; font-size: 0.9em; }
 .totals { background: #f5f5f5; border: 1px solid #ddd; padding: 12px 16px; border-radius: 4px; margin-bottom: 16px; font-size: 0.95em; }
 .totals strong { color: #111; }
+.frozen-section { background: #eef7ee; border: 1px solid #c8e6c9; padding: 12px 16px; border-radius: 4px; margin-bottom: 16px; font-size: 0.95em; }
+.frozen-section h2 { margin-top: 0; color: #2e7d32; }
+.never-covered-section { background: #fafafa; border: 1px solid #ddd; padding: 12px 16px; border-radius: 4px; margin-top: 24px; font-size: 0.95em; }
+.never-covered-section h2 { margin-top: 0; color: #c62828; }
 .legend { margin: 16px 0; display: flex; flex-wrap: wrap; gap: 16px; align-items: center; }
 .legend-item { display: inline-flex; align-items: center; font-size: 0.85em; }
 .legend-box { width: 14px; height: 14px; margin-right: 6px; border-radius: 2px; }
@@ -23,6 +29,7 @@ td.status { text-align: center; font-weight: 600; color: #fff; }
 td.verdict { text-align: center; font-weight: 600; color: #fff; }
 tr:nth-child(even) td.title, tr:nth-child(even) td.tech-id, tr:nth-child(even) td.tactic { background: #fafafa; }
 tfoot td { font-weight: bold; background: #eee; border-top: 2px solid #333; }
+code { font-family: monospace; background: #f0f0f0; padding: 2px 4px; border-radius: 3px; }
 </style>
 </head>
 <body>
@@ -30,7 +37,26 @@ tfoot td { font-weight: bold; background: #eee; border-top: 2px solid #333; }
 <p class='subtitle'>Automated Threat-Informed Detection Engineering Platform</p>
 <div class='totals'>
 <strong>Coverage Summary:</strong> 29 of 44 techniques covered (at least one configuration passes all repeats).<br>
-Sets included: sets 1, 2, and 3 (44 techniques total). Sets with results: 1, 2, 3. Date: 2026-11-12.
+Sets included: sets 1, 2, and 3 (44 techniques total). Sets with results: 1, 2, 3. Date: 2026-11-13.<br><br>
+<strong>Coverage Definition:</strong> Covered means at least one of the tested configurations passed every repeat. Up to 10 configurations were tried per technique on set 1 and 6 on set 3, so this number is optimistic. The next section shows the frozen configurations alone.
+</div>
+<div class='frozen-section'>
+<h2>Frozen configurations only</h2>
+<p>Techniques with a strict pass in all 3 repeats under the frozen configurations:</p>
+<ul>
+<li><strong>qwen2.5-coder:14b with prompt v3b:</strong>
+  <ul>
+    <li>Set 3 (clean final test): 19 of 20 (95.0%)</li>
+    <li>Set 1 (practice set used for tuning): 7 of 12 (58.3%)</li>
+  </ul>
+</li>
+<li><strong>qwen2.5-coder:7b with prompt v3a:</strong>
+  <ul>
+    <li>Set 3 (clean final test): 18 of 20 (90.0%)</li>
+    <li>Set 1 (practice set used for tuning): 5 of 12 (41.7%)</li>
+  </ul>
+</li>
+</ul>
 </div>
 <div class='legend'>
 <strong>Legend:</strong>
@@ -1192,4 +1218,33 @@ Sets included: sets 1, 2, and 3 (44 techniques total). Sets with results: 1, 2, 
 <td style='text-align:center;'>54/60</td>
 </tr></tfoot>
 </table>
+<div class='never-covered-section'>
+<h2>Never-Covered Techniques (15 of 44)</h2>
+<p>The following techniques did not achieve an all-repeat strict pass under any tested configuration:</p>
+<h3>Set 1 (4 techniques)</h3>
+<ul>
+<li><code>T1059.001</code>: Blocking values in the saved rules were -nop, -w hidden and http://, which are in the shown line but not in the variant.</li>
+<li><code>T1547.001</code>: Blocking value was the exact key path HKCU\Software\Microsoft\Windows\CurrentVersion\Run. The variant uses HKLM and RunOnce.</li>
+<li><code>T1136.001</code>: The variant runs net1.exe instead of net.exe (alias). Needs outside knowledge. Left out of the &quot;out of 30&quot; numbers.</li>
+<li><code>T1003.001</code>: The variant runs procdump64.exe instead of procdump.exe (alias). Needs outside knowledge. Left out of the &quot;out of 30&quot; numbers.</li>
+</ul>
+<h3>Set 2 (10 techniques)</h3>
+<p>Set 2 was run once, with the basic prompt (v1), and never with the final prompts. Some of its variants need outside knowledge (T1489 net1.exe, T1090 which port, T1490 another bcdedit setting, T1059 -c versus /c). Do not read this list as a result about the final system.</p>
+<ul>
+<li><code>T1218.001</code>: no cause recorded</li>
+<li><code>T1021.002</code>: no cause recorded</li>
+<li><code>T1560.001</code>: no cause recorded</li>
+<li><code>T1222.001</code>: no cause recorded</li>
+<li><code>T1489</code>: no cause recorded</li>
+<li><code>T1482</code>: no cause recorded</li>
+<li><code>T1218.008</code>: no cause recorded</li>
+<li><code>T1090</code>: no cause recorded</li>
+<li><code>T1490</code>: no cause recorded</li>
+<li><code>T1059</code>: no cause recorded</li>
+</ul>
+<h3>Set 3 (1 techniques)</h3>
+<ul>
+<li><code>T1529</code>: Known flaw in our test: the description says &quot;immediate reboot&quot; but the variant is a 30 second delay (/t 30), so rules that kept /t 0 failed.</li>
+</ul>
+</div>
 </body></html>

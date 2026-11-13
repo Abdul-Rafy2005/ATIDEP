@@ -6,16 +6,29 @@ This template tracks which MITRE ATT&CK techniques have passing Sigma detection 
 ## Coverage definition
 A technique is defined as **covered** when at least one configuration has a strict pass in all of its repeats (3 of 3 for 3-repeat runs, or 1 of 1 for the set 2 baseline).
 
+Covered means at least one of the tested configurations passed every repeat. Up to 10 configurations were tried per technique on set 1 and 6 on set 3, so this number is optimistic. The next section shows the frozen configurations alone.
+
 Across all 44 evaluated techniques:
 - **29 of 44 techniques are covered** across all sets (65.9%).
 - **27 of 32 techniques are covered** across Sets 1 and 3 (84.4%).
+
+## Frozen configurations only
+
+Techniques with a strict pass in all 3 repeats under the frozen configurations:
+
+- **qwen2.5-coder:14b with prompt v3b:**
+  - Set 3 (clean final test): 19 of 20 (95.0%)
+  - Set 1 (practice set used for tuning): 7 of 12 (58.3%)
+- **qwen2.5-coder:7b with prompt v3a:**
+  - Set 3 (clean final test): 18 of 20 (90.0%)
+  - Set 1 (practice set used for tuning): 5 of 12 (41.7%)
 
 Never-covered techniques:
 - **Set 1 (4 techniques):** T1059.001, T1547.001, T1136.001, T1003.001
 - **Set 2 (10 techniques):** T1218.001, T1021.002, T1560.001, T1222.001, T1489, T1482, T1218.008, T1090, T1490, T1059
 - **Set 3 (1 technique):** T1529
 
-Full details and technique breakdown are recorded in [COVERAGE.md](COVERAGE.md).
+Full details, reasons, and technique breakdown are recorded in [COVERAGE.md](COVERAGE.md).
 
 ## What the columns mean
 
@@ -33,7 +46,7 @@ Full details and technique breakdown are recorded in [COVERAGE.md](COVERAGE.md).
 | Verdict | Meaning |
 |---|---|
 | PASS | The rule has valid syntax, fires on the shown attack and hidden variant, and stays quiet on benign logs. |
-| NARROW | The rule fires on the shown attack but misses the hidden variant (overfitted to the example). |
+| NARROW | The rule fires on the shown attack but misses the hidden variant (fires on shown example only). |
 | MISSED | The rule fails to fire on the shown attack line. |
 | SYNTAX | The rule contains a YAML or pySigma syntax error that cannot convert to SQL. |
 | NOISY | The rule fires on harmless benign logs (false positive). |

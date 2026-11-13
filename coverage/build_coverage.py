@@ -34,6 +34,31 @@ from llm.scoring import score_rule
 
 
 # ---------------------------------------------------------------------------
+# Never-covered technique explanations and notes
+# ---------------------------------------------------------------------------
+
+NEVER_COVERED_REASONS = {
+    "T1059.001": "Blocking values in the saved rules were -nop, -w hidden and http://, which are in the shown line but not in the variant.",
+    "T1547.001": r"Blocking value was the exact key path HKCU\Software\Microsoft\Windows\CurrentVersion\Run. The variant uses HKLM and RunOnce.",
+    "T1136.001": 'The variant runs net1.exe instead of net.exe (alias). Needs outside knowledge. Left out of the "out of 30" numbers.',
+    "T1003.001": 'The variant runs procdump64.exe instead of procdump.exe (alias). Needs outside knowledge. Left out of the "out of 30" numbers.',
+    "T1529": 'Known flaw in our test: the description says "immediate reboot" but the variant is a 30 second delay (/t 30), so rules that kept /t 0 failed.',
+}
+
+SET2_HEADING_NOTE = (
+    "Set 2 was run once, with the basic prompt (v1), and never with the final prompts. "
+    "Some of its variants need outside knowledge (T1489 net1.exe, T1090 which port, T1490 another bcdedit setting, T1059 -c versus /c). "
+    "Do not read this list as a result about the final system."
+)
+
+COVERAGE_NOTE = (
+    "Covered means at least one of the tested configurations passed every repeat. "
+    "Up to 10 configurations were tried per technique on set 1 and 6 on set 3, so this number is optimistic. "
+    "The next section shows the frozen configurations alone."
+)
+
+
+# ---------------------------------------------------------------------------
 # 1. Read technique CSVs
 # ---------------------------------------------------------------------------
 
@@ -227,7 +252,6 @@ def collect_config_results(newest_configs, root_dir=None):
 
         tech_verdicts = {}
         if os.path.isdir(rf_dir):
-            # Gather techniques from rows or files
             tech_names = []
             for r in rows:
                 t = r.get("technique")
@@ -387,7 +411,6 @@ def build_coverage_table(runs_dir=None, root_dir=None):
             if set_number == 1:
                 ref_status = val_results.get(tech_id, "PASS")
             else:
-                # Set 2 and 3 real rules were verified by sanity test suites
                 ref_status = "PASS"
 
             row = {
@@ -405,6 +428,61 @@ def build_coverage_table(runs_dir=None, root_dir=None):
             rows.append(row)
 
     return rows, config_keys, config_summaries
+
+
+# ---------------------------------------------------------------------------
+# Frozen configuration statistics computation
+# ---------------------------------------------------------------------------
+
+def compute_frozen_stats(rows, root_dir=None):
+    """Compute techniques with a strict pass in all 3 repeats for frozen configurations.
+
+    Returns dict mapping:
+      (model, prompt, set_num) -> (passed_count, total_count)
+    """
+    if root_dir is None:
+        root_dir = ROOT
+
+    set1_ids = {r["technique"] for r in read_techniques_csv(os.path.join(root_dir, "results", "techniques.csv"))}
+    set3_ids = {r["technique"] for r in read_techniques_csv(os.path.join(root_dir, "results", "techniques_set3.csv"))}
+
+    counts = {
+        ("qwen2.5-coder:14b", "v3b", 3): 0,
+        ("qwen2.5-coder:14b", "v3b", 1): 0,
+        ("qwen2.5-coder:7b", "v3a", 3): 0,
+        ("qwen2.5-coder:7b", "v3a", 1): 0,
+    }
+
+    for row in rows:
+        tid = row["technique_id"]
+        if tid in set3_ids:
+            v_14b = row.get("qwen2.5-coder:14b|v3b|3", "")
+            p, t = _passes_text(v_14b)
+            if t > 0 and p == t:
+                counts[("qwen2.5-coder:14b", "v3b", 3)] += 1
+
+            v_7b = row.get("qwen2.5-coder:7b|v3a|3", "")
+            p, t = _passes_text(v_7b)
+            if t > 0 and p == t:
+                counts[("qwen2.5-coder:7b", "v3a", 3)] += 1
+
+        elif tid in set1_ids:
+            v_14b = row.get("qwen2.5-coder:14b|v3b|1", "")
+            p, t = _passes_text(v_14b)
+            if t > 0 and p == t:
+                counts[("qwen2.5-coder:14b", "v3b", 1)] += 1
+
+            v_7b = row.get("qwen2.5-coder:7b|v3a|1", "")
+            p, t = _passes_text(v_7b)
+            if t > 0 and p == t:
+                counts[("qwen2.5-coder:7b", "v3a", 1)] += 1
+
+    return {
+        ("qwen2.5-coder:14b", "v3b", 3): (counts[("qwen2.5-coder:14b", "v3b", 3)], len(set3_ids)),
+        ("qwen2.5-coder:14b", "v3b", 1): (counts[("qwen2.5-coder:14b", "v3b", 1)], len(set1_ids)),
+        ("qwen2.5-coder:7b", "v3a", 3): (counts[("qwen2.5-coder:7b", "v3a", 3)], len(set3_ids)),
+        ("qwen2.5-coder:7b", "v3a", 1): (counts[("qwen2.5-coder:7b", "v3a", 1)], len(set1_ids)),
+    }
 
 
 # ---------------------------------------------------------------------------
@@ -530,6 +608,28 @@ def write_html(rows, config_keys, config_summaries=None, path=None):
     sets_with_results_str = ", ".join(str(s) for s in sorted(list(sets_with_results)))
     date_str = datetime.date.today().isoformat()
 
+    # Compute frozen configurations stats
+    frozen_stats = compute_frozen_stats(rows)
+    f_14b_s3_p, f_14b_s3_t = frozen_stats[("qwen2.5-coder:14b", "v3b", 3)]
+    f_14b_s1_p, f_14b_s1_t = frozen_stats[("qwen2.5-coder:14b", "v3b", 1)]
+    f_7b_s3_p, f_7b_s3_t = frozen_stats[("qwen2.5-coder:7b", "v3a", 3)]
+    f_7b_s1_p, f_7b_s1_t = frozen_stats[("qwen2.5-coder:7b", "v3a", 1)]
+
+    # Compute never-covered techniques
+    never_covered_by_set = {1: [], 2: [], 3: []}
+    for row in rows:
+        tid = row["technique_id"]
+        set_num = 1 if tid in set1_ids else (2 if tid in set2_ids else 3)
+        is_covered = False
+        for ck in config_keys:
+            v = row.get(ck, "NOT_TESTED")
+            p, t = _passes_text(v)
+            if t > 0 and p == t:
+                is_covered = True
+                break
+        if not is_covered:
+            never_covered_by_set[set_num].append(row)
+
     lines = [
         "<!DOCTYPE html>",
         "<html lang='en'>",
@@ -539,9 +639,15 @@ def write_html(rows, config_keys, config_summaries=None, path=None):
         "<style>",
         "body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; margin: 24px; color: #222; }",
         "h1 { font-size: 1.5em; margin-bottom: 8px; }",
+        "h2 { font-size: 1.2em; margin-top: 24px; margin-bottom: 8px; }",
+        "h3 { font-size: 1.05em; margin-top: 16px; margin-bottom: 6px; }",
         "p.subtitle { color: #666; margin-top: 0; margin-bottom: 16px; font-size: 0.9em; }",
         ".totals { background: #f5f5f5; border: 1px solid #ddd; padding: 12px 16px; border-radius: 4px; margin-bottom: 16px; font-size: 0.95em; }",
         ".totals strong { color: #111; }",
+        ".frozen-section { background: #eef7ee; border: 1px solid #c8e6c9; padding: 12px 16px; border-radius: 4px; margin-bottom: 16px; font-size: 0.95em; }",
+        ".frozen-section h2 { margin-top: 0; color: #2e7d32; }",
+        ".never-covered-section { background: #fafafa; border: 1px solid #ddd; padding: 12px 16px; border-radius: 4px; margin-top: 24px; font-size: 0.95em; }",
+        ".never-covered-section h2 { margin-top: 0; color: #c62828; }",
         ".legend { margin: 16px 0; display: flex; flex-wrap: wrap; gap: 16px; align-items: center; }",
         ".legend-item { display: inline-flex; align-items: center; font-size: 0.85em; }",
         ".legend-box { width: 14px; height: 14px; margin-right: 6px; border-radius: 2px; }",
@@ -556,15 +662,35 @@ def write_html(rows, config_keys, config_summaries=None, path=None):
         "td.verdict { text-align: center; font-weight: 600; color: #fff; }",
         "tr:nth-child(even) td.title, tr:nth-child(even) td.tech-id, tr:nth-child(even) td.tactic { background: #fafafa; }",
         "tfoot td { font-weight: bold; background: #eee; border-top: 2px solid #333; }",
+        "code { font-family: monospace; background: #f0f0f0; padding: 2px 4px; border-radius: 3px; }",
         "</style>",
         "</head>",
         "<body>",
         "<h1>ATIDEP ATT&amp;CK Coverage Grid</h1>",
         "<p class='subtitle'>Automated Threat-Informed Detection Engineering Platform</p>",
-        f"<div class='totals'>",
+        "<div class='totals'>",
         f"<strong>Coverage Summary:</strong> {covered_techniques} of {total_techniques} techniques covered (at least one configuration passes all repeats).<br>",
-        f"Sets included: {sets_included_str} ({total_techniques} techniques total). Sets with results: {sets_with_results_str}. Date: {date_str}.",
-        f"</div>",
+        f"Sets included: {sets_included_str} ({total_techniques} techniques total). Sets with results: {sets_with_results_str}. Date: {date_str}.<br><br>",
+        f"<strong>Coverage Definition:</strong> {_html_escape(COVERAGE_NOTE)}",
+        "</div>",
+        "<div class='frozen-section'>",
+        "<h2>Frozen configurations only</h2>",
+        "<p>Techniques with a strict pass in all 3 repeats under the frozen configurations:</p>",
+        "<ul>",
+        "<li><strong>qwen2.5-coder:14b with prompt v3b:</strong>",
+        "  <ul>",
+        f"    <li>Set 3 (clean final test): {f_14b_s3_p} of {f_14b_s3_t} ({(f_14b_s3_p / f_14b_s3_t * 100) if f_14b_s3_t > 0 else 0:.1f}%)</li>",
+        f"    <li>Set 1 (practice set used for tuning): {f_14b_s1_p} of {f_14b_s1_t} ({(f_14b_s1_p / f_14b_s1_t * 100) if f_14b_s1_t > 0 else 0:.1f}%)</li>",
+        "  </ul>",
+        "</li>",
+        "<li><strong>qwen2.5-coder:7b with prompt v3a:</strong>",
+        "  <ul>",
+        f"    <li>Set 3 (clean final test): {f_7b_s3_p} of {f_7b_s3_t} ({(f_7b_s3_p / f_7b_s3_t * 100) if f_7b_s3_t > 0 else 0:.1f}%)</li>",
+        f"    <li>Set 1 (practice set used for tuning): {f_7b_s1_p} of {f_7b_s1_t} ({(f_7b_s1_p / f_7b_s1_t * 100) if f_7b_s1_t > 0 else 0:.1f}%)</li>",
+        "  </ul>",
+        "</li>",
+        "</ul>",
+        "</div>",
         "<div class='legend'>",
         "<strong>Legend:</strong>",
     ]
@@ -615,8 +741,45 @@ def write_html(rows, config_keys, config_summaries=None, path=None):
         ratio = summary.get("ratio", "-")
         lines.append(f"<td style='text-align:center;'>{ratio}</td>")
     lines.append("</tr></tfoot>")
-
     lines.append("</table>")
+
+    # Never-covered techniques section in HTML
+    lines.append("<div class='never-covered-section'>")
+    total_never = sum(len(v) for v in never_covered_by_set.values())
+    lines.append(f"<h2>Never-Covered Techniques ({total_never} of {total_techniques})</h2>")
+    lines.append("<p>The following techniques did not achieve an all-repeat strict pass under any tested configuration:</p>")
+
+    # Set 1
+    lines.append(f"<h3>Set 1 ({len(never_covered_by_set[1])} techniques)</h3>")
+    lines.append("<ul>")
+    for r in never_covered_by_set[1]:
+        tid = r["technique_id"]
+        reason = NEVER_COVERED_REASONS.get(tid, "no cause recorded")
+        lines.append(f"<li><code>{_html_escape(tid)}</code>: {_html_escape(reason)}</li>")
+    lines.append("</ul>")
+
+    # Set 2
+    lines.append(f"<h3>Set 2 ({len(never_covered_by_set[2])} techniques)</h3>")
+    lines.append(f"<p>{_html_escape(SET2_HEADING_NOTE)}</p>")
+    lines.append("<ul>")
+    for r in never_covered_by_set[2]:
+        tid = r["technique_id"]
+        reason = NEVER_COVERED_REASONS.get(tid, "no cause recorded")
+        lines.append(f"<li><code>{_html_escape(tid)}</code>: {_html_escape(reason)}</li>")
+    lines.append("</ul>")
+
+    # Set 3
+    s3_count = len(never_covered_by_set[3])
+    s3_label = f"Set 3 ({s3_count} technique{'s' if s3_count != 1 else ''})"
+    lines.append(f"<h3>{s3_label}</h3>")
+    lines.append("<ul>")
+    for r in never_covered_by_set[3]:
+        tid = r["technique_id"]
+        reason = NEVER_COVERED_REASONS.get(tid, "no cause recorded")
+        lines.append(f"<li><code>{_html_escape(tid)}</code>: {_html_escape(reason)}</li>")
+    lines.append("</ul>")
+    lines.append("</div>")
+
     lines.append("</body></html>")
 
     with open(path, "w", encoding="utf-8") as f:
@@ -662,11 +825,37 @@ def write_coverage_md(rows, config_keys, config_summaries=None, path=None):
     sets1_3_total = len(set1_ids) + len(set3_ids)
     sets1_3_covered = len(covered_by_set[1]) + len(covered_by_set[3])
 
+    frozen_stats = compute_frozen_stats(rows)
+    f_14b_s3_p, f_14b_s3_t = frozen_stats[("qwen2.5-coder:14b", "v3b", 3)]
+    f_14b_s1_p, f_14b_s1_t = frozen_stats[("qwen2.5-coder:14b", "v3b", 1)]
+    f_7b_s3_p, f_7b_s3_t = frozen_stats[("qwen2.5-coder:7b", "v3a", 3)]
+    f_7b_s1_p, f_7b_s1_t = frozen_stats[("qwen2.5-coder:7b", "v3a", 1)]
+
     lines = [
         "# ATIDEP ATT&CK Coverage Summary",
         "",
         "## Coverage Definition",
         "A technique is defined as **covered** when at least one configuration achieves a strict pass in all of its repeats (3 of 3 for 3-repeat runs, or 1 of 1 for the single-repeat set 2 baseline).",
+        "",
+        COVERAGE_NOTE,
+        "",
+        "## Frozen configurations only",
+        "",
+        "Techniques with a strict pass in all 3 repeats under the frozen configurations:",
+        "",
+        "- **qwen2.5-coder:14b with prompt v3b:**",
+        f"  - Set 3 (clean final test): {f_14b_s3_p} of {f_14b_s3_t} ({(f_14b_s3_p / f_14b_s3_t * 100) if f_14b_s3_t > 0 else 0:.1f}%)",
+        f"  - Set 1 (practice set used for tuning): {f_14b_s1_p} of {f_14b_s1_t} ({(f_14b_s1_p / f_14b_s1_t * 100) if f_14b_s1_t > 0 else 0:.1f}%)",
+        "- **qwen2.5-coder:7b with prompt v3a:**",
+        f"  - Set 3 (clean final test): {f_7b_s3_p} of {f_7b_s3_t} ({(f_7b_s3_p / f_7b_s3_t * 100) if f_7b_s3_t > 0 else 0:.1f}%)",
+        f"  - Set 1 (practice set used for tuning): {f_7b_s1_p} of {f_7b_s1_t} ({(f_7b_s1_p / f_7b_s1_t * 100) if f_7b_s1_t > 0 else 0:.1f}%)",
+        "",
+        "| Model | Prompt | Set | Set Description | Strict Pass in All 3 Repeats | Total Techniques | Pass Percentage |",
+        "|---|---|---|---|---|---|---|",
+        f"| qwen2.5-coder:14b | v3b | Set 3 | clean final test | {f_14b_s3_p} of {f_14b_s3_t} | {f_14b_s3_t} | {(f_14b_s3_p / f_14b_s3_t * 100) if f_14b_s3_t > 0 else 0:.1f}% |",
+        f"| qwen2.5-coder:14b | v3b | Set 1 | practice set used for tuning | {f_14b_s1_p} of {f_14b_s1_t} | {f_14b_s1_t} | {(f_14b_s1_p / f_14b_s1_t * 100) if f_14b_s1_t > 0 else 0:.1f}% |",
+        f"| qwen2.5-coder:7b | v3a | Set 3 | clean final test | {f_7b_s3_p} of {f_7b_s3_t} | {f_7b_s3_t} | {(f_7b_s3_p / f_7b_s3_t * 100) if f_7b_s3_t > 0 else 0:.1f}% |",
+        f"| qwen2.5-coder:7b | v3a | Set 1 | practice set used for tuning | {f_7b_s1_p} of {f_7b_s1_t} | {f_7b_s1_t} | {(f_7b_s1_p / f_7b_s1_t * 100) if f_7b_s1_t > 0 else 0:.1f}% |",
         "",
         "## Headline Metrics",
         f"- Total techniques in catalog: {total_techs} (Set 1: 12, Set 2: 12, Set 3: 20)",
@@ -691,31 +880,42 @@ def write_coverage_md(rows, config_keys, config_summaries=None, path=None):
 
     lines.extend([
         "",
-        "## Never-Covered Techniques (15 of 44)",
+        f"## Never-Covered Techniques ({total_techs - total_covered} of {total_techs})",
         "",
         "The following 15 techniques did not achieve an all-repeat strict pass under any tested configuration:",
         "",
-        "### Set 1 (4 techniques)",
-        "- `T1059.001` (Command and Scripting Interpreter: PowerShell): Rules overfit to specific cmdlet flags or syntax.",
-        "- `T1547.001` (Boot or Logon Autostart Execution: Registry Run Keys): Rules overfit to specific registry value names.",
-        "- `T1136.001` (Create Account: Local Account): Rules overfit to specific net user parameters.",
-        "- `T1003.001` (OS Credential Dumping: LSASS Memory): Rules overfit to procdump flags or dump file paths.",
+        f"### Set 1 ({len(never_covered_by_set[1])} techniques)",
+    ])
+
+    for r in never_covered_by_set[1]:
+        tid = r["technique_id"]
+        reason = NEVER_COVERED_REASONS.get(tid, "no cause recorded")
+        lines.append(f"- `{tid}`: {reason}")
+
+    lines.extend([
         "",
-        "### Set 2 (10 techniques)",
-        "Set 2 was evaluated only under prompt v1 as a single-repeat baseline (temperature 0). Ten techniques did not pass strict validation due to missing outside domain knowledge (e.g. net1.exe alias, port numbers, bcdedit tamper settings, forfiles syntax) or narrow command line matching:",
-        "- `T1218.001` (System Binary Proxy Execution: Compiled HTML File)",
-        "- `T1021.002` (Remote Services: SMB/Windows Admin Shares)",
-        "- `T1560.001` (Archive Collected Data: Archive via Utility)",
-        "- `T1222.001` (File and Directory Permissions Modification: Windows MACs)",
-        "- `T1489` (Service Stop)",
-        "- `T1482` (Domain Trust Discovery)",
-        "- `T1218.008` (System Binary Proxy Execution: Odbcconf)",
-        "- `T1090` (Proxy)",
-        "- `T1490` (Inhibit System Recovery)",
-        "- `T1059` (Command and Scripting Interpreter)",
+        f"### Set 2 ({len(never_covered_by_set[2])} techniques)",
+        SET2_HEADING_NOTE,
+    ])
+
+    for r in never_covered_by_set[2]:
+        tid = r["technique_id"]
+        reason = NEVER_COVERED_REASONS.get(tid, "no cause recorded")
+        lines.append(f"- `{tid}`: {reason}")
+
+    s3_count = len(never_covered_by_set[3])
+    s3_label = f"### Set 3 ({s3_count} technique{'s' if s3_count != 1 else ''})"
+    lines.extend([
         "",
-        "### Set 3 (1 technique)",
-        "- `T1529` (System Shutdown/Reboot): Requires generalising shutdown command arguments; models overfitted to specific timeout and comment flags.",
+        s3_label,
+    ])
+
+    for r in never_covered_by_set[3]:
+        tid = r["technique_id"]
+        reason = NEVER_COVERED_REASONS.get(tid, "no cause recorded")
+        lines.append(f"- `{tid}`: {reason}")
+
+    lines.extend([
         "",
         "## Configuration Strict Pass Totals",
         "",
@@ -749,11 +949,24 @@ def write_coverage_md(rows, config_keys, config_summaries=None, path=None):
 # 10. Write coverage/README.md
 # ---------------------------------------------------------------------------
 
-def write_readme(path=None):
+def write_readme(path=None, rows=None):
     if path is None:
         path = os.path.join(ROOT, "coverage", "README.md")
     os.makedirs(os.path.dirname(path), exist_ok=True)
-    text = r"""# ATT&CK Coverage Template
+
+    if rows is not None:
+        frozen_stats = compute_frozen_stats(rows)
+        f_14b_s3_p, f_14b_s3_t = frozen_stats[("qwen2.5-coder:14b", "v3b", 3)]
+        f_14b_s1_p, f_14b_s1_t = frozen_stats[("qwen2.5-coder:14b", "v3b", 1)]
+        f_7b_s3_p, f_7b_s3_t = frozen_stats[("qwen2.5-coder:7b", "v3a", 3)]
+        f_7b_s1_p, f_7b_s1_t = frozen_stats[("qwen2.5-coder:7b", "v3a", 1)]
+    else:
+        f_14b_s3_p, f_14b_s3_t = 19, 20
+        f_14b_s1_p, f_14b_s1_t = 7, 12
+        f_7b_s3_p, f_7b_s3_t = 18, 20
+        f_7b_s1_p, f_7b_s1_t = 5, 12
+
+    text = f"""# ATT&CK Coverage Template
 
 ## What this template is
 This template tracks which MITRE ATT&CK techniques have passing Sigma detection rules in ATIDEP. It displays the reference SigmaHQ rules, their validation status against our synthetic logs, and the performance of each LLM configuration.
@@ -761,16 +974,29 @@ This template tracks which MITRE ATT&CK techniques have passing Sigma detection 
 ## Coverage definition
 A technique is defined as **covered** when at least one configuration has a strict pass in all of its repeats (3 of 3 for 3-repeat runs, or 1 of 1 for the set 2 baseline).
 
+{COVERAGE_NOTE}
+
 Across all 44 evaluated techniques:
 - **29 of 44 techniques are covered** across all sets (65.9%).
 - **27 of 32 techniques are covered** across Sets 1 and 3 (84.4%).
+
+## Frozen configurations only
+
+Techniques with a strict pass in all 3 repeats under the frozen configurations:
+
+- **qwen2.5-coder:14b with prompt v3b:**
+  - Set 3 (clean final test): {f_14b_s3_p} of {f_14b_s3_t} ({(f_14b_s3_p / f_14b_s3_t * 100) if f_14b_s3_t > 0 else 0:.1f}%)
+  - Set 1 (practice set used for tuning): {f_14b_s1_p} of {f_14b_s1_t} ({(f_14b_s1_p / f_14b_s1_t * 100) if f_14b_s1_t > 0 else 0:.1f}%)
+- **qwen2.5-coder:7b with prompt v3a:**
+  - Set 3 (clean final test): {f_7b_s3_p} of {f_7b_s3_t} ({(f_7b_s3_p / f_7b_s3_t * 100) if f_7b_s3_t > 0 else 0:.1f}%)
+  - Set 1 (practice set used for tuning): {f_7b_s1_p} of {f_7b_s1_t} ({(f_7b_s1_p / f_7b_s1_t * 100) if f_7b_s1_t > 0 else 0:.1f}%)
 
 Never-covered techniques:
 - **Set 1 (4 techniques):** T1059.001, T1547.001, T1136.001, T1003.001
 - **Set 2 (10 techniques):** T1218.001, T1021.002, T1560.001, T1222.001, T1489, T1482, T1218.008, T1090, T1490, T1059
 - **Set 3 (1 technique):** T1529
 
-Full details and technique breakdown are recorded in [COVERAGE.md](COVERAGE.md).
+Full details, reasons, and technique breakdown are recorded in [COVERAGE.md](COVERAGE.md).
 
 ## What the columns mean
 
@@ -781,14 +1007,14 @@ Full details and technique breakdown are recorded in [COVERAGE.md](COVERAGE.md).
 | reference_rule_title | Title of the real SigmaHQ rule used as the ground-truth reference. |
 | reference_rule_file | File name of the reference rule in data/sigmahq_rules*/. |
 | reference_rule_status | Whether the real SigmaHQ rule passes our synthetic logs (PASS or FAIL). |
-| model\|prompt\|set | The strict-gate result of the first-try LLM-generated rule for that configuration. |
+| model\\|prompt\\|set | The strict-gate result of the first-try LLM-generated rule for that configuration. |
 
 ## Verdict values
 
 | Verdict | Meaning |
 |---|---|
 | PASS | The rule has valid syntax, fires on the shown attack and hidden variant, and stays quiet on benign logs. |
-| NARROW | The rule fires on the shown attack but misses the hidden variant (overfitted to the example). |
+| NARROW | The rule fires on the shown attack but misses the hidden variant (fires on shown example only). |
 | MISSED | The rule fails to fire on the shown attack line. |
 | SYNTAX | The rule contains a YAML or pySigma syntax error that cannot convert to SQL. |
 | NOISY | The rule fires on harmless benign logs (false positive). |
@@ -823,7 +1049,7 @@ def main():
     csv_path = write_csv(rows, config_keys)
     html_path = write_html(rows, config_keys, config_summaries)
     coverage_md_path = write_coverage_md(rows, config_keys, config_summaries)
-    readme_path = write_readme()
+    readme_path = write_readme(rows=rows)
 
     total = len(rows)
     covered = 0
@@ -846,7 +1072,23 @@ def main():
         ratio = summary.get("ratio", "-")
         folder = summary.get("folder", "-")
         print(f"  {ck:30} passes: {ratio:6} (from {folder})")
-    print(f"CSV:         {csv_path}")
+
+    # Frozen configuration view checks
+    frozen_stats = compute_frozen_stats(rows)
+    expected_frozen = [
+        (("qwen2.5-coder:14b", "v3b", 3), "14b v3b set 3", 19, 20),
+        (("qwen2.5-coder:14b", "v3b", 1), "14b v3b set 1", 7, 12),
+        (("qwen2.5-coder:7b", "v3a", 3), "7b v3a set 3", 18, 20),
+        (("qwen2.5-coder:7b", "v3a", 1), "7b v3a set 1", 5, 12),
+    ]
+
+    print("\nFrozen configurations only check:")
+    for key, label, exp_pass, exp_tot in expected_frozen:
+        actual_pass, actual_tot = frozen_stats.get(key, (0, exp_tot))
+        status = "PASS" if (actual_pass == exp_pass and actual_tot == exp_tot) else "WARN"
+        print(f"  {label:15}: actual {actual_pass} of {actual_tot} (expected {exp_pass} of {exp_tot}) -> {status}")
+
+    print(f"\nCSV:         {csv_path}")
     print(f"HTML:        {html_path}")
     print(f"COVERAGE.MD: {coverage_md_path}")
     print(f"README:      {readme_path}")

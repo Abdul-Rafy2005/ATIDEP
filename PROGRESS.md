@@ -205,3 +205,14 @@ Antigravity started on 2026-11-06
   - tests/test_coverage.py (updated with assertions for strict totals, Set 2 baseline numbers, dynamic header, no all-NOT_TESTED rows, and multi-tactic formatting)
   - PROGRESS.md (updated)
 - WARN lines: none
+
+### 2026-11-13: Task 9b - Fix reasons and add frozen-configuration view
+- Status: DONE
+- Files created or changed:
+  - coverage/build_coverage.py (replaced speculative never-covered reasons with dictionary-driven verified text, added compute_frozen_stats, added frozen configurations view to COVERAGE.md, coverage.html, and README.md, added coverage definition note)
+  - coverage/COVERAGE.md (regenerated with dictionary reasons, coverage definition note, and frozen configurations section)
+  - coverage/coverage.html (regenerated with dictionary reasons, coverage definition note, and frozen configurations section)
+  - coverage/README.md (updated with coverage definition note and frozen configurations section; removed overfit text)
+  - tests/test_coverage.py (added tests for T1529 containing 'flaw', absence of 'overfit' in generated files, and frozen configuration numbers: 14b v3b 19/20 on set 3 and 7/12 on set 1; 7b v3a 18/20 on set 3 and 5/12 on set 1)
+  - PROGRESS.md (updated)
+- WARN lines: none

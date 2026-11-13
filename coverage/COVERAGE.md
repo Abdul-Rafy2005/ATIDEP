@@ -3,6 +3,26 @@
 ## Coverage Definition
 A technique is defined as **covered** when at least one configuration achieves a strict pass in all of its repeats (3 of 3 for 3-repeat runs, or 1 of 1 for the single-repeat set 2 baseline).
 
+Covered means at least one of the tested configurations passed every repeat. Up to 10 configurations were tried per technique on set 1 and 6 on set 3, so this number is optimistic. The next section shows the frozen configurations alone.
+
+## Frozen configurations only
+
+Techniques with a strict pass in all 3 repeats under the frozen configurations:
+
+- **qwen2.5-coder:14b with prompt v3b:**
+  - Set 3 (clean final test): 19 of 20 (95.0%)
+  - Set 1 (practice set used for tuning): 7 of 12 (58.3%)
+- **qwen2.5-coder:7b with prompt v3a:**
+  - Set 3 (clean final test): 18 of 20 (90.0%)
+  - Set 1 (practice set used for tuning): 5 of 12 (41.7%)
+
+| Model | Prompt | Set | Set Description | Strict Pass in All 3 Repeats | Total Techniques | Pass Percentage |
+|---|---|---|---|---|---|---|
+| qwen2.5-coder:14b | v3b | Set 3 | clean final test | 19 of 20 | 20 | 95.0% |
+| qwen2.5-coder:14b | v3b | Set 1 | practice set used for tuning | 7 of 12 | 12 | 58.3% |
+| qwen2.5-coder:7b | v3a | Set 3 | clean final test | 18 of 20 | 20 | 90.0% |
+| qwen2.5-coder:7b | v3a | Set 1 | practice set used for tuning | 5 of 12 | 12 | 41.7% |
+
 ## Headline Metrics
 - Total techniques in catalog: 44 (Set 1: 12, Set 2: 12, Set 3: 20)
 - Techniques evaluated: 44 of 44 (100%)
@@ -53,26 +73,26 @@ A technique is defined as **covered** when at least one configuration achieves a
 The following 15 techniques did not achieve an all-repeat strict pass under any tested configuration:
 
 ### Set 1 (4 techniques)
-- `T1059.001` (Command and Scripting Interpreter: PowerShell): Rules overfit to specific cmdlet flags or syntax.
-- `T1547.001` (Boot or Logon Autostart Execution: Registry Run Keys): Rules overfit to specific registry value names.
-- `T1136.001` (Create Account: Local Account): Rules overfit to specific net user parameters.
-- `T1003.001` (OS Credential Dumping: LSASS Memory): Rules overfit to procdump flags or dump file paths.
+- `T1059.001`: Blocking values in the saved rules were -nop, -w hidden and http://, which are in the shown line but not in the variant.
+- `T1547.001`: Blocking value was the exact key path HKCU\Software\Microsoft\Windows\CurrentVersion\Run. The variant uses HKLM and RunOnce.
+- `T1136.001`: The variant runs net1.exe instead of net.exe (alias). Needs outside knowledge. Left out of the "out of 30" numbers.
+- `T1003.001`: The variant runs procdump64.exe instead of procdump.exe (alias). Needs outside knowledge. Left out of the "out of 30" numbers.
 
 ### Set 2 (10 techniques)
-Set 2 was evaluated only under prompt v1 as a single-repeat baseline (temperature 0). Ten techniques did not pass strict validation due to missing outside domain knowledge (e.g. net1.exe alias, port numbers, bcdedit tamper settings, forfiles syntax) or narrow command line matching:
-- `T1218.001` (System Binary Proxy Execution: Compiled HTML File)
-- `T1021.002` (Remote Services: SMB/Windows Admin Shares)
-- `T1560.001` (Archive Collected Data: Archive via Utility)
-- `T1222.001` (File and Directory Permissions Modification: Windows MACs)
-- `T1489` (Service Stop)
-- `T1482` (Domain Trust Discovery)
-- `T1218.008` (System Binary Proxy Execution: Odbcconf)
-- `T1090` (Proxy)
-- `T1490` (Inhibit System Recovery)
-- `T1059` (Command and Scripting Interpreter)
+Set 2 was run once, with the basic prompt (v1), and never with the final prompts. Some of its variants need outside knowledge (T1489 net1.exe, T1090 which port, T1490 another bcdedit setting, T1059 -c versus /c). Do not read this list as a result about the final system.
+- `T1218.001`: no cause recorded
+- `T1021.002`: no cause recorded
+- `T1560.001`: no cause recorded
+- `T1222.001`: no cause recorded
+- `T1489`: no cause recorded
+- `T1482`: no cause recorded
+- `T1218.008`: no cause recorded
+- `T1090`: no cause recorded
+- `T1490`: no cause recorded
+- `T1059`: no cause recorded
 
-### Set 3 (1 technique)
-- `T1529` (System Shutdown/Reboot): Requires generalising shutdown command arguments; models overfitted to specific timeout and comment flags.
+### Set 3 (1 techniques)
+- `T1529`: Known flaw in our test: the description says "immediate reboot" but the variant is a 30 second delay (/t 30), so rules that kept /t 0 failed.
 
 ## Configuration Strict Pass Totals
 
