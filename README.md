@@ -41,6 +41,12 @@ python demo/demo.py --text "Adversaries executed whoami.exe /priv to discover pr
 
 # Run demo on an unsupported sample (demonstrates clean refusal)
 python demo/demo.py --file demo/samples/sample4.txt
+
+# Run the standalone validation gate demonstration on sample rules
+python demo/gate_demo.py --rule demo/sample_rules/rule_a_pass.yml --set 3 --technique T1615
+python demo/gate_demo.py --rule demo/sample_rules/rule_b_narrow_padded.yml --set 3 --technique T1564.004
+python demo/gate_demo.py --rule demo/sample_rules/rule_c_narrow_copy.yml --set 3 --technique T1220
+python demo/gate_demo.py --rule demo/sample_rules/rule_d_syntax_error.yml --set 3 --technique T1529
 ```
 
 Demo output artifacts (JSON summary and YAML rule) are saved to `demo/output/`.
@@ -52,7 +58,7 @@ Demo output artifacts (JSON summary and YAML rule) are saved to `demo/output/`.
 All tests run locally using standard library unit testing and mocked models without requiring live GPU inference.
 
 ```powershell
-# Run full unit test suite (36 tests)
+# Run full unit test suite
 python -m unittest discover -s tests -p "test_*.py"
 
 # Verify all frozen files match pre-registered SHA-256 hashes
@@ -81,14 +87,17 @@ C:\ATIDEP/
 │   ├── build_coverage.py     # Generates coverage matrix from CSVs and runs
 │   ├── coverage.csv          # Machine-readable coverage matrix (44 techniques)
 │   ├── coverage.html         # Interactive visual HTML coverage dashboard
+│   ├── COVERAGE.md           # Detailed coverage summary and frozen-only metrics
 │   └── README.md             # Coverage template documentation
 ├── data/                     # Reference SigmaHQ rules and synthetic logs
 │   ├── sigmahq_rules/        # Reference rules for Set 1
 │   ├── sigmahq_rules_set2/   # Reference rules for Set 2
 │   ├── sigmahq_rules_set3/   # Reference rules for Set 3
 │   └── synthetic_logs/       # Generated synthetic logs for Set 1
-├── demo/                     # End-to-end interactive prototype
+├── demo/                     # End-to-end interactive prototype and gate demo
 │   ├── demo.py               # Main demo driver (technique -> rule -> gate -> save)
+│   ├── gate_demo.py          # Standalone gate evaluation demonstration
+│   ├── sample_rules/         # Four real model rules for gate testing
 │   ├── samples/              # Synthetic test paragraphs (samples 1-4)
 │   └── output/               # Saved demonstration rules and JSON summaries
 ├── docs/                     # Project documentation and reports

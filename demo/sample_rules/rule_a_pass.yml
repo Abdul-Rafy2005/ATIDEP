@@ -1,0 +1,17 @@
+title: Gpresult Used To Inspect Group Policy Settings
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\gpresult.exe'
+        CommandLine|contains|windash|all:
+            - '/z'
+            - '/user'
+    condition: selection
+level: low
+tags:
+    - attack.discovery
+    - attack.t1615
+

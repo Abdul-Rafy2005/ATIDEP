@@ -216,3 +216,18 @@ Antigravity started on 2026-11-06
   - tests/test_coverage.py (added tests for T1529 containing 'flaw', absence of 'overfit' in generated files, and frozen configuration numbers: 14b v3b 19/20 on set 3 and 7/12 on set 1; 7b v3a 18/20 on set 3 and 5/12 on set 1)
   - PROGRESS.md (updated)
 - WARN lines: none
+
+### 2026-11-13: Task 10 - Gate demo and demo script update
+- Status: DONE
+- Files created or changed:
+  - demo/gate_demo.py (created: standalone CLI tool to demonstrate gate evaluations with rule text, test logs, checklist, and explanation)
+  - demo/sample_rules/rule_a_pass.yml (copied: T1615 repeat 1 from 14b v3b set 3, verdict PASS)
+  - demo/sample_rules/rule_b_narrow_padded.yml (copied: T1564.004 repeat 1 from 7b v1 set 3, verdict TOO_NARROW)
+  - demo/sample_rules/rule_c_narrow_copy.yml (copied: T1220 repeat 1 from 7b v1 set 3, verdict TOO_NARROW)
+  - demo/sample_rules/rule_d_syntax_error.yml (copied: T1529 repeat 2 from 7b v3a set 3, verdict SYNTAX_ERROR)
+  - demo/sample_rules/README.md (created: documentation of the four real model output sample rules)
+  - tests/test_gate_demo.py (created: unit tests for gate_demo across all four sample rules and results/ immutability check)
+  - docs/DEMO_SCRIPT.md (updated: 5-minute presentation plan with exact PowerShell commands, spoken talking points, checklist, and contingency steps)
+  - README.md (updated: added gate demo commands and updated folder map)
+  - PROGRESS.md (updated)
+- WARN lines: none

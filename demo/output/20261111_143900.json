@@ -1,0 +1,18 @@
+{
+  "timestamp": "20261111_143900",
+  "input_text": "Synthetic example, not real intelligence. During the forensic triage of workstation WS-04, security operations detected internal discovery activity where the threat actor checked their current user privileges on the endpoint. The command execution recorded in the timeline was:\nwhoami.exe /priv\nThis command was invoked to enumerate the assigned security privileges and determine whether administrative tokens were available.\n",
+  "model": "qwen2.5-coder:14b",
+  "prompt_version": "v3b",
+  "technique": "T1033",
+  "extracted_command_line": "whoami.exe /priv",
+  "process_image": "C:\\Windows\\System32\\whoami.exe",
+  "gate_verdict": "PASS",
+  "gate_reason": "Caught extracted attack and hidden variant, quiet on benign line",
+  "rule_yaml": "title: Whoami Used To List Privileges\nstatus: test\nlogsource:\n    category: process_creation\n    product: windows\ndetection:\n    selection:\n        Image|endswith: '\\whoami.exe'\n        CommandLine|contains|windash: '/priv'\n    condition: selection\nlevel: low\ntags:\n    - attack.discovery\n    - attack.t1033",
+  "timings": {
+    "step1_technique_seconds": 9.79,
+    "step2_rule_seconds": 5.57,
+    "step3_gate_seconds": 0.02,
+    "total_seconds": 15.38
+  }
+}
