@@ -1,26 +1,36 @@
 {% extends "base.html" %}
 {% block title %}ATIDEP - Experiment Runs{% endblock %}
 {% block content %}
-<div class="mb-6">
-    <h2 class="text-xl font-bold text-slate-900 tracking-tight mb-1">Experiment Evaluation Runs</h2>
-    <p class="text-xs text-slate-500">Historical records of model evaluation batches verified against the synthetic log gate</p>
+<div class="mb-4 flex flex-wrap items-center justify-between gap-4">
+    <div>
+        <h2 class="text-lg font-bold text-slate-900 tracking-tight">Empirical Evaluation Runs</h2>
+        <p class="text-xs text-slate-500">Historical records of model evaluation batches verified against the synthetic log validation gate</p>
+    </div>
+    
+    <div class="text-xs font-mono text-slate-500">
+        Results stored in <span class="font-bold text-slate-700">results/runs/</span>
+    </div>
 </div>
 
 <div class="card overflow-hidden">
+    <div class="p-3 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between text-xs">
+        <span class="font-bold text-slate-700 uppercase tracking-wider text-[11px]">Recorded Evaluation Batches</span>
+        <span class="text-slate-400 font-mono">14 Completed Runs</span>
+    </div>
     <div class="overflow-x-auto">
         <table class="w-full text-xs text-left" id="runs-table">
             <thead>
                 <tr class="bg-slate-50 border-b border-slate-200 text-slate-600 font-semibold font-mono">
-                    <th class="py-3 px-4">Run Folder</th>
-                    <th class="py-3 px-4">Date</th>
-                    <th class="py-3 px-4">Set</th>
-                    <th class="py-3 px-4">Prompt</th>
-                    <th class="py-3 px-4">Model(s)</th>
-                    <th class="py-3 px-4">Strict Pass</th>
-                    <th class="py-3 px-4">Single Pass</th>
-                    <th class="py-3 px-4">Syntax Errors</th>
-                    <th class="py-3 px-4">Role</th>
-                    <th class="py-3 px-4 text-right">Action</th>
+                    <th class="py-2.5 px-4">Run Folder</th>
+                    <th class="py-2.5 px-4">Date</th>
+                    <th class="py-2.5 px-4">Set</th>
+                    <th class="py-2.5 px-4">Prompt</th>
+                    <th class="py-2.5 px-4">Model(s)</th>
+                    <th class="py-2.5 px-4">Strict Pass</th>
+                    <th class="py-2.5 px-4">Single Pass</th>
+                    <th class="py-2.5 px-4">Syntax Errors</th>
+                    <th class="py-2.5 px-4">Role</th>
+                    <th class="py-2.5 px-4 text-right">Action</th>
                 </tr>
             </thead>
             <tbody id="runs-body" class="divide-y divide-slate-100 font-mono"></tbody>
@@ -40,23 +50,23 @@ async function loadRuns() {
             : r.label === 'baseline' ? 'bg-amber-50 text-amber-700 border-amber-200'
             : 'bg-slate-100 text-slate-600 border-slate-200';
         const row = document.createElement('tr');
-        row.className = 'hover:bg-slate-50/80 transition-colors';
+        row.className = 'hover:bg-slate-50 transition-colors';
         row.innerHTML = `
-            <td class="py-3 px-4 font-bold text-slate-900">${r.folder}</td>
-            <td class="py-3 px-4 text-slate-500">${r.date ? r.date.split('T')[0] : 'N/A'}</td>
-            <td class="py-3 px-4 font-bold text-slate-800">Set ${r.set}</td>
-            <td class="py-3 px-4 text-blue-600 font-bold">${r.prompt}</td>
-            <td class="py-3 px-4 text-slate-700">${r.models.join(', ')}</td>
-            <td class="py-3 px-4 font-bold text-emerald-600">${r.strict_pass}/${r.total}</td>
-            <td class="py-3 px-4 text-blue-600">${r.single_pass}/${r.total}</td>
-            <td class="py-3 px-4 ${r.syntax_errors > 0 ? 'text-red-600 font-bold' : 'text-slate-400'}">${r.syntax_errors}</td>
-            <td class="py-3 px-4">
+            <td class="py-2.5 px-4 font-bold text-slate-900">${r.folder}</td>
+            <td class="py-2.5 px-4 text-slate-500">${r.date ? r.date.split('T')[0] : 'N/A'}</td>
+            <td class="py-2.5 px-4 font-bold text-slate-800">Set ${r.set}</td>
+            <td class="py-2.5 px-4 text-blue-600 font-bold">${r.prompt}</td>
+            <td class="py-2.5 px-4 text-slate-700">${r.models.join(', ')}</td>
+            <td class="py-2.5 px-4 font-bold text-emerald-600">${r.strict_pass}/${r.total}</td>
+            <td class="py-2.5 px-4 text-blue-600">${r.single_pass}/${r.total}</td>
+            <td class="py-2.5 px-4 ${r.syntax_errors > 0 ? 'text-red-600 font-bold' : 'text-slate-400'}">${r.syntax_errors}</td>
+            <td class="py-2.5 px-4">
                 <span class="px-2 py-0.5 rounded text-[10px] font-sans uppercase font-bold border ${labelClass}">
                     ${r.label}
                 </span>
             </td>
-            <td class="py-3 px-4 text-right font-sans">
-                <a href="/run/${r.folder}" class="text-blue-600 hover:text-blue-800 font-medium hover:underline">
+            <td class="py-2.5 px-4 text-right font-sans">
+                <a href="/run/${r.folder}" class="text-blue-600 hover:text-blue-800 font-semibold hover:underline">
                     View Details &rarr;
                 </a>
             </td>

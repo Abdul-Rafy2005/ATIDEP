@@ -1,74 +1,120 @@
 {% extends "base.html" %}
 {% block title %}ATIDEP - Overview{% endblock %}
 {% block content %}
-<div class="mb-8">
-    <h2 class="text-xl font-bold text-slate-900 tracking-tight mb-1">Executive Overview</h2>
-    <p class="text-xs text-slate-500">Validation metrics and detection coverage across empirical test sets</p>
-</div>
-
-<!-- KPI Cards -->
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-    <div class="card p-5">
-        <div class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider mb-1">Techniques Tracked</div>
-        <div id="m-total" class="text-3xl font-extrabold text-slate-900 font-mono">--</div>
-        <div class="text-[11px] text-slate-400 mt-1">across test sets 1, 2, and 3</div>
+<!-- Page Header -->
+<div class="mb-6 flex flex-wrap items-center justify-between gap-4">
+    <div>
+        <h2 class="text-lg font-bold text-slate-900 tracking-tight">Executive Security & Detection Overview</h2>
+        <p class="text-xs text-slate-500">Live ATT&CK detection coverage, validation benchmarks, and experiment telemetry</p>
     </div>
-    <div class="card p-5">
-        <div class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider mb-1">Covered Techniques</div>
-        <div id="m-covered" class="text-3xl font-extrabold text-emerald-600 font-mono">--</div>
-        <div class="text-[11px] text-slate-400 mt-1">strict gate pass across all repeats</div>
-    </div>
-    <div class="card p-5">
-        <div class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider mb-1">Strict Coverage Ratio</div>
-        <div id="m-pct" class="text-3xl font-extrabold text-blue-600 font-mono">--%</div>
-        <div class="text-[11px] text-slate-400 mt-1">empirical test set pass rate</div>
-    </div>
-    <div class="card p-5">
-        <div class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider mb-1">Evaluations Run</div>
-        <div id="m-rules" class="text-3xl font-extrabold text-slate-700 font-mono">--</div>
-        <div class="text-[11px] text-slate-400 mt-1">total rules tested across runs</div>
+    <div class="flex items-center gap-2">
+        <a href="/coverage" class="px-3 py-1.5 rounded-md bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold shadow-sm transition-colors">
+            Open ATT&CK Matrix &rarr;
+        </a>
     </div>
 </div>
 
-<!-- Visualizations Row -->
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-    <!-- Radar Chart -->
-    <div class="card p-6">
-        <div class="flex items-center justify-between mb-4 border-b border-slate-100 pb-3">
+<!-- KPI Metrics Grid (100% width, high density) -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+    <div class="card p-4 flex flex-col justify-between">
+        <div class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">Techniques Tracked</div>
+        <div class="flex items-baseline justify-between mt-1">
+            <div id="m-total" class="text-3xl font-extrabold text-slate-900 font-mono">--</div>
+            <span class="text-[10px] font-semibold text-slate-500 bg-slate-100 px-2 py-0.5 rounded">Sets 1, 2, 3</span>
+        </div>
+        <div class="text-[11px] text-slate-400 mt-2 pt-2 border-t border-slate-100">44 unique attack behaviors</div>
+    </div>
+    <div class="card p-4 flex flex-col justify-between">
+        <div class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">Strict Covered</div>
+        <div class="flex items-baseline justify-between mt-1">
+            <div id="m-covered" class="text-3xl font-extrabold text-emerald-600 font-mono">--</div>
+            <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">Verified</span>
+        </div>
+        <div class="text-[11px] text-slate-400 mt-2 pt-2 border-t border-slate-100">passed all repeated evaluation trials</div>
+    </div>
+    <div class="card p-4 flex flex-col justify-between">
+        <div class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">Coverage Ratio</div>
+        <div class="flex items-baseline justify-between mt-1">
+            <div id="m-pct" class="text-3xl font-extrabold text-blue-600 font-mono">--%</div>
+            <span class="text-[10px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">Across Matrix</span>
+        </div>
+        <div class="text-[11px] text-slate-400 mt-2 pt-2 border-t border-slate-100">tested under automated validation gate</div>
+    </div>
+    <div class="card p-4 flex flex-col justify-between">
+        <div class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">Total Rules Tested</div>
+        <div class="flex items-baseline justify-between mt-1">
+            <div id="m-rules" class="text-3xl font-extrabold text-slate-800 font-mono">--</div>
+            <span class="text-[10px] font-semibold text-slate-500 bg-slate-100 px-2 py-0.5 rounded">14 Batches</span>
+        </div>
+        <div class="text-[11px] text-slate-400 mt-2 pt-2 border-t border-slate-100">empirical model outputs scored</div>
+    </div>
+</div>
+
+<!-- Main Visualizations (Balanced 2-Column Grid) -->
+<div class="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-6">
+    <!-- Radar Chart Panel -->
+    <div class="card p-5 flex flex-col">
+        <div class="flex items-center justify-between mb-2 border-b border-slate-100 pb-3">
             <div>
                 <h3 class="text-sm font-bold text-slate-900">MITRE ATT&CK Tactic Coverage</h3>
-                <p class="text-xs text-slate-500">Coverage percentage per tactical phase</p>
+                <p class="text-xs text-slate-500">Distribution of validated detection rules across tactical stages</p>
             </div>
-            <span class="text-[11px] font-medium text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
-                Module 4
+            <span class="text-[10px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
+                14 Tactics
             </span>
         </div>
-        <div id="radar-chart" class="flex justify-center relative"></div>
-        <div class="radar-tooltip" id="radar-tooltip"></div>
+        <div class="flex-1 flex items-center justify-center p-2 relative min-h-[360px]">
+            <div id="radar-chart"></div>
+            <div class="radar-tooltip" id="radar-tooltip"></div>
+        </div>
     </div>
 
-    <!-- Bar Chart -->
-    <div class="card p-6">
-        <div class="flex items-center justify-between mb-4 border-b border-slate-100 pb-3">
+    <!-- Bar Chart Panel -->
+    <div class="card p-5 flex flex-col">
+        <div class="flex items-center justify-between mb-2 border-b border-slate-100 pb-3">
             <div>
-                <h3 class="text-sm font-bold text-slate-900">Model Pass Comparison (Set 3)</h3>
-                <p class="text-xs text-slate-500">First-try strict passes out of 60 trials</p>
+                <h3 class="text-sm font-bold text-slate-900">Final Locked Test Benchmark (Set 3)</h3>
+                <p class="text-xs text-slate-500">Strict pass rate out of 60 trials across prompt revisions</p>
             </div>
-            <span class="text-[11px] font-medium text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
-                Final Test
+            <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                Out of 60
             </span>
         </div>
-        <div id="bar-chart" class="flex justify-center"></div>
+        <div class="flex-1 flex items-center justify-center p-2 min-h-[360px]">
+            <div id="bar-chart"></div>
+        </div>
     </div>
 </div>
 
-<!-- Latest Run Card -->
-<div class="card p-5">
-    <div class="flex items-center justify-between mb-3 border-b border-slate-100 pb-2">
-        <h3 class="text-sm font-bold text-slate-900">Most Recent Experiment Run</h3>
-        <span class="text-xs text-slate-500 font-mono">results/runs/</span>
+<!-- Structured Recent Experiment Runs Table (Fills bottom, zero empty void) -->
+<div class="card overflow-hidden">
+    <div class="p-4 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
+        <div>
+            <h3 class="text-sm font-bold text-slate-900">Empirical Experiment Run History</h3>
+            <p class="text-xs text-slate-500">Latest evaluation batches executed on the local NVIDIA RTX 4000 Ada testbed</p>
+        </div>
+        <a href="/runs" class="text-xs font-semibold text-blue-600 hover:text-blue-800">
+            View All 14 Runs &rarr;
+        </a>
     </div>
-    <div id="latest-run-content" class="text-xs text-slate-600">Loading latest run data...</div>
+    <div class="overflow-x-auto">
+        <table class="w-full text-xs text-left font-mono">
+            <thead>
+                <tr class="bg-slate-50 border-b border-slate-200 text-slate-600 font-semibold">
+                    <th class="py-2.5 px-4 font-sans">Run Folder</th>
+                    <th class="py-2.5 px-4 font-sans">Set</th>
+                    <th class="py-2.5 px-4 font-sans">Prompt</th>
+                    <th class="py-2.5 px-4 font-sans">Model</th>
+                    <th class="py-2.5 px-4 font-sans">Strict Pass</th>
+                    <th class="py-2.5 px-4 font-sans">Single Pass</th>
+                    <th class="py-2.5 px-4 font-sans">Syntax Errors</th>
+                    <th class="py-2.5 px-4 font-sans">Category</th>
+                    <th class="py-2.5 px-4 text-right font-sans">Action</th>
+                </tr>
+            </thead>
+            <tbody id="recent-runs-body" class="divide-y divide-slate-100"></tbody>
+        </table>
+    </div>
 </div>
 {% endblock %}
 
@@ -77,37 +123,55 @@
 <script src="/static/js/barchart.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', async () => {
+    // 1. Load Overview Metrics
     const ov = await (await fetch('/api/overview')).json();
     document.getElementById('m-total').textContent = ov.total_techniques;
     document.getElementById('m-covered').textContent = ov.covered;
     document.getElementById('m-pct').textContent = ov.coverage_pct + '%';
     document.getElementById('m-rules').textContent = ov.total_rules_tested;
 
-    if (ov.latest_run) {
-        const lr = ov.latest_run;
-        document.getElementById('latest-run-content').innerHTML = `
-            <div class="flex flex-wrap items-center justify-between gap-4 py-1">
-                <div class="flex items-center gap-6 font-mono text-xs">
-                    <div><span class="text-slate-400 font-sans">Folder:</span> <span class="font-bold text-slate-800">${lr.folder}</span></div>
-                    <div><span class="text-slate-400 font-sans">Set:</span> <span class="font-semibold text-slate-700">Set ${lr.set}</span></div>
-                    <div><span class="text-slate-400 font-sans">Prompt:</span> <span class="text-blue-600 font-semibold">${lr.prompt}</span></div>
-                    <div><span class="text-slate-400 font-sans">Model:</span> <span class="text-slate-700">${lr.models.join(', ')}</span></div>
-                    <div><span class="text-slate-400 font-sans">Strict Pass:</span> <span class="text-emerald-600 font-bold">${lr.strict_pass}/${lr.total}</span></div>
-                </div>
-                <div>
-                    <a href="/run/${lr.folder}" class="text-blue-600 hover:text-blue-800 font-medium text-xs hover:underline">
-                        View Full Run Details &rarr;
-                    </a>
-                </div>
-            </div>
-        `;
-    }
-
+    // 2. Load Radar Chart
     const tactics = await (await fetch('/api/tactics')).json();
     drawRadar('#radar-chart', tactics);
 
+    // 3. Load Bar Chart
     const comparison = await (await fetch('/api/comparison')).json();
     drawBarChart('#bar-chart', comparison);
+
+    // 4. Load Recent Runs Table
+    const runs = await (await fetch('/api/runs')).json();
+    const tbody = document.getElementById('recent-runs-body');
+    const recent = runs.slice(-6).reverse(); // Last 6 runs
+    
+    recent.forEach(r => {
+        const labelClass = r.label === 'primary' ? 'bg-blue-50 text-blue-700 border-blue-200'
+            : r.label === 'exploratory' ? 'bg-purple-50 text-purple-700 border-purple-200'
+            : r.label === 'baseline' ? 'bg-amber-50 text-amber-700 border-amber-200'
+            : 'bg-slate-100 text-slate-600 border-slate-200';
+            
+        const row = document.createElement('tr');
+        row.className = 'hover:bg-slate-50 transition-colors';
+        row.innerHTML = `
+            <td class="py-2.5 px-4 font-bold text-slate-900">${r.folder}</td>
+            <td class="py-2.5 px-4 text-slate-800 font-semibold">Set ${r.set}</td>
+            <td class="py-2.5 px-4 text-blue-600 font-bold">${r.prompt}</td>
+            <td class="py-2.5 px-4 text-slate-700">${r.models.join(', ')}</td>
+            <td class="py-2.5 px-4 font-bold text-emerald-600">${r.strict_pass}/${r.total}</td>
+            <td class="py-2.5 px-4 text-blue-600">${r.single_pass}/${r.total}</td>
+            <td class="py-2.5 px-4 ${r.syntax_errors > 0 ? 'text-red-600 font-bold' : 'text-slate-400'}">${r.syntax_errors}</td>
+            <td class="py-2.5 px-4 font-sans">
+                <span class="px-2 py-0.5 rounded text-[10px] uppercase font-bold border ${labelClass}">
+                    ${r.label}
+                </span>
+            </td>
+            <td class="py-2.5 px-4 text-right font-sans">
+                <a href="/run/${r.folder}" class="text-blue-600 hover:text-blue-800 font-semibold hover:underline">
+                    Inspect &rarr;
+                </a>
+            </td>
+        `;
+        tbody.appendChild(row);
+    });
 });
 </script>
 {% endblock %}

@@ -1,21 +1,40 @@
 {% extends "base.html" %}
 {% block title %}ATIDEP - Gate Tester{% endblock %}
 {% block content %}
-<div class="mb-6">
-    <h2 class="text-xl font-bold text-slate-900 tracking-tight mb-1">Interactive Gate Validator</h2>
-    <p class="text-xs text-slate-500">Test any Sigma rule in real time against synthetic process creation logs. Evaluated locally via pySigma SQLite backend.</p>
+<div class="mb-4 flex flex-wrap items-center justify-between gap-4">
+    <div>
+        <h2 class="text-lg font-bold text-slate-900 tracking-tight">Interactive Validation Gate Workbench</h2>
+        <p class="text-xs text-slate-500">Test Sigma rules against synthetic process creation logs. Automated multi-point functional verification.</p>
+    </div>
+    
+    <!-- Quick sample buttons -->
+    <div class="flex items-center gap-2 text-xs">
+        <span class="text-slate-400 font-semibold text-[11px] uppercase">Load Test Sample:</span>
+        <button onclick="loadSample('pass')" class="px-2.5 py-1 rounded bg-white hover:bg-slate-50 border border-slate-300 font-semibold text-slate-700 shadow-sm text-xs">
+            Passing (T1615)
+        </button>
+        <button onclick="loadSample('narrow')" class="px-2.5 py-1 rounded bg-white hover:bg-slate-50 border border-slate-300 font-semibold text-amber-700 shadow-sm text-xs">
+            Too Narrow (T1564.004)
+        </button>
+        <button onclick="loadSample('syntax')" class="px-2.5 py-1 rounded bg-white hover:bg-slate-50 border border-slate-300 font-semibold text-red-700 shadow-sm text-xs">
+            Syntax Error (T1529)
+        </button>
+    </div>
 </div>
 
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-    <!-- Left: Sigma Rule Editor -->
-    <div class="card p-5 flex flex-col">
+<!-- Persistent 2-Column Split Workbench (100% height utilization) -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+    <!-- Left: Sigma Rule Editor Panel -->
+    <div class="card p-5 flex flex-col min-h-[560px]">
         <div class="flex items-center justify-between mb-3 border-b border-slate-100 pb-2">
-            <label for="rule-input" class="text-xs font-bold text-slate-800 uppercase tracking-wider">Sigma Rule (YAML)</label>
-            <div class="flex gap-2">
-                <button onclick="loadSample('pass')" class="text-xs text-blue-600 hover:text-blue-800 font-medium">Load Passing Sample (T1615)</button>
+            <div>
+                <span class="text-xs font-bold text-slate-800 uppercase tracking-wider">Detection Logic</span>
+                <span class="text-[11px] text-slate-400 ml-1">(Sigma YAML format)</span>
             </div>
+            <span class="text-[10px] font-mono text-slate-400">Windows Event Log 4688 / Sysmon 1</span>
         </div>
-        <textarea id="rule-input" class="w-full flex-1 min-h-[380px] bg-slate-900 border border-slate-700 rounded-md p-3.5 text-xs font-mono text-slate-100 focus:border-blue-500 focus:outline-none resize-y leading-relaxed" placeholder="title: Gpresult Used To Inspect Group Policy Settings
+        
+        <textarea id="rule-input" class="w-full flex-1 min-h-[460px] bg-slate-900 border border-slate-700 rounded-md p-4 text-xs font-mono text-slate-100 focus:border-blue-500 focus:outline-none resize-none leading-relaxed" placeholder="title: Test Sigma Rule
 status: test
 logsource:
     category: process_creation
@@ -30,43 +49,56 @@ detection:
 level: low"></textarea>
     </div>
 
-    <!-- Right: Parameter controls and verification output -->
-    <div class="space-y-6">
-        <div class="card p-5">
-            <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider mb-3 pb-2 border-b border-slate-100">
-                Evaluation Target Parameters
-            </h3>
-            <div class="grid grid-cols-2 gap-4 mb-4">
+    <!-- Right: Verification Parameters & Persistent Gate Output -->
+    <div class="card p-5 flex flex-col min-h-[560px] justify-between">
+        <div>
+            <div class="flex items-center justify-between mb-3 pb-2 border-b border-slate-100">
+                <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Evaluation Configuration</h3>
+                <span class="text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">pySigma SQLite Engine</span>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 mb-4">
                 <div>
-                    <label for="gate-set" class="text-xs font-semibold text-slate-600 mb-1 block">Test Set</label>
-                    <select id="gate-set" class="w-full bg-slate-50 border border-slate-300 rounded px-3 py-2 text-xs text-slate-800 focus:border-blue-500 font-mono font-medium">
+                    <label for="gate-set" class="text-[11px] font-bold text-slate-500 uppercase mb-1 block">Test Set</label>
+                    <select id="gate-set" class="w-full bg-slate-50 border border-slate-300 rounded px-2.5 py-1.5 text-xs text-slate-800 font-semibold focus:border-blue-500">
                         <option value="1">Set 1 - Development (12)</option>
                         <option value="2">Set 2 - Baseline (12)</option>
                         <option value="3" selected>Set 3 - Final Test (20)</option>
                     </select>
                 </div>
                 <div>
-                    <label for="gate-technique" class="text-xs font-semibold text-slate-600 mb-1 block">Technique ID</label>
-                    <select id="gate-technique" class="w-full bg-slate-50 border border-slate-300 rounded px-3 py-2 text-xs text-slate-800 focus:border-blue-500 font-mono font-medium"></select>
+                    <label for="gate-technique" class="text-[11px] font-bold text-slate-500 uppercase mb-1 block">Target Technique</label>
+                    <select id="gate-technique" class="w-full bg-slate-50 border border-slate-300 rounded px-2.5 py-1.5 text-xs text-slate-800 font-mono font-bold focus:border-blue-500"></select>
                 </div>
             </div>
-            <button onclick="runGate()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-md transition-colors text-xs shadow-sm">
-                Run Validation Gate
+
+            <button onclick="runGate()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded-md transition-colors text-xs shadow-sm mb-5">
+                Run Validation Gate &rarr;
             </button>
+
+            <!-- Verification Checklist (Always rendered, never empty) -->
+            <div class="mb-4">
+                <div class="flex items-center justify-between text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+                    <span>Gate Checklist</span>
+                    <span id="gate-timestamp" class="text-[10px] font-mono text-slate-400">Ready</span>
+                </div>
+                <div id="gate-checklist" class="space-y-2 bg-slate-50 p-3 rounded-lg border border-slate-200">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+
+            <!-- Verdict Card -->
+            <div id="gate-verdict-box" class="p-3.5 rounded-lg border text-center font-mono font-bold text-base shadow-sm">
+                <span id="gate-verdict">PASS</span>
+            </div>
+            <div id="gate-explanation" class="text-xs text-slate-600 mt-2 text-center italic font-sans">
+                Rule verified against ground truth attack and hidden evasion logs.
+            </div>
         </div>
 
-        <div id="gate-result" class="card p-5 hidden">
-            <div class="flex items-center justify-between mb-4 border-b border-slate-100 pb-2">
-                <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Gate Verification Checklist</h3>
-                <span id="gate-timestamp" class="text-[11px] text-slate-400 font-mono"></span>
-            </div>
-            
-            <div id="gate-checklist" class="space-y-2 mb-4 bg-slate-50 p-3 rounded-lg border border-slate-200"></div>
-            
-            <div id="gate-verdict" class="text-center py-3 rounded-md text-base font-bold font-mono tracking-wide shadow-sm"></div>
-            <div id="gate-explanation" class="text-xs text-slate-600 mt-2 text-center italic"></div>
-            
-            <div id="gate-events" class="mt-4 pt-3 border-t border-slate-100 text-[11px] font-mono space-y-1.5"></div>
+        <!-- Target Synthetic Logs Container -->
+        <div class="mt-4 pt-3 border-t border-slate-100 text-[11px] font-mono space-y-1.5" id="gate-events">
+            <!-- Dynamic events -->
         </div>
     </div>
 </div>
@@ -74,29 +106,18 @@ level: low"></textarea>
 
 {% block scripts %}
 <script>
-async function loadTechniques() {
-    const sets = await (await fetch('/api/sets')).json();
-    updateTechniqueList(sets);
-    document.getElementById('gate-set').addEventListener('change', () => updateTechniqueList(sets));
-}
+const explanations = {
+    'PASS': 'The rule has valid syntax, catches both the observed attack line and its hidden variant, and stays quiet on harmless commands.',
+    'TOO_NARROW': 'The rule catches the attack line it was written from but misses a changed version of the same attack. A check with only one attack log would have approved it.',
+    'SYNTAX_ERROR': 'The rule contains invalid syntax and could not be converted to SQL by pySigma.',
+    'MISSED_SHOWN': 'The rule fails to catch even the observed attack command line it was written from.',
+    'NOISY': 'The rule fires on harmless everyday commands, causing false alarms.'
+};
 
-function updateTechniqueList(sets) {
-    const setNum = document.getElementById('gate-set').value;
-    const select = document.getElementById('gate-technique');
-    select.innerHTML = '';
-    (sets[setNum] || []).forEach(t => {
-        const opt = document.createElement('option');
-        opt.value = t; opt.textContent = t;
-        select.appendChild(opt);
-    });
-}
-
-function loadSample(type) {
-    document.getElementById('gate-set').value = '3';
-    document.getElementById('gate-set').dispatchEvent(new Event('change'));
-    setTimeout(() => {
-        document.getElementById('gate-technique').value = 'T1615';
-        document.getElementById('rule-input').value = `title: Gpresult Used To Inspect Group Policy Settings
+const samples = {
+    pass: {
+        set: 3, technique: 'T1615',
+        rule: `title: Gpresult Used To Inspect Group Policy Settings
 status: test
 logsource:
     category: process_creation
@@ -111,70 +132,134 @@ detection:
 level: low
 tags:
     - attack.discovery
-    - attack.t1615`;
-    }, 100);
+    - attack.t1615`
+    },
+    narrow: {
+        set: 3, technique: 'T1564.004',
+        rule: `title: Printer Backup Creation Using PrintBrm
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\\PrintBrm.exe'
+        CommandLine|contains: ' -b -f '
+    condition: selection
+level: high`
+    },
+    syntax: {
+        set: 3, technique: 'T1529',
+        rule: `title: Malformed Shutdown Rule
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\\shutdown.exe'
+        CommandLine|contains:
+            invalid_key: /r
+    condition: selection`
+    }
+};
+
+let allSets = {};
+
+async function loadTechniques() {
+    allSets = await (await fetch('/api/sets')).json();
+    updateTechniqueList();
+    loadSample('pass'); // Preload active sample so page is NEVER empty!
+    document.getElementById('gate-set').addEventListener('change', () => {
+        updateTechniqueList();
+        runGate();
+    });
+    document.getElementById('gate-technique').addEventListener('change', () => {
+        runGate();
+    });
 }
 
-const explanations = {
-    'PASS': 'The rule has valid syntax, catches both the observed attack line and its hidden variant, and stays quiet on harmless commands.',
-    'TOO_NARROW': 'The rule catches the attack line it was written from but misses a changed version of the same attack. A check with only one attack log would have approved it.',
-    'SYNTAX_ERROR': 'The rule contains invalid syntax and could not be converted to SQL by pySigma.',
-    'MISSED_SHOWN': 'The rule fails to catch even the observed attack command line it was written from.',
-    'NOISY': 'The rule fires on harmless everyday commands, causing false alarms.'
-};
+function updateTechniqueList() {
+    const setNum = document.getElementById('gate-set').value;
+    const select = document.getElementById('gate-technique');
+    select.innerHTML = '';
+    (allSets[setNum] || []).forEach(t => {
+        const opt = document.createElement('option');
+        opt.value = t; opt.textContent = t;
+        select.appendChild(opt);
+    });
+}
+
+function loadSample(key) {
+    const s = samples[key];
+    if (!s) return;
+    document.getElementById('gate-set').value = s.set.toString();
+    updateTechniqueList();
+    document.getElementById('gate-technique').value = s.technique;
+    document.getElementById('rule-input').value = s.rule;
+    runGate();
+}
 
 async function runGate() {
     const ruleYaml = document.getElementById('rule-input').value;
     const setId = parseInt(document.getElementById('gate-set').value);
     const technique = document.getElementById('gate-technique').value;
-    if (!ruleYaml.trim()) { alert('Paste a Sigma rule first'); return; }
+    if (!ruleYaml.trim() || !technique) return;
 
-    const res = await fetch('/api/gate', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({rule_yaml: ruleYaml, set: setId, technique: technique})
-    });
-    const data = await res.json();
-    if (data.error) { alert('Error: ' + data.error); return; }
+    try {
+        const res = await fetch('/api/gate', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({rule_yaml: ruleYaml, set: setId, technique: technique})
+        });
+        const data = await res.json();
+        if (data.error) {
+            document.getElementById('gate-explanation').textContent = data.error;
+            return;
+        }
 
-    const resultDiv = document.getElementById('gate-result');
-    resultDiv.classList.remove('hidden');
-    document.getElementById('gate-timestamp').textContent = new Date().toLocaleTimeString();
+        document.getElementById('gate-timestamp').textContent = 'Scored ' + new Date().toLocaleTimeString();
 
-    const checks = [
-        {label: 'Syntax Valid (pySigma SQLite parse)', ok: data.syntax_ok, detail: data.error && !data.syntax_ok ? data.error : null},
-        {label: 'Fires on Malicious Attack Line', ok: data.fires_shown},
-        {label: 'Fires on Hidden Attack Variant', ok: data.fires_variant},
-        {label: 'Quiet on Harmless Near-Miss Line', ok: !data.fires_benign},
-    ];
-    document.getElementById('gate-checklist').innerHTML = checks.map(c =>
-        `<div class="flex items-start gap-2 text-xs font-mono">
-            <span class="${c.ok ? 'text-emerald-600' : 'text-red-600'} font-bold">${c.ok ? '✓' : '✗'}</span>
-            <div class="flex-1">
-                <span class="${c.ok ? 'text-slate-800' : 'text-slate-500'} font-medium">${c.label}</span>
-                ${c.detail ? `<div class="text-[10px] text-red-600 mt-0.5">${c.detail}</div>` : ''}
-            </div>
-        </div>`
-    ).join('');
+        const checks = [
+            {label: 'Syntax Valid (pySigma SQLite parse)', ok: data.syntax_ok, detail: data.error && !data.syntax_ok ? data.error : null},
+            {label: 'Catches Observed Malicious Attack Line', ok: data.fires_shown},
+            {label: 'Catches Hidden Attack Variant Line', ok: data.fires_variant},
+            {label: 'Remains Quiet on Harmless Near-Miss Line', ok: !data.fires_benign},
+        ];
 
-    const verdictColors = {
-        'PASS': 'verdict-pass', 'TOO_NARROW': 'verdict-narrow',
-        'NOISY': 'verdict-noisy', 'MISSED_SHOWN': 'verdict-missed',
-        'SYNTAX_ERROR': 'verdict-syntax'
-    };
-    const vDiv = document.getElementById('gate-verdict');
-    vDiv.className = `text-center py-2.5 rounded-md text-base font-bold font-mono tracking-wide ${verdictColors[data.verdict] || 'verdict-not-tested'}`;
-    vDiv.textContent = data.verdict;
+        document.getElementById('gate-checklist').innerHTML = checks.map(c =>
+            `<div class="flex items-start gap-2.5 text-xs font-mono">
+                <span class="${c.ok ? 'text-emerald-600' : 'text-red-600'} font-bold">${c.ok ? '✓' : '✗'}</span>
+                <div class="flex-1">
+                    <span class="${c.ok ? 'text-slate-800' : 'text-slate-500'} font-medium">${c.label}</span>
+                    ${c.detail ? `<div class="text-[10px] text-red-600 mt-0.5">${c.detail}</div>` : ''}
+                </div>
+            </div>`
+        ).join('');
 
-    document.getElementById('gate-explanation').textContent = explanations[data.verdict] || '';
+        const verdictStyles = {
+            'PASS': 'bg-emerald-50 text-emerald-800 border-emerald-300',
+            'TOO_NARROW': 'bg-amber-50 text-amber-800 border-amber-300',
+            'NOISY': 'bg-red-50 text-red-800 border-red-300',
+            'MISSED_SHOWN': 'bg-red-50 text-red-800 border-red-300',
+            'SYNTAX_ERROR': 'bg-slate-100 text-slate-800 border-slate-300'
+        };
 
-    if (data.events) {
-        document.getElementById('gate-events').innerHTML = `
-            <div class="text-slate-500 font-bold mb-1">Evaluated against synthetic logs:</div>
-            <div class="truncate text-slate-700"><span class="text-red-700 font-bold">Attack:</span> ${data.events.shown || 'N/A'}</div>
-            <div class="truncate text-slate-700"><span class="text-amber-700 font-bold">Variant:</span> ${data.events.variant || 'N/A'}</div>
-            <div class="truncate text-slate-700"><span class="text-emerald-700 font-bold">Benign:</span> ${data.events.benign || 'N/A'}</div>
-        `;
+        const vBox = document.getElementById('gate-verdict-box');
+        vBox.className = `p-3 rounded-lg border text-center font-mono font-bold text-base shadow-sm ${verdictStyles[data.verdict] || 'bg-slate-50 border-slate-200 text-slate-800'}`;
+        document.getElementById('gate-verdict').textContent = data.verdict;
+        document.getElementById('gate-explanation').textContent = explanations[data.verdict] || '';
+
+        if (data.events) {
+            document.getElementById('gate-events').innerHTML = `
+                <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Synthetic Logs Tested:</div>
+                <div class="p-1.5 rounded bg-slate-50 border border-slate-200 truncate text-slate-700"><span class="text-red-700 font-bold">Attack:</span> ${data.events.shown || 'N/A'}</div>
+                <div class="p-1.5 rounded bg-slate-50 border border-slate-200 truncate text-slate-700"><span class="text-amber-700 font-bold">Variant:</span> ${data.events.variant || 'N/A'}</div>
+                <div class="p-1.5 rounded bg-slate-50 border border-slate-200 truncate text-slate-700"><span class="text-emerald-700 font-bold">Benign:</span> ${data.events.benign || 'N/A'}</div>
+            `;
+        }
+    } catch (err) {
+        document.getElementById('gate-explanation').textContent = 'Scoring error: ' + err.message;
     }
 }
 
