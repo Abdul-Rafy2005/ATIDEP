@@ -1,8 +1,8 @@
 function drawRadar(selector, data) {
     d3.select(selector).select('svg').remove();
 
-    const width = 420, height = 420;
-    const margin = 70;
+    const width = 420, height = 400;
+    const margin = 65;
     const radius = Math.min(width, height) / 2 - margin;
     const levels = 4;
 
@@ -27,14 +27,14 @@ function drawRadar(selector, data) {
         g.append('circle')
             .attr('r', r)
             .attr('fill', 'none')
-            .attr('stroke', '#334155')
-            .attr('stroke-width', 0.8)
-            .attr('stroke-dasharray', '2,2');
+            .attr('stroke', '#e2e8f0')
+            .attr('stroke-width', 1)
+            .attr('stroke-dasharray', '3,3');
 
         g.append('text')
             .attr('x', 4)
             .attr('y', -r - 2)
-            .attr('fill', '#64748b')
+            .attr('fill', '#94a3b8')
             .attr('font-size', '9px')
             .attr('font-family', 'monospace')
             .text(Math.round(maxVal * i / levels) + '%');
@@ -49,10 +49,10 @@ function drawRadar(selector, data) {
         g.append('line')
             .attr('x1', 0).attr('y1', 0)
             .attr('x2', x).attr('y2', y)
-            .attr('stroke', '#334155')
-            .attr('stroke-width', 0.8);
+            .attr('stroke', '#e2e8f0')
+            .attr('stroke-width', 1);
 
-        const labelRadius = radius + 24;
+        const labelRadius = radius + 22;
         const lx = labelRadius * Math.cos(angle);
         const ly = labelRadius * Math.sin(angle);
 
@@ -63,9 +63,9 @@ function drawRadar(selector, data) {
             .attr('y', ly)
             .attr('text-anchor', 'middle')
             .attr('dominant-baseline', 'middle')
-            .attr('fill', '#94a3b8')
+            .attr('fill', '#475569')
             .attr('font-size', '10px')
-            .attr('font-weight', '500')
+            .attr('font-weight', '600')
             .text(shortName);
     });
 
@@ -78,8 +78,8 @@ function drawRadar(selector, data) {
     g.append('path')
         .datum(data)
         .attr('d', line)
-        .attr('fill', 'rgba(59, 130, 246, 0.25)')
-        .attr('stroke', '#3b82f6')
+        .attr('fill', 'rgba(37, 99, 235, 0.12)')
+        .attr('stroke', '#2563eb')
         .attr('stroke-width', 2);
 
     // Data points & tooltip
@@ -93,17 +93,17 @@ function drawRadar(selector, data) {
         g.append('circle')
             .attr('cx', x).attr('cy', y)
             .attr('r', 4.5)
-            .attr('fill', '#60a5fa')
-            .attr('stroke', '#1e293b')
-            .attr('stroke-width', 1.5)
+            .attr('fill', '#2563eb')
+            .attr('stroke', '#ffffff')
+            .attr('stroke-width', 2)
             .style('cursor', 'pointer')
             .on('mouseover', function(event) {
-                d3.select(this).attr('r', 6).attr('fill', '#93c5fd');
+                d3.select(this).attr('r', 6).attr('fill', '#1d4ed8');
                 tooltip.style('opacity', 1)
                     .html(`
                         <div class="font-bold text-white mb-0.5">${d.tactic_name}</div>
-                        <div class="text-xs text-blue-300 font-mono">${d.covered} / ${d.total} techniques</div>
-                        <div class="text-xs text-green-400 font-mono font-semibold">${d.coverage_pct}% coverage</div>
+                        <div class="text-xs text-blue-200 font-mono">${d.covered} / ${d.total} techniques</div>
+                        <div class="text-xs text-emerald-400 font-mono font-semibold">${d.coverage_pct}% coverage</div>
                     `);
             })
             .on('mousemove', function(event) {
@@ -111,9 +111,8 @@ function drawRadar(selector, data) {
                     .style('top', (event.pageY - 20) + 'px');
             })
             .on('mouseout', function() {
-                d3.select(this).attr('r', 4.5).attr('fill', '#60a5fa');
+                d3.select(this).attr('r', 4.5).attr('fill', '#2563eb');
                 tooltip.style('opacity', 0);
             });
     });
 }
-

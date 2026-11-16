@@ -2,7 +2,7 @@
 {% block title %}ATIDEP - Run {{ folder }}{% endblock %}
 {% block content %}
 <div id="run-content">
-    <div class="card p-8 text-center text-slate-400">Loading run {{ folder }}...</div>
+    <div class="card p-12 text-center text-slate-400 text-xs">Loading run execution telemetry...</div>
 </div>
 {% endblock %}
 
@@ -18,7 +18,7 @@ const verdictClass = {
 async function loadRunDetail() {
     const res = await fetch(`/api/run/${FOLDER}`);
     if (!res.ok) {
-        document.getElementById('run-content').innerHTML = '<div class="card p-8 text-center text-red-400">Run not found</div>';
+        document.getElementById('run-content').innerHTML = '<div class="card p-8 text-center text-red-600 text-sm">Run record not found.</div>';
         return;
     }
     const run = await res.json();
@@ -26,76 +26,86 @@ async function loadRunDetail() {
 
     let html = `
         <div class="mb-6">
-            <a href="/runs" class="text-xs text-blue-400 hover:text-blue-300 font-medium">&larr; Back to all runs</a>
-            <h2 class="text-2xl font-bold text-white font-mono mt-2 mb-1">${run.folder}</h2>
-            <div class="flex flex-wrap gap-4 text-xs text-slate-400 font-mono">
-                <div><span class="text-slate-500 font-sans">Set:</span> Set ${run.set}</div>
-                <div><span class="text-slate-500 font-sans">Prompt:</span> ${run.prompt}</div>
-                <div><span class="text-slate-500 font-sans">Models:</span> ${run.models.join(', ')}</div>
-                <div><span class="text-slate-500 font-sans">Temperature:</span> ${run.temperature}</div>
-                <div><span class="text-slate-500 font-sans">Repeats:</span> ${run.repeats}</div>
-                <div><span class="text-slate-500 font-sans">Seed:</span> ${run.seed}</div>
-                <div><span class="text-slate-500 font-sans">Role:</span> <span class="uppercase font-bold text-blue-300">${run.label}</span></div>
+            <a href="/runs" class="text-xs text-blue-600 hover:text-blue-800 font-medium">&larr; Back to all runs</a>
+            <div class="flex flex-wrap items-center justify-between gap-4 mt-2">
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900 font-mono">${run.folder}</h2>
+                    <p class="text-xs text-slate-500 font-sans mt-0.5">Recorded run settings from settings.json and results.csv</p>
+                </div>
+                <span class="px-2.5 py-1 rounded text-xs font-semibold uppercase bg-blue-50 text-blue-700 border border-blue-200">
+                    ${run.label}
+                </span>
+            </div>
+            
+            <div class="flex flex-wrap gap-4 text-xs text-slate-500 font-mono mt-3">
+                <div><span class="text-slate-400 font-sans">Set:</span> Set ${run.set}</div>
+                <div><span class="text-slate-400 font-sans">Prompt:</span> ${run.prompt}</div>
+                <div><span class="text-slate-400 font-sans">Models:</span> ${run.models.join(', ')}</div>
+                <div><span class="text-slate-400 font-sans">Temperature:</span> ${run.temperature}</div>
+                <div><span class="text-slate-400 font-sans">Repeats:</span> ${run.repeats}</div>
+                <div><span class="text-slate-400 font-sans">Seed:</span> ${run.seed}</div>
             </div>
         </div>
-        
+
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
-            <div class="metric-card card p-4">
-                <div class="text-xs text-slate-400 uppercase tracking-wider mb-1">Strict Pass</div>
-                <div class="text-2xl font-bold text-green-400">${run.strict_pass}/${run.total}</div>
-                <div class="text-[11px] text-slate-500 mt-1">${Math.round(100 * run.strict_pass / (run.total || 1))}% success</div>
+            <div class="card p-4">
+                <div class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider mb-1">Strict Pass</div>
+                <div class="text-2xl font-extrabold text-emerald-600 font-mono">${run.strict_pass}/${run.total}</div>
+                <div class="text-[11px] text-slate-400 mt-1">${Math.round(100 * run.strict_pass / (run.total || 1))}% overall success</div>
             </div>
-            <div class="metric-card card p-4">
-                <div class="text-xs text-slate-400 uppercase tracking-wider mb-1">Single Pass</div>
-                <div class="text-2xl font-bold text-blue-400">${run.single_pass}/${run.total}</div>
-                <div class="text-[11px] text-slate-500 mt-1">shown line pass</div>
+            <div class="card p-4">
+                <div class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider mb-1">Single Pass</div>
+                <div class="text-2xl font-extrabold text-blue-600 font-mono">${run.single_pass}/${run.total}</div>
+                <div class="text-[11px] text-slate-400 mt-1">shown line pass</div>
             </div>
-            <div class="metric-card card p-4">
-                <div class="text-xs text-slate-400 uppercase tracking-wider mb-1">Syntax Errors</div>
-                <div class="text-2xl font-bold ${run.syntax_errors > 0 ? 'text-red-400' : 'text-slate-500'}">${run.syntax_errors}</div>
-                <div class="text-[11px] text-slate-500 mt-1">pySigma invalid</div>
+            <div class="card p-4">
+                <div class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider mb-1">Syntax Errors</div>
+                <div class="text-2xl font-extrabold ${run.syntax_errors > 0 ? 'text-red-600' : 'text-slate-400'} font-mono">${run.syntax_errors}</div>
+                <div class="text-[11px] text-slate-400 mt-1">pySigma SQL failure</div>
             </div>
-            <div class="metric-card card p-4">
-                <div class="text-xs text-slate-400 uppercase tracking-wider mb-1">Too Narrow</div>
-                <div class="text-2xl font-bold text-orange-400">${run.too_narrow}</div>
-                <div class="text-[11px] text-slate-500 mt-1">missed hidden variant</div>
+            <div class="card p-4">
+                <div class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider mb-1">Too Narrow</div>
+                <div class="text-2xl font-extrabold text-amber-600 font-mono">${run.too_narrow}</div>
+                <div class="text-[11px] text-slate-400 mt-1">missed hidden variant</div>
             </div>
         </div>
 
         <div class="card overflow-hidden">
-            <div class="flex items-center justify-between p-4 border-b border-slate-800">
-                <h3 class="text-sm font-semibold text-white">Technique Evaluation Breakdown (${run.results.length} rows)</h3>
-                <span class="text-xs text-slate-500 font-mono">results.csv</span>
+            <div class="flex items-center justify-between p-4 border-b border-slate-100 bg-slate-50/50">
+                <h3 class="text-sm font-bold text-slate-900">Per-Technique Evaluation Telemetry (${run.results.length} evaluations)</h3>
+                <span class="text-xs text-slate-400 font-mono">results.csv</span>
             </div>
             <div class="overflow-x-auto">
-                <table class="w-full text-xs font-mono">
+                <table class="w-full text-xs font-mono text-left">
                     <thead>
-                        <tr class="text-slate-400 border-b border-slate-700 bg-slate-900/60">
-                            <th class="text-left py-2.5 px-3">Model</th>
-                            <th class="text-left py-2.5 px-3">Technique</th>
-                            <th class="text-left py-2.5 px-3">Repeat</th>
-                            <th class="text-left py-2.5 px-3">Strict</th>
-                            <th class="text-left py-2.5 px-3">Single</th>
-                            <th class="text-left py-2.5 px-3">Verdict</th>
-                            <th class="text-left py-2.5 px-3">Speed</th>
+                        <tr class="bg-slate-50 border-b border-slate-200 text-slate-600 font-semibold">
+                            <th class="py-2.5 px-3">Model</th>
+                            <th class="py-2.5 px-3">Technique</th>
+                            <th class="py-2.5 px-3">Repeat</th>
+                            <th class="py-2.5 px-3">Strict</th>
+                            <th class="py-2.5 px-3">Single</th>
+                            <th class="py-2.5 px-3">Verdict</th>
+                            <th class="py-2.5 px-3">Latency / Speed</th>
+                            <th class="py-2.5 px-3 text-right">Inspect</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-800">
+                    <tbody class="divide-y divide-slate-100">
     `;
     run.results.forEach(r => {
         html += `
-            <tr class="hover:bg-slate-800/40">
-                <td class="py-2.5 px-3 text-slate-300">${r.model}</td>
-                <td class="py-2.5 px-3">
-                    <a href="/technique/${r.technique}" class="text-blue-400 hover:text-blue-300 font-bold hover:underline">
-                        ${r.technique}
-                    </a>
-                </td>
-                <td class="py-2.5 px-3">${r.repeat}</td>
-                <td class="py-2.5 px-3 font-semibold ${r.strict_pass === 'True' ? 'text-green-400' : 'text-slate-600'}">${r.strict_pass === 'True' ? 'YES' : 'NO'}</td>
-                <td class="py-2.5 px-3 ${r.single_pass === 'True' ? 'text-blue-400' : 'text-slate-600'}">${r.single_pass === 'True' ? 'YES' : 'NO'}</td>
-                <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded text-[10px] font-medium ${verdictClass[r.verdict]}">${r.verdict}</span></td>
+            <tr class="hover:bg-slate-50/80">
+                <td class="py-2.5 px-3 text-slate-700">${r.model}</td>
+                <td class="py-2.5 px-3 font-bold text-slate-900">${r.technique}</td>
+                <td class="py-2.5 px-3 text-slate-600">${r.repeat}</td>
+                <td class="py-2.5 px-3 font-bold ${r.strict_pass === 'True' ? 'text-emerald-600' : 'text-slate-300'}">${r.strict_pass === 'True' ? 'YES' : 'NO'}</td>
+                <td class="py-2.5 px-3 font-bold ${r.single_pass === 'True' ? 'text-blue-600' : 'text-slate-300'}">${r.single_pass === 'True' ? 'YES' : 'NO'}</td>
+                <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded text-[10px] font-semibold ${verdictClass[r.verdict]}">${r.verdict}</span></td>
                 <td class="py-2.5 px-3 text-slate-500">${r.tokens_per_second ? r.tokens_per_second + ' t/s' : (r.seconds ? r.seconds + 's' : '-')}</td>
+                <td class="py-2.5 px-3 text-right font-sans">
+                    <button onclick="openTechniqueDrawer('${r.technique}')" class="text-blue-600 hover:text-blue-800 text-[11px] font-medium hover:underline">
+                        Drawer &rarr;
+                    </button>
+                </td>
             </tr>
         `;
     });
@@ -105,4 +115,3 @@ async function loadRunDetail() {
 document.addEventListener('DOMContentLoaded', loadRunDetail);
 </script>
 {% endblock %}
-

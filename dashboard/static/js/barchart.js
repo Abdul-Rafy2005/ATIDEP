@@ -1,14 +1,13 @@
 function drawBarChart(selector, data) {
     d3.select(selector).select('svg').remove();
 
-    // Filter to set 3 runs only, and only primary/baseline/exploratory
     const filtered = data.filter(d =>
         d.set === 3 && ['primary', 'baseline', 'exploratory'].includes(d.label)
     );
 
     if (filtered.length === 0) {
         d3.select(selector).append('div')
-            .attr('class', 'text-slate-500 text-xs text-center py-12')
+            .attr('class', 'text-slate-400 text-xs text-center py-12')
             .text('No Set 3 comparison data available');
         return;
     }
@@ -46,9 +45,8 @@ function drawBarChart(selector, data) {
         .attr('class', 'grid')
         .call(d3.axisLeft(y).ticks(6).tickSize(-innerW).tickFormat(''))
         .selectAll('line')
-        .attr('stroke', '#334155')
-        .attr('stroke-width', 0.5)
-        .attr('stroke-dasharray', '2,2');
+        .attr('stroke', '#f1f5f9')
+        .attr('stroke-width', 1);
 
     g.select('.grid .domain').remove();
 
@@ -57,29 +55,30 @@ function drawBarChart(selector, data) {
         .attr('transform', `translate(0, ${innerH})`)
         .call(d3.axisBottom(x))
         .selectAll('text')
-        .attr('fill', '#94a3b8')
+        .attr('fill', '#475569')
         .attr('font-size', '11px')
         .attr('font-family', 'monospace')
+        .attr('font-weight', '500')
         .attr('transform', 'rotate(-30)')
         .attr('text-anchor', 'end')
         .attr('dx', '-6px')
         .attr('dy', '6px');
 
-    g.selectAll('.domain, .tick line').attr('stroke', '#334155');
+    g.selectAll('.domain, .tick line').attr('stroke', '#cbd5e1');
 
     // Y axis
     g.append('g')
         .call(d3.axisLeft(y).ticks(6))
         .selectAll('text')
-        .attr('fill', '#94a3b8')
+        .attr('fill', '#64748b')
         .attr('font-size', '10px')
         .attr('font-family', 'monospace');
 
     // Bar colors
     const colorMap = {
-        'primary': '#3b82f6',
-        'baseline': '#f59e0b',
-        'exploratory': '#a855f7'
+        'primary': '#2563eb',     // Blue
+        'baseline': '#d97706',    // Amber
+        'exploratory': '#9333ea'  // Purple
     };
 
     // Bars
@@ -92,7 +91,7 @@ function drawBarChart(selector, data) {
         .attr('y', d => y(d.strict_pass))
         .attr('width', x.bandwidth())
         .attr('height', d => innerH - y(d.strict_pass))
-        .attr('fill', d => colorMap[d.label] || '#64748b')
+        .attr('fill', d => colorMap[d.label] || '#94a3b8')
         .attr('rx', 3);
 
     // Number label on top of bar
@@ -103,7 +102,7 @@ function drawBarChart(selector, data) {
         .attr('x', d => x(d.barLabel) + x.bandwidth() / 2)
         .attr('y', d => y(d.strict_pass) - 6)
         .attr('text-anchor', 'middle')
-        .attr('fill', '#e2e8f0')
+        .attr('fill', '#0f172a')
         .attr('font-size', '11px')
         .attr('font-family', 'monospace')
         .attr('font-weight', 'bold')
@@ -112,13 +111,12 @@ function drawBarChart(selector, data) {
     // Legend
     const legend = svg.append('g').attr('transform', `translate(${margin.left}, ${height - 15})`);
     [
-        ['Primary (frozen)', '#3b82f6'],
-        ['Baseline (v1)', '#f59e0b'],
-        ['Exploratory', '#a855f7']
+        ['Primary (frozen)', '#2563eb'],
+        ['Baseline (v1)', '#d97706'],
+        ['Exploratory', '#9333ea']
     ].forEach(([label, color], i) => {
         const item = legend.append('g').attr('transform', `translate(${i * 130}, 0)`);
         item.append('rect').attr('width', 9).attr('height', 9).attr('fill', color).attr('rx', 2);
-        item.append('text').attr('x', 14).attr('y', 8).attr('fill', '#94a3b8').attr('font-size', '10px').text(label);
+        item.append('text').attr('x', 14).attr('y', 8).attr('fill', '#475569').attr('font-size', '10px').attr('font-weight', '500').text(label);
     });
 }
-
