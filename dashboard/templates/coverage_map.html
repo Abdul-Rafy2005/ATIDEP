@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% block title %}ATIDEP - Coverage Map{% endblock %}
+{% block content %}
+<div class="mb-6">
+    <h2 class="text-2xl font-bold text-white mb-1">ATT&CK Coverage Map</h2>
+    <p class="text-sm text-slate-400">Techniques grouped by tactic, colored by best verdict across all tested configurations</p>
+</div>
+
+<!-- Filters -->
+<div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+    <div class="flex items-center gap-3">
+        <label for="filter-set" class="text-xs text-slate-400 uppercase font-medium">Filter by set:</label>
+        <select id="filter-set" class="bg-slate-800 border border-slate-700 rounded px-3 py-1.5 text-sm text-slate-300 focus:border-blue-500">
+            <option value="all">All Sets (44 techniques)</option>
+            <option value="1">Set 1 (12 techniques)</option>
+            <option value="2">Set 2 (12 techniques)</option>
+            <option value="3">Set 3 (20 techniques)</option>
+        </select>
+    </div>
+    
+    <!-- Legend -->
+    <div class="flex flex-wrap gap-3 text-xs">
+        <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded verdict-pass inline-block"></span> PASS</span>
+        <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded verdict-narrow inline-block"></span> TOO_NARROW</span>
+        <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded verdict-noisy inline-block"></span> NOISY</span>
+        <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded verdict-missed inline-block"></span> MISSED_SHOWN</span>
+        <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded verdict-syntax inline-block"></span> SYNTAX_ERROR</span>
+        <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded verdict-not-tested inline-block"></span> NOT_TESTED</span>
+    </div>
+</div>
+
+<div id="coverage-grid" class="space-y-6"></div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const verdictClass = {
+    'PASS': 'verdict-pass', 'TOO_NARROW': 'verdict-narrow',
+    'NOISY': 'verdict-noisy', 'MISSED_SHOWN': 'verdict-missed',
+    'SYNTAX_ERROR': 'verdict-syntax', 'NOT_TESTED': 'verdict-not-tested'
+};
+
+async function loadCoverage() {
+    const techniques = await (await fetch('/api/techniques')).json();
+    const filterSet = document.getElementById('filter-set').value;
+
+    // Group by tactic
+    const byTactic = {};
+    techniques.forEach(t => {
+        if (filterSet !== 'all' && !t.sets.includes(parseInt(filterSet))) return;
+        t.tactics.forEach(tac => {
+            if (!byTactic[tac]) byTactic[tac] = [];
+            if (!byTactic[tac].find(x => x.id === t.id)) {
+                byTactic[tac].push(t);
+            }
+        });
+    });
+
+    const grid = document.getElementById('coverage-grid');
+    grid.innerHTML = '';
+
+    const tacticOrder = [
+        'Initial Access', 'Execution', 'Persistence', 'Privilege Escalation',
+        'Defense Evasion', 'Credential Access', 'Discovery', 'Lateral Movement',
+        'Collection', 'Exfiltration', 'Command and Control', 'Impact',
+        'Resource Development', 'Reconnaissance'
+    ];
+
+    let renderedCount = 0;
+
+    tacticOrder.forEach(tac => {
+        const techs = byTactic[tac];
+        if (!techs || techs.length === 0) return;
+
+        renderedCount += techs.length;
+        const covered = techs.filter(t => t.best_verdict === 'PASS').length;
+        const section = document.createElement('div');
+        section.className = 'card p-5';
+        section.innerHTML = `
+            <div class="flex items-center justify-between mb-4 border-b border-slate-800 pb-3">
+                <div class="flex items-center gap-3">
+                    <h3 class="text-base font-semibold text-white">${tac}</h3>
+                    <span class="px-2 py-0.5 rounded text-xs bg-slate-800 text-slate-400 border border-slate-700">${covered}/${techs.length} covered</span>
+                </div>
+                <span class="text-xs text-slate-500">${Math.round(100 * covered / techs.length)}%</span>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3" id="tactic-${tac.replace(/\s/g, '')}"></div>
+        `;
+        grid.appendChild(section);
+
+        const container = section.querySelector(`#tactic-${tac.replace(/\s/g, '')}`);
+        techs.sort((a, b) => a.id.localeCompare(b.id)).forEach(t => {
+            const cell = document.createElement('a');
+            cell.href = `/technique/${t.id}`;
+            cell.className = `${verdictClass[t.best_verdict] || 'verdict-not-tested'} rounded-lg p-3 block hover:opacity-90 transition-all border border-transparent hover:border-slate-400 cursor-pointer shadow-sm`;
+            cell.innerHTML = `
+                <div class="text-xs font-mono font-bold">${t.id}</div>
+                <div class="text-xs opacity-90 truncate mt-1" title="${t.title}">${t.title || 'Unknown'}</div>
+                <div class="flex items-center justify-between text-[10px] mt-2 opacity-75 font-mono">
+                    <span>${t.best_verdict}</span>
+                    <span>Set ${t.sets.join(',')}</span>
+                </div>
+            `;
+            container.appendChild(cell);
+        });
+    });
+
+    if (renderedCount === 0) {
+        grid.innerHTML = '<div class="card p-8 text-center text-slate-500">No techniques found for selected filter.</div>';
+    }
+}
+
+document.addEventListener('DOMContentLoaded', loadCoverage);
+document.getElementById('filter-set').addEventListener('change', loadCoverage);
+</script>
+{% endblock %}
+

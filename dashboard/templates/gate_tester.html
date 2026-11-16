@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+{% block title %}ATIDEP - Gate Tester{% endblock %}
+{% block content %}
+<div class="mb-6">
+    <h2 class="text-2xl font-bold text-white mb-1">Gate Tester</h2>
+    <p class="text-sm text-slate-400">Evaluate any Sigma rule against synthetic logs in real time. Runs locally without LLM inference.</p>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Left: rule input -->
+    <div class="card p-5 flex flex-col">
+        <div class="flex items-center justify-between mb-2">
+            <label for="rule-input" class="text-sm text-slate-300 font-medium">Sigma Rule YAML</label>
+            <button onclick="loadSample('pass')" class="text-xs text-blue-400 hover:text-blue-300">Load Passing Sample</button>
+        </div>
+        <textarea id="rule-input" class="w-full flex-1 min-h-[360px] bg-slate-900 border border-slate-700 rounded-lg p-3 text-xs font-mono text-slate-200 focus:border-blue-500 focus:outline-none resize-y leading-relaxed" placeholder="title: Test Rule
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\gpresult.exe'
+        CommandLine|contains|windash|all:
+            - '/z'
+            - '/user'
+    condition: selection
+level: low"></textarea>
+    </div>
+
+    <!-- Right: controls and result -->
+    <div>
+        <div class="card p-5 mb-5">
+            <h3 class="text-sm font-semibold text-white mb-3">Target Technique Parameters</h3>
+            <div class="grid grid-cols-2 gap-4 mb-4">
+                <div>
+                    <label for="gate-set" class="text-xs text-slate-400 font-medium mb-1 block">Validation Set</label>
+                    <select id="gate-set" class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-xs text-slate-200 focus:border-blue-500 font-mono">
+                        <option value="1">Set 1 (Development)</option>
+                        <option value="2">Set 2 (Baseline)</option>
+                        <option value="3" selected>Set 3 (Final Test)</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="gate-technique" class="text-xs text-slate-400 font-medium mb-1 block">Technique ID</label>
+                    <select id="gate-technique" class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-xs text-slate-200 focus:border-blue-500 font-mono"></select>
+                </div>
+            </div>
+            <button onclick="runGate()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 rounded-lg transition-colors text-sm shadow-md">
+                Run Validation Gate
+            </button>
+        </div>
+
+        <div id="gate-result" class="card p-5 hidden">
+            <div class="flex items-center justify-between mb-3 border-b border-slate-800 pb-2">
+                <h3 class="text-sm font-semibold text-white">Validation Results</h3>
+                <span id="gate-timestamp" class="text-[11px] text-slate-500 font-mono"></span>
+            </div>
+            
+            <div id="gate-checklist" class="space-y-2 mb-4 bg-slate-900/80 p-3 rounded-lg border border-slate-800"></div>
+            
+            <div id="gate-verdict" class="text-center py-3 rounded-lg text-lg font-bold font-mono tracking-wide shadow-inner"></div>
+            <div id="gate-explanation" class="text-xs text-slate-400 mt-2 text-center italic"></div>
+            
+            <div id="gate-events" class="mt-4 pt-3 border-t border-slate-800 text-[11px] font-mono space-y-1.5"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+async function loadTechniques() {
+    const sets = await (await fetch('/api/sets')).json();
+    updateTechniqueList(sets);
+    document.getElementById('gate-set').addEventListener('change', () => updateTechniqueList(sets));
+}
+
+function updateTechniqueList(sets) {
+    const setNum = document.getElementById('gate-set').value;
+    const select = document.getElementById('gate-technique');
+    select.innerHTML = '';
+    (sets[setNum] || []).forEach(t => {
+        const opt = document.createElement('option');
+        opt.value = t; opt.textContent = t;
+        select.appendChild(opt);
+    });
+}
+
+function loadSample(type) {
+    document.getElementById('gate-set').value = '3';
+    document.getElementById('gate-set').dispatchEvent(new Event('change'));
+    setTimeout(() => {
+        document.getElementById('gate-technique').value = 'T1615';
+        document.getElementById('rule-input').value = `title: Gpresult Used To Inspect Group Policy Settings
+status: test
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\\gpresult.exe'
+        CommandLine|contains|windash|all:
+            - '/z'
+            - '/user'
+    condition: selection
+level: low
+tags:
+    - attack.discovery
+    - attack.t1615`;
+    }, 100);
+}
+
+const explanations = {
+    'PASS': 'The rule has valid syntax, catches both the observed attack line and its hidden variant, and stays quiet on harmless commands.',
+    'TOO_NARROW': 'The rule catches the attack line it was written from but misses a changed version of the same attack. A check with only one attack log would have approved it.',
+    'SYNTAX_ERROR': 'The rule contains invalid syntax and could not be converted to SQL by pySigma.',
+    'MISSED_SHOWN': 'The rule fails to catch even the observed attack command line it was written from.',
+    'NOISY': 'The rule fires on harmless everyday commands, causing false alarms.'
+};
+
+async function runGate() {
+    const ruleYaml = document.getElementById('rule-input').value;
+    const setId = parseInt(document.getElementById('gate-set').value);
+    const technique = document.getElementById('gate-technique').value;
+    if (!ruleYaml.trim()) { alert('Paste a Sigma rule first'); return; }
+
+    const res = await fetch('/api/gate', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({rule_yaml: ruleYaml, set: setId, technique: technique})
+    });
+    const data = await res.json();
+    if (data.error) { alert('Error: ' + data.error); return; }
+
+    const resultDiv = document.getElementById('gate-result');
+    resultDiv.classList.remove('hidden');
+    document.getElementById('gate-timestamp').textContent = new Date().toLocaleTimeString();
+
+    const checks = [
+        {label: 'Syntax Valid (pySigma SQLite parse)', ok: data.syntax_ok, detail: data.error && !data.syntax_ok ? data.error : null},
+        {label: 'Fires on Malicious Attack Line', ok: data.fires_shown},
+        {label: 'Fires on Hidden Attack Variant', ok: data.fires_variant},
+        {label: 'Quiet on Harmless Near-Miss Line', ok: !data.fires_benign},
+    ];
+    document.getElementById('gate-checklist').innerHTML = checks.map(c =>
+        `<div class="flex items-start gap-2.5 text-xs font-mono">
+            <span class="${c.ok ? 'text-green-400' : 'text-red-400'} font-bold">${c.ok ? '✓' : '✗'}</span>
+            <div class="flex-1">
+                <span class="${c.ok ? 'text-slate-200' : 'text-slate-400'}">${c.label}</span>
+                ${c.detail ? `<div class="text-[10px] text-red-400 mt-0.5">${c.detail}</div>` : ''}
+            </div>
+        </div>`
+    ).join('');
+
+    const verdictColors = {
+        'PASS': 'verdict-pass', 'TOO_NARROW': 'verdict-narrow',
+        'NOISY': 'verdict-noisy', 'MISSED_SHOWN': 'verdict-missed',
+        'SYNTAX_ERROR': 'verdict-syntax'
+    };
+    const vDiv = document.getElementById('gate-verdict');
+    vDiv.className = `text-center py-3 rounded-lg text-lg font-bold font-mono tracking-wide ${verdictColors[data.verdict] || 'verdict-not-tested'}`;
+    vDiv.textContent = data.verdict;
+
+    document.getElementById('gate-explanation').textContent = explanations[data.verdict] || '';
+
+    if (data.events) {
+        document.getElementById('gate-events').innerHTML = `
+            <div class="text-slate-400 font-bold mb-1">Evaluated against synthetic logs:</div>
+            <div class="truncate"><span class="text-red-400">Attack:</span> <span class="text-slate-300">${data.events.shown || 'N/A'}</span></div>
+            <div class="truncate"><span class="text-orange-400">Variant:</span> <span class="text-slate-300">${data.events.variant || 'N/A'}</span></div>
+            <div class="truncate"><span class="text-green-400">Benign:</span> <span class="text-slate-300">${data.events.benign || 'N/A'}</span></div>
+        `;
+    }
+}
+
+document.addEventListener('DOMContentLoaded', loadTechniques);
+</script>
+{% endblock %}
+

@@ -231,3 +231,15 @@ Antigravity started on 2026-11-06
   - README.md (updated: added gate demo commands and updated folder map)
   - PROGRESS.md (updated)
 - WARN lines: none
+
+### 2026-11-16: Task 11 - Web dashboard prototype (Flask + D3.js)
+- Status: DONE
+- Files created or changed:
+  - dashboard/__init__.py, dashboard/app.py (created: Flask application with HTML routes and REST JSON APIs)
+  - dashboard/data_loader.py (created: data extraction and aggregation across results, coverage, and generator)
+  - dashboard/templates/ (created: base.html, overview.html, coverage_map.html, technique.html, runs.html, run_detail.html, gate_tester.html, pipeline.html)
+  - dashboard/static/ (created: js/radar.js, js/barchart.js, css/custom.css)
+  - tests/test_dashboard.py (created: automated unit tests covering data loader, web views, and REST endpoints)
+  - README.md (updated with web dashboard execution instructions and folder map)
+  - PROGRESS.md (updated)
+- WARN lines: none

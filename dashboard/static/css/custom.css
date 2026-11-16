@@ -1,0 +1,27 @@
+/* Minimal overrides beyond Tailwind */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #0b1120;
+}
+::-webkit-scrollbar-thumb {
+    background: #334155;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #475569;
+}
+
+textarea:focus, select:focus, input:focus {
+    outline: none;
+    border-color: #3b82f6 !important;
+    box-shadow: 0 0 0 1px #3b82f6 !important;
+}
+
+pre {
+    scrollbar-width: thin;
+    scrollbar-color: #334155 #0b1120;
+}
+

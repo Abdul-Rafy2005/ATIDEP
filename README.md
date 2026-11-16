@@ -53,6 +53,28 @@ Demo output artifacts (JSON summary and YAML rule) are saved to `demo/output/`.
 
 ---
 
+## Running the Web Dashboard
+
+ATIDEP includes an interactive web dashboard (Module 4 & 7 prototype) built with Flask, Tailwind CSS, and D3.js:
+
+```powershell
+# Start the local dashboard server
+python dashboard/app.py
+
+# Open in browser:
+# http://127.0.0.1:5000
+```
+
+Features included in the dashboard:
+- **Overview:** Metric cards, D3.js ATT&CK tactic radar chart, and Set 3 configuration pass rate comparison.
+- **Coverage Map:** Interactive color-coded matrix across 44 techniques grouped by tactic.
+- **Technique Detail:** Drill-down into test events, historical model runs, and generated rule YAMLs.
+- **Experiment Runs:** Table of all recorded empirical runs with strict/single pass metrics.
+- **Gate Tester:** Live interactive validator for testing arbitrary Sigma rules against synthetic logs.
+- **Pipeline Demo:** Web interface for running the end-to-end extraction, drafting, and validation pipeline.
+
+---
+
 ## Running the Tests
 
 All tests run locally using standard library unit testing and mocked models without requiring live GPU inference.
@@ -89,6 +111,11 @@ C:\ATIDEP/
 │   ├── coverage.html         # Interactive visual HTML coverage dashboard
 │   ├── COVERAGE.md           # Detailed coverage summary and frozen-only metrics
 │   └── README.md             # Coverage template documentation
+├── dashboard/                # Web dashboard application (Flask + D3.js)
+│   ├── app.py                # Server routes and REST API endpoints
+│   ├── data_loader.py        # Aggregator for runs, coverage, and techniques
+│   ├── templates/            # HTML views (overview, coverage map, gate, etc.)
+│   └── static/               # D3.js visualizers (radar chart, bar chart) and styles
 ├── data/                     # Reference SigmaHQ rules and synthetic logs
 │   ├── sigmahq_rules/        # Reference rules for Set 1
 │   ├── sigmahq_rules_set2/   # Reference rules for Set 2

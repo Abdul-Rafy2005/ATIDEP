@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}ATIDEP{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link rel="stylesheet" href="/static/css/custom.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        slate: {
+                            850: '#172033',
+                            950: '#0b1120',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+        .verdict-pass { background-color: #166534; color: #bbf7d0; }
+        .verdict-narrow { background-color: #92400e; color: #fef3c7; }
+        .verdict-missed { background-color: #991b1b; color: #fecaca; }
+        .verdict-syntax { background-color: #374151; color: #d1d5db; }
+        .verdict-noisy { background-color: #7c2d12; color: #fed7aa; }
+        .verdict-not-tested { background-color: #1e293b; color: #64748b; }
+        .nav-link { transition: all 0.15s ease; }
+        .nav-link:hover { background-color: rgba(59, 130, 246, 0.15); }
+        .nav-link.active { background-color: rgba(59, 130, 246, 0.2); border-left: 3px solid #3b82f6; }
+        .card { background-color: #1e293b; border: 1px solid #334155; border-radius: 0.75rem; }
+        .metric-card { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); }
+        pre { tab-size: 4; }
+        .radar-tooltip {
+            position: absolute; background: #1e293b; border: 1px solid #475569;
+            border-radius: 6px; padding: 8px 12px; color: #e2e8f0; font-size: 13px;
+            pointer-events: none; opacity: 0; transition: opacity 0.15s; z-index: 100;
+        }
+    </style>
+    {% block head %}{% endblock %}
+</head>
+<body class="bg-slate-950 text-slate-200 min-h-screen">
+    <!-- Top bar -->
+    <header class="bg-slate-900 border-b border-slate-800 px-6 py-3 flex items-center justify-between sticky top-0 z-50">
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center font-bold text-white text-sm">A</div>
+            <h1 class="text-lg font-semibold text-white tracking-tight">ATIDEP</h1>
+            <span class="text-xs text-slate-500 ml-2 hidden sm:inline">Automated Threat-Informed Detection Engineering Platform</span>
+        </div>
+        <div class="flex items-center gap-3 text-xs text-slate-400">
+            <span class="px-2 py-0.5 rounded bg-slate-800 border border-slate-700">Module 4 & 7 Preview</span>
+            <span class="text-slate-500">FYP-1</span>
+        </div>
+    </header>
+
+    <div class="flex">
+        <!-- Sidebar -->
+        <nav class="w-56 bg-slate-900 border-r border-slate-800 min-h-screen sticky top-12 pt-4 flex-shrink-0">
+            <div class="px-3 mb-4">
+                <span class="text-xs font-medium text-slate-500 uppercase tracking-wider px-3">Navigation</span>
+            </div>
+            <a href="/" class="nav-link block px-6 py-2.5 text-sm text-slate-300 {% if request.path == '/' %}active{% endif %}">
+                <span class="mr-2">&#9632;</span> Overview
+            </a>
+            <a href="/coverage" class="nav-link block px-6 py-2.5 text-sm text-slate-300 {% if request.path == '/coverage' %}active{% endif %}">
+                <span class="mr-2">&#9632;</span> Coverage Map
+            </a>
+            <a href="/runs" class="nav-link block px-6 py-2.5 text-sm text-slate-300 {% if '/run' in request.path %}active{% endif %}">
+                <span class="mr-2">&#9632;</span> Experiment Runs
+            </a>
+            <a href="/gate" class="nav-link block px-6 py-2.5 text-sm text-slate-300 {% if request.path == '/gate' %}active{% endif %}">
+                <span class="mr-2">&#9632;</span> Gate Tester
+            </a>
+            <a href="/pipeline" class="nav-link block px-6 py-2.5 text-sm text-slate-300 {% if request.path == '/pipeline' %}active{% endif %}">
+                <span class="mr-2">&#9632;</span> Pipeline Demo
+            </a>
+        </nav>
+
+        <!-- Main content -->
+        <main class="flex-1 p-6 max-w-7xl">
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>
+

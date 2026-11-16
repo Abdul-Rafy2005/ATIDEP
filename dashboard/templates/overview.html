@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block title %}ATIDEP - Overview{% endblock %}
+{% block content %}
+<div class="mb-6">
+    <h2 class="text-2xl font-bold text-white mb-1">Dashboard Overview</h2>
+    <p class="text-sm text-slate-400">Detection coverage and experiment results across validation test sets</p>
+</div>
+
+<!-- Metric cards -->
+<div id="metrics" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+    <div class="metric-card card p-5">
+        <div class="text-xs text-slate-400 uppercase tracking-wider mb-1">Techniques Tracked</div>
+        <div id="m-total" class="text-3xl font-bold text-white">--</div>
+        <div class="text-xs text-slate-500 mt-1">across 3 test sets</div>
+    </div>
+    <div class="metric-card card p-5">
+        <div class="text-xs text-slate-400 uppercase tracking-wider mb-1">Covered Techniques</div>
+        <div id="m-covered" class="text-3xl font-bold text-green-400">--</div>
+        <div class="text-xs text-slate-500 mt-1">strict gate pass (all repeats)</div>
+    </div>
+    <div class="metric-card card p-5">
+        <div class="text-xs text-slate-400 uppercase tracking-wider mb-1">Coverage Rate</div>
+        <div id="m-pct" class="text-3xl font-bold text-blue-400">--%</div>
+        <div class="text-xs text-slate-500 mt-1">of evaluated techniques</div>
+    </div>
+    <div class="metric-card card p-5">
+        <div class="text-xs text-slate-400 uppercase tracking-wider mb-1">Rules Evaluated</div>
+        <div id="m-rules" class="text-3xl font-bold text-slate-300">--</div>
+        <div class="text-xs text-slate-500 mt-1">total across all runs</div>
+    </div>
+</div>
+
+<!-- Charts row -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+    <!-- Radar chart -->
+    <div class="card p-5">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-sm font-semibold text-white">Coverage by ATT&CK Tactic</h3>
+            <span class="text-xs text-slate-500">Module 4 preview</span>
+        </div>
+        <div id="radar-chart" class="flex justify-center relative"></div>
+        <div class="radar-tooltip" id="radar-tooltip"></div>
+    </div>
+    <!-- Bar chart -->
+    <div class="card p-5">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-sm font-semibold text-white">Strict Pass Rate by Configuration (Set 3)</h3>
+            <span class="text-xs text-slate-500">Final test out of 60</span>
+        </div>
+        <div id="bar-chart" class="flex justify-center"></div>
+    </div>
+</div>
+
+<!-- Latest run card -->
+<div class="card p-5 mb-8" id="latest-run">
+    <h3 class="text-sm font-semibold text-white mb-3">Latest Experiment Run</h3>
+    <div id="latest-run-content" class="text-sm text-slate-400">Loading...</div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/radar.js"></script>
+<script src="/static/js/barchart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+    // Load overview
+    const ov = await (await fetch('/api/overview')).json();
+    document.getElementById('m-total').textContent = ov.total_techniques;
+    document.getElementById('m-covered').textContent = ov.covered;
+    document.getElementById('m-pct').textContent = ov.coverage_pct + '%';
+    document.getElementById('m-rules').textContent = ov.total_rules_tested;
+
+    if (ov.latest_run) {
+        const lr = ov.latest_run;
+        document.getElementById('latest-run-content').innerHTML =
+            `<div class="flex flex-wrap items-center gap-6">
+                <div><span class="text-slate-500">Set:</span> <span class="text-white font-medium">${lr.set}</span></div>
+                <div><span class="text-slate-500">Prompt:</span> <span class="text-white font-medium">${lr.prompt}</span></div>
+                <div><span class="text-slate-500">Model:</span> <span class="text-white font-medium">${lr.models.join(', ')}</span></div>
+                <div><span class="text-slate-500">Strict pass:</span> <span class="text-green-400 font-medium">${lr.strict_pass}/${lr.total}</span></div>
+                <div><span class="px-2 py-0.5 rounded text-xs font-medium ${lr.label === 'primary' ? 'bg-blue-900 text-blue-300' : lr.label === 'exploratory' ? 'bg-purple-900 text-purple-300' : 'bg-slate-700 text-slate-300'}">${lr.label}</span></div>
+                <a href="/run/${lr.folder}" class="text-blue-400 hover:text-blue-300 text-xs ml-auto">View full run &rarr;</a>
+            </div>`;
+    }
+
+    // Load radar chart
+    const tactics = await (await fetch('/api/tactics')).json();
+    drawRadar('#radar-chart', tactics);
+
+    // Load bar chart
+    const comparison = await (await fetch('/api/comparison')).json();
+    drawBarChart('#bar-chart', comparison);
+});
+</script>
+{% endblock %}
+
