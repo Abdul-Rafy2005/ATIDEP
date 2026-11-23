@@ -228,7 +228,7 @@ export const RunsView = ({ onNavigateTab, searchFilter = '' }: RunsViewProps) =>
                             }}
                             className="text-blue-700 hover:text-blue-900 font-semibold cursor-pointer text-[11px]"
                           >
-                            Inspect &rarr;
+                            Inspect
                           </button>
                         </td>
                       </tr>

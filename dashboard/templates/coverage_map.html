@@ -101,7 +101,7 @@
                 <span class="flex items-center gap-1.5 text-slate-700">
                     <span>ATT&CK Enterprise Matrix Stages (14 Tactics)</span>
                 </span>
-                <span class="text-slate-500 font-sans font-medium text-[11px]">Click any technique tile to inspect live details on the right &rarr;</span>
+                <span class="text-slate-500 font-sans font-medium text-[11px]">Click any technique tile to inspect live details on the right</span>
             </div>
             
             <div class="flex gap-3 overflow-x-auto pb-3 max-h-[520px]" id="matrix-board">
@@ -253,7 +253,7 @@ function renderMatrix() {
                     <div class="text-[10px] font-semibold text-slate-800 truncate mt-0.5" title="${t.title}">${t.title || 'Untitled'}</div>
                     <div class="text-[9px] font-mono mt-1 text-slate-500 flex items-center justify-between">
                         <span class="px-1.5 py-0.5 rounded text-[9px] font-sans font-bold border ${verdictClass[t.best_verdict]}">${t.best_verdict}</span>
-                        <span class="text-blue-700 font-sans font-semibold">Details &rarr;</span>
+                        <span class="text-blue-700 font-sans font-semibold">Details</span>
                     </div>
                 `;
                 cardContainer.appendChild(card);
@@ -276,7 +276,7 @@ function renderMatrix() {
             <td class="py-2.5 px-3 text-slate-500">Sysmon Event 1</td>
             <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded text-[10px] font-sans font-bold border ${verdictClass[t.best_verdict]}">${t.best_verdict}</span></td>
             <td class="py-2.5 px-3 text-right font-sans">
-                <button class="text-blue-700 hover:text-blue-900 font-semibold">Inspect &rarr;</button>
+                <button class="text-blue-700 hover:text-blue-900 font-semibold">Inspect</button>
             </td>
         `;
         tbody.appendChild(tr);
@@ -363,7 +363,7 @@ async function selectTechnique(techniqueId) {
 
             <div class="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between gap-2">
                 <a href="/gate" class="flex-1 text-center px-3 py-2 rounded bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold shadow-xs">
-                    Test in Gate Validator &rarr;
+                    Test in Gate Validator
                 </a>
                 <a href="/technique/${t.id}" class="px-3 py-2 rounded bg-white hover:bg-slate-50 border border-slate-300 text-slate-700 text-xs font-semibold">
                     Full Profile

@@ -234,7 +234,7 @@ tags:
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
             <div className="text-[10px] text-slate-400 text-center font-mono">
-              Ollama Extractor &rarr; Qwen 14b (v3b) Generator &rarr; pySigma Gate
+              Ollama Extractor | Qwen 14b (v3b) Generator | pySigma Gate
             </div>
           </div>
         </div>

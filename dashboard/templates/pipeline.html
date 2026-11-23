@@ -96,10 +96,10 @@
         <div class="pt-4 border-t border-slate-100">
             <button onclick="runPipeline()" id="pipeline-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded-md transition-colors text-xs shadow-xs flex items-center justify-center gap-2">
                 <span>Execute Detection Pipeline</span>
-                <span>&rarr;</span>
+                
             </button>
             <div class="text-[10px] text-slate-400 text-center mt-2 font-mono">
-                Runs: Ollama TTP extractor &rarr; Qwen 14b (v3b) Sigma Generator &rarr; pySigma Gate
+                Runs: Ollama TTP extractor | Qwen 14b (v3b) Sigma Generator | pySigma Gate
             </div>
         </div>
     </div>
@@ -241,7 +241,7 @@ async function runPipeline() {
     } finally {
         btn.disabled = false;
         btn.classList.remove('opacity-70');
-        btn.innerHTML = '<span>Execute Detection Pipeline</span><span>&rarr;</span>';
+        btn.innerHTML = '<span>Execute Detection Pipeline</span>';
     }
 }
 

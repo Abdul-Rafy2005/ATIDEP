@@ -123,7 +123,7 @@ export const OverviewView = ({ onNavigateTab }: OverviewViewProps) => {
               onClick={() => onNavigateTab('coverage')}
               className="px-3.5 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 text-xs font-semibold transition-all cursor-pointer"
             >
-              Inspect ATT&CK Matrix &rarr;
+              Inspect ATT&CK Matrix
             </button>
           </div>
         </div>
@@ -372,7 +372,7 @@ export const OverviewView = ({ onNavigateTab }: OverviewViewProps) => {
               onClick={() => onNavigateTab('coverage')}
               className="text-blue-700 hover:text-blue-900 font-semibold cursor-pointer"
             >
-              Open ATT&CK Matrix &rarr;
+              Open ATT&CK Matrix
             </button>
           </div>
         </div>

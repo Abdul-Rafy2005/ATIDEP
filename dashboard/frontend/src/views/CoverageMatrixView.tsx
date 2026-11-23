@@ -224,7 +224,7 @@ tags:
                 <Filter className="w-3.5 h-3.5 text-blue-600" />
                 <span>ATT&CK Enterprise Matrix Stages ({tacticOrder.length} Tactics)</span>
               </span>
-              <span className="text-slate-500 font-sans font-medium text-[11px]">Select any tile to inspect live telemetry on the right &rarr;</span>
+              <span className="text-slate-500 font-sans font-medium text-[11px]">Select any tile to inspect live telemetry</span>
             </div>
 
             {/* Horizontal Scrollable Column Board with Vertical Scroll inside each column */}
@@ -273,7 +273,7 @@ tags:
                                 <span className={`px-1.5 py-0.5 rounded text-[9px] font-sans font-bold border ${getVerdictBadgeStyle(t.best_verdict)}`}>
                                   {t.best_verdict}
                                 </span>
-                                <span className="text-blue-700 font-sans font-semibold">Inspect &rarr;</span>
+                                <span className="text-blue-700 font-sans font-semibold">Inspect</span>
                               </div>
                             </div>
                           );
@@ -450,7 +450,7 @@ tags:
                         }}
                         className="text-blue-700 hover:text-blue-900 font-semibold cursor-pointer"
                       >
-                        Inspect &rarr;
+                        Inspect
                       </button>
                     </td>
                   </tr>
