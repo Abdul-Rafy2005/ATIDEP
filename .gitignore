@@ -1,0 +1,13 @@
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+
+# Agent skills cache
+.agents/
+
+# Node / Vite
+dashboard/frontend/node_modules/
+dashboard/frontend/dist/
+.DS_Store
+Thumbs.db

@@ -243,3 +243,16 @@ Antigravity started on 2026-11-06
   - README.md (updated with web dashboard execution instructions and folder map)
   - PROGRESS.md (updated)
 - WARN lines: none
+
+### 2026-11-20: Task 11b - Modern React + Vite Dashboard overhaul and color synchronization
+- Status: DONE
+- Files created or changed:
+  - dashboard/frontend/ (created: React 19, Vite, Tailwind CSS v4, shadcn/ui frontend workbench)
+  - dashboard/frontend/src/views/ (CoverageMatrixView.tsx, OverviewView.tsx, RunsView.tsx, GateValidatorView.tsx, PipelineView.tsx)
+  - dashboard/frontend/src/data/ (all_runs.json, all_techniques.json, fallback.ts)
+  - dashboard/templates/ (updated: coverage_map.html, gate_tester.html, overview.html, pipeline.html, runs.html, technique.html, base.html)
+  - dashboard/app.py (updated with SPA routing to frontend dist)
+  - .gitignore (created: root ignore for node_modules, dist, .agents, and pycache)
+  - PROGRESS.md (updated)
+- WARN lines: none
+

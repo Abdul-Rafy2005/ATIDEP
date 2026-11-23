@@ -2,7 +2,7 @@
 {% block title %}ATIDEP - Technique {{ technique_id }}{% endblock %}
 {% block content %}
 <div id="tech-content">
-    <div class="card p-8 text-center text-slate-400">Loading technique {{ technique_id }}...</div>
+    <div class="card p-12 text-center text-slate-400 text-xs">Loading technique {{ technique_id }}...</div>
 </div>
 {% endblock %}
 
@@ -18,30 +18,34 @@ const verdictClass = {
 async function loadTechnique() {
     const res = await fetch(`/api/technique/${TECHNIQUE_ID}`);
     if (!res.ok) {
-        document.getElementById('tech-content').innerHTML = '<div class="card p-8 text-center text-red-400">Technique not found</div>';
+        document.getElementById('tech-content').innerHTML = '<div class="card p-8 text-center text-red-600 text-xs font-mono">Technique not found</div>';
         return;
     }
     const tech = await res.json();
     const container = document.getElementById('tech-content');
 
     let html = `
-        <div class="mb-6">
-            <a href="/coverage" class="text-xs text-blue-400 hover:text-blue-300 font-medium">&larr; Back to Coverage Map</a>
-            <div class="flex flex-wrap items-center justify-between gap-4 mt-2">
-                <div>
-                    <h2 class="text-2xl font-bold text-white font-mono">${tech.id}</h2>
-                    <p class="text-base text-slate-300">${tech.title || 'Untitled Technique'}</p>
-                </div>
-                <div class="flex items-center gap-3">
-                    <span class="px-3 py-1 rounded-full text-xs font-semibold ${verdictClass[tech.best_verdict]}">
+        <div class="mb-5 flex flex-wrap items-center justify-between gap-4">
+            <div>
+                <a href="/coverage" class="text-xs text-blue-600 hover:text-blue-800 font-semibold">&larr; Back to Coverage Matrix</a>
+                <div class="flex items-baseline gap-3 mt-1">
+                    <h1 class="text-2xl font-extrabold text-slate-900 font-mono">${tech.id}</h1>
+                    <span class="px-2.5 py-1 rounded text-xs font-bold uppercase border ${verdictClass[tech.best_verdict]}">
                         Best Verdict: ${tech.best_verdict}
                     </span>
                 </div>
+                <p class="text-sm font-semibold text-slate-700 mt-0.5">${tech.title || 'Untitled Technique'}</p>
+                <div class="flex flex-wrap gap-4 text-xs text-slate-500 font-mono mt-2">
+                    <div><span class="text-slate-400 font-sans">Tactics:</span> <strong class="text-slate-700">${tech.tactics.join(', ')}</strong></div>
+                    <div><span class="text-slate-400 font-sans">Sets:</span> <strong class="text-slate-700">${tech.sets.map(s => 'Set ' + s).join(', ')}</strong></div>
+                    <div><span class="text-slate-400 font-sans">Ground Truth:</span> <strong class="text-slate-700">${tech.ref_status || 'N/A'}</strong></div>
+                </div>
             </div>
-            <div class="flex flex-wrap gap-4 text-xs text-slate-400 mt-3">
-                <div><span class="text-slate-500">Tactics:</span> <span class="text-slate-300">${tech.tactics.join(', ')}</span></div>
-                <div><span class="text-slate-500">Test Sets:</span> <span class="text-slate-300">${tech.sets.map(s => 'Set ' + s).join(', ')}</span></div>
-                <div><span class="text-slate-500">Ref Status:</span> <span class="text-slate-300 font-mono">${tech.ref_status || 'N/A'}</span></div>
+
+            <div class="flex items-center gap-2">
+                <a href="/gate" class="px-3 py-1.5 rounded-md bg-blue-600 text-white text-xs font-semibold hover:bg-blue-700 shadow-xs">
+                    Test in Gate Validator &rarr;
+                </a>
             </div>
         </div>
     `;
@@ -51,22 +55,22 @@ async function loadTechnique() {
         for (const [setNum, ev] of Object.entries(tech.events)) {
             html += `
                 <div class="card p-5 mb-5">
-                    <div class="flex items-center justify-between mb-3 border-b border-slate-800 pb-2">
-                        <h3 class="text-sm font-semibold text-white">Validation Log Events (Set ${setNum})</h3>
-                        <span class="text-xs text-slate-500">Sysmon Event 1 process_creation</span>
+                    <div class="flex items-center justify-between mb-3 border-b border-slate-100 pb-2">
+                        <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Ground Truth Test Telemetry (Set ${setNum})</h3>
+                        <span class="text-[10px] font-mono text-slate-400">Sysmon Event 1 process_creation</span>
                     </div>
-                    <div class="space-y-3 text-xs font-mono">
-                        <div class="bg-slate-900/80 p-3 rounded border border-slate-800">
-                            <div class="text-red-400 font-semibold mb-1">&#9656; Malicious Shown Attack Line:</div>
-                            <div class="text-slate-300 break-all select-all">${ev.shown || 'N/A'}</div>
+                    <div class="space-y-2.5 text-xs font-mono">
+                        <div class="bg-slate-50 p-3 rounded border border-slate-200">
+                            <div class="text-[10px] text-red-600 font-bold uppercase mb-1">Shown Malicious Attack Command:</div>
+                            <div class="text-slate-800 break-all select-all font-semibold">${ev.shown || 'N/A'}</div>
                         </div>
-                        <div class="bg-slate-900/80 p-3 rounded border border-slate-800">
-                            <div class="text-orange-400 font-semibold mb-1">&#9656; Hidden Attack Variant Line:</div>
-                            <div class="text-slate-300 break-all select-all">${ev.variant || 'N/A'}</div>
+                        <div class="bg-slate-50 p-3 rounded border border-slate-200">
+                            <div class="text-[10px] text-amber-600 font-bold uppercase mb-1">Hidden Attack Variant Command:</div>
+                            <div class="text-slate-800 break-all select-all">${ev.variant || 'N/A'}</div>
                         </div>
-                        <div class="bg-slate-900/80 p-3 rounded border border-slate-800">
-                            <div class="text-green-400 font-semibold mb-1">&#9656; Harmless Near-Miss Line:</div>
-                            <div class="text-slate-300 break-all select-all">${ev.benign || 'N/A'}</div>
+                        <div class="bg-slate-50 p-3 rounded border border-slate-200">
+                            <div class="text-[10px] text-emerald-600 font-bold uppercase mb-1">Harmless Near-Miss Baseline Command:</div>
+                            <div class="text-slate-800 break-all select-all">${ev.benign || 'N/A'}</div>
                         </div>
                     </div>
                 </div>
@@ -85,77 +89,84 @@ async function loadTechnique() {
         });
 
         html += `
-            <div class="card p-5 mb-5">
-                <div class="flex items-center justify-between mb-3 border-b border-slate-800 pb-2">
-                    <h3 class="text-sm font-semibold text-white">Rule Generation Evaluations (${configs.length} runs recorded)</h3>
-                    <span class="text-xs text-slate-500">Click "View Rule" to inspect generated YAML</span>
+            <div class="card overflow-hidden mb-5">
+                <div class="flex items-center justify-between p-3.5 border-b border-slate-100 bg-slate-50/50">
+                    <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Empirical Rule Evaluations (${configs.length} runs recorded)</h3>
+                    <span class="text-[11px] text-slate-400 font-mono">Click "View Rule" to inspect generated YAML</span>
                 </div>
                 <div class="overflow-x-auto">
-                    <table class="w-full text-xs">
+                    <table class="w-full text-xs font-mono text-left">
                         <thead>
-                            <tr class="text-slate-400 border-b border-slate-700 bg-slate-900/50">
-                                <th class="text-left py-2.5 px-3">Model</th>
-                                <th class="text-left py-2.5 px-3">Prompt</th>
-                                <th class="text-left py-2.5 px-3">Set</th>
-                                <th class="text-left py-2.5 px-3">Repeat</th>
-                                <th class="text-left py-2.5 px-3">Strict Pass</th>
-                                <th class="text-left py-2.5 px-3">Verdict</th>
-                                <th class="text-left py-2.5 px-3">Action</th>
+                            <tr class="bg-slate-50 border-b border-slate-200 text-slate-600 font-semibold font-sans">
+                                <th class="py-2.5 px-3">Model</th>
+                                <th class="py-2.5 px-3">Prompt</th>
+                                <th class="py-2.5 px-3">Set</th>
+                                <th class="py-2.5 px-3">Repeat</th>
+                                <th class="py-2.5 px-3">Strict Pass</th>
+                                <th class="py-2.5 px-3">Verdict</th>
+                                <th class="py-2.5 px-3 text-right">Action</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="divide-y divide-slate-100">
         `;
         configs.forEach(c => {
             html += `
-                <tr class="border-b border-slate-800 hover:bg-slate-800/40 font-mono">
-                    <td class="py-2.5 px-3 text-slate-300">${c.model}</td>
-                    <td class="py-2.5 px-3 text-blue-300">${c.prompt}</td>
-                    <td class="py-2.5 px-3">${c.set}</td>
-                    <td class="py-2.5 px-3">${c.repeat}</td>
-                    <td class="py-2.5 px-3 font-semibold ${c.strict_pass ? 'text-green-400' : 'text-slate-600'}">${c.strict_pass ? 'YES' : 'NO'}</td>
-                    <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded text-[11px] font-medium ${verdictClass[c.verdict]}">${c.verdict}</span></td>
-                    <td class="py-2.5 px-3">
-                        <button onclick="loadRule('${c.run_folder}', '${c.model}', '${TECHNIQUE_ID}', ${c.repeat})" class="text-blue-400 hover:text-blue-300 font-sans hover:underline">
+                <tr class="hover:bg-slate-50/80">
+                    <td class="py-2.5 px-3 text-slate-700">${c.model}</td>
+                    <td class="py-2.5 px-3 text-blue-600 font-bold">${c.prompt}</td>
+                    <td class="py-2.5 px-3 font-semibold">Set ${c.set}</td>
+                    <td class="py-2.5 px-3 text-slate-600">${c.repeat}</td>
+                    <td class="py-2.5 px-3 font-bold ${c.strict_pass ? 'text-emerald-600' : 'text-slate-300'}">${c.strict_pass ? 'YES' : 'NO'}</td>
+                    <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded text-[10px] font-semibold border ${verdictClass[c.verdict]}">${c.verdict}</span></td>
+                    <td class="py-2.5 px-3 text-right font-sans">
+                        <button onclick="loadRule('${c.run_folder}', '${c.model}', '${TECHNIQUE_ID}', ${c.repeat})" class="text-blue-600 hover:text-blue-800 font-semibold hover:underline">
                             View Rule &rarr;
                         </button>
                     </td>
                 </tr>
             `;
         });
-        html += '</tbody></table></div></div>';
+        html += `
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        `;
     }
 
-    // Rule display area
+    // Modal or rule viewer container
     html += `
-        <div id="rule-display" class="card p-5 hidden">
-            <div class="flex items-center justify-between mb-3 border-b border-slate-800 pb-2">
-                <h3 class="text-sm font-semibold text-white">Generated Sigma Rule YAML</h3>
-                <span id="rule-meta" class="text-xs font-mono text-slate-500"></span>
+        <div id="rule-viewer-card" class="card p-5 hidden">
+            <div class="flex items-center justify-between mb-3 border-b border-slate-100 pb-2">
+                <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider" id="rule-viewer-title">Generated Rule YAML</h3>
+                <button onclick="document.getElementById('rule-viewer-card').classList.add('hidden')" class="text-slate-400 hover:text-slate-600 text-xs">Close &times;</button>
             </div>
-            <pre id="rule-text" class="text-xs text-slate-300 bg-slate-950 p-4 rounded-lg border border-slate-800 font-mono overflow-x-auto select-all leading-relaxed"></pre>
+            <pre id="rule-viewer-code" class="bg-slate-900 p-4 rounded-md text-slate-100 text-xs font-mono overflow-x-auto select-all leading-relaxed"></pre>
         </div>
     `;
 
     container.innerHTML = html;
 }
 
-async function loadRule(folder, model, technique, repeat) {
-    const res = await fetch(`/api/rule/${folder}/${encodeURIComponent(model)}/${technique}/${repeat}`);
-    const display = document.getElementById('rule-display');
-    const text = document.getElementById('rule-text');
-    const meta = document.getElementById('rule-meta');
-    if (res.ok) {
+async function loadRule(folder, model, tech, rep) {
+    const card = document.getElementById('rule-viewer-card');
+    const title = document.getElementById('rule-viewer-title');
+    const code = document.getElementById('rule-viewer-code');
+    card.classList.remove('hidden');
+    title.textContent = `Generated Rule: ${model} | ${tech} (Repeat ${rep}) [${folder}]`;
+    code.textContent = 'Loading rule YAML...';
+
+    try {
+        const res = await fetch(`/api/rule/${folder}/${model}/${tech}/${rep}`);
+        if (!res.ok) throw new Error('Not found');
         const data = await res.json();
-        text.textContent = data.rule_text;
-        meta.textContent = `${model} | ${technique} | r${repeat}`;
-        display.classList.remove('hidden');
-        display.scrollIntoView({ behavior: 'smooth' });
-    } else {
-        alert('Rule file not found for this execution.');
+        code.textContent = data.rule_text || 'Rule file empty.';
+        card.scrollIntoView({behavior: 'smooth'});
+    } catch (e) {
+        code.textContent = 'Failed to load rule file.';
     }
 }
 
 document.addEventListener('DOMContentLoaded', loadTechnique);
 </script>
 {% endblock %}
-

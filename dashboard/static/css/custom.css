@@ -1,11 +1,33 @@
-/* Minimal custom styles for clean enterprise UI */
+/* ATIDEP Enterprise SOC Dashboard Theme */
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+:root {
+    --bg-app: #f8fafc;
+    --sidebar-bg: #0f172a;
+    --sidebar-border: #1e293b;
+    --card-bg: #ffffff;
+    --card-border: #e2e8f0;
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: var(--bg-app);
+    color: #0f172a;
+    -webkit-font-smoothing: antialiased;
+}
+
+code, pre, .font-mono {
+    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+}
+
+/* Scrollbars */
 ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-    background: #f8fafc;
+    background: #f1f5f9;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -17,6 +39,60 @@
     background: #94a3b8;
 }
 
+/* Card Styling */
+.card {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.04), 0 1px 2px -1px rgba(15, 23, 42, 0.04);
+}
+
+.card-header {
+    border-bottom: 1px solid #f1f5f9;
+    padding: 0.875rem 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Enterprise Verdict Badges */
+.verdict-pass {
+    background-color: #ecfdf5;
+    color: #065f46;
+    border: 1px solid #a7f3d0;
+}
+
+.verdict-narrow {
+    background-color: #fffbeb;
+    color: #92400e;
+    border: 1px solid #fde68a;
+}
+
+.verdict-noisy {
+    background-color: #fff7ed;
+    color: #9a3412;
+    border: 1px solid #fed7aa;
+}
+
+.verdict-missed {
+    background-color: #fef2f2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+}
+
+.verdict-syntax {
+    background-color: #f8fafc;
+    color: #475569;
+    border: 1px solid #cbd5e1;
+}
+
+.verdict-not-tested {
+    background-color: #f8fafc;
+    color: #64748b;
+    border: 1px solid #e2e8f0;
+}
+
+/* Focus styles */
 textarea:focus,
 select:focus,
 input:focus {
@@ -25,7 +101,20 @@ input:focus {
     box-shadow: 0 0 0 1px #2563eb !important;
 }
 
-pre {
-    scrollbar-width: thin;
-    scrollbar-color: #475569 #0f172a;
+/* Table styles */
+.table-dense th {
+    padding: 0.625rem 0.875rem;
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #64748b;
+    background-color: #f8fafc;
+    border-bottom: 1px solid #e2e8f0;
+    font-weight: 700;
+}
+
+.table-dense td {
+    padding: 0.625rem 0.875rem;
+    font-size: 0.75rem;
+    border-bottom: 1px solid #f1f5f9;
 }

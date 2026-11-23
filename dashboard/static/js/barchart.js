@@ -19,8 +19,9 @@ function drawBarChart(selector, data) {
 
     const svg = d3.select(selector)
         .append('svg')
-        .attr('width', width)
-        .attr('height', height);
+        .attr('viewBox', `0 0 ${width} ${height}`)
+        .attr('preserveAspectRatio', 'xMidYMid meet')
+        .attr('class', 'w-full h-full max-h-[340px]');
 
     const g = svg.append('g')
         .attr('transform', `translate(${margin.left}, ${margin.top})`);

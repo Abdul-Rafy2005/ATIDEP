@@ -1,79 +1,465 @@
 {% extends "base.html" %}
-{% block title %}ATIDEP - Experiment Runs{% endblock %}
+{% block title %}ATIDEP - Empirical Evaluation Runs & Benchmarks{% endblock %}
 {% block content %}
+<!-- Page Header -->
 <div class="mb-4 flex flex-wrap items-center justify-between gap-4">
     <div>
-        <h2 class="text-lg font-bold text-slate-900 tracking-tight">Empirical Evaluation Runs</h2>
-        <p class="text-xs text-slate-500">Historical records of model evaluation batches verified against the synthetic log validation gate</p>
+        <h1 class="text-xl font-extrabold text-slate-900 tracking-tight">Empirical Evaluation Runs & Benchmarks</h1>
+        <p class="text-xs text-slate-500 mt-0.5">Historical records of model evaluation batches verified against the synthetic log validation gate</p>
     </div>
     
-    <div class="text-xs font-mono text-slate-500">
-        Results stored in <span class="font-bold text-slate-700">results/runs/</span>
+    <div class="text-xs font-mono text-slate-500 bg-white border border-slate-200 px-3 py-1.5 rounded-md shadow-xs">
+        Results directory: <strong class="text-slate-800">results/runs/</strong>
     </div>
 </div>
 
-<div class="card overflow-hidden">
-    <div class="p-3 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between text-xs">
-        <span class="font-bold text-slate-700 uppercase tracking-wider text-[11px]">Recorded Evaluation Batches</span>
-        <span class="text-slate-400 font-mono">14 Completed Runs</span>
+<!-- Top Summary Cards (Full-width 4-col ribbon) -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-5">
+    <div class="card p-3.5 flex items-center justify-between">
+        <div>
+            <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Evaluation Batches</div>
+            <div class="text-2xl font-extrabold text-slate-900 font-mono mt-0.5" id="stat-total-runs">14 Runs</div>
+            <div class="text-[11px] text-slate-500 mt-0.5">Across Sets 1, 2, and 3</div>
+        </div>
+        <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-700 flex items-center justify-center font-bold text-xs">
+            14
+        </div>
     </div>
-    <div class="overflow-x-auto">
-        <table class="w-full text-xs text-left" id="runs-table">
-            <thead>
-                <tr class="bg-slate-50 border-b border-slate-200 text-slate-600 font-semibold font-mono">
-                    <th class="py-2.5 px-4">Run Folder</th>
-                    <th class="py-2.5 px-4">Date</th>
-                    <th class="py-2.5 px-4">Set</th>
-                    <th class="py-2.5 px-4">Prompt</th>
-                    <th class="py-2.5 px-4">Model(s)</th>
-                    <th class="py-2.5 px-4">Strict Pass</th>
-                    <th class="py-2.5 px-4">Single Pass</th>
-                    <th class="py-2.5 px-4">Syntax Errors</th>
-                    <th class="py-2.5 px-4">Role</th>
-                    <th class="py-2.5 px-4 text-right">Action</th>
-                </tr>
-            </thead>
-            <tbody id="runs-body" class="divide-y divide-slate-100 font-mono"></tbody>
-        </table>
+
+    <div class="card p-3.5 flex items-center justify-between">
+        <div>
+            <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Scored Sigma Rules</div>
+            <div class="text-2xl font-extrabold text-emerald-600 font-mono mt-0.5">804 Rules</div>
+            <div class="text-[11px] text-slate-500 mt-0.5">Empirically gate scored</div>
+        </div>
+        <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+        </div>
+    </div>
+
+    <div class="card p-3.5 flex items-center justify-between">
+        <div>
+            <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Primary Winner</div>
+            <div class="text-xl font-extrabold text-blue-700 font-mono mt-0.5 truncate">14b (v3b)</div>
+            <div class="text-[11px] text-slate-500 mt-0.5">57/60 Strict Pass (95.0%)</div>
+        </div>
+        <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-700 flex items-center justify-center">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+    </div>
+
+    <div class="card p-3.5 flex items-center justify-between">
+        <div>
+            <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Local Testbed</div>
+            <div class="text-xl font-extrabold text-slate-900 font-mono mt-0.5">RTX 4000 Ada</div>
+            <div class="text-[11px] text-slate-500 mt-0.5">100% Offline Local Ollama</div>
+        </div>
+        <div class="w-8 h-8 rounded-lg bg-purple-50 text-purple-700 flex items-center justify-center">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+        </div>
+    </div>
+</div>
+
+<!-- Main Split Workbench (Runs Table Left 8 Cols, Deep-Dive Inspector Right 4 Cols) -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-5 items-stretch min-h-[580px] mb-5">
+    <!-- Left: Runs Table (8 cols) -->
+    <div class="xl:col-span-8 card p-4 flex flex-col justify-between overflow-hidden">
+        <div>
+            <!-- Filter Toolbar -->
+            <div class="pb-3 mb-3 border-b border-slate-100 flex flex-wrap items-center justify-between gap-3">
+                <div class="flex flex-wrap items-center gap-3 text-xs">
+                    <div class="flex items-center gap-1.5">
+                        <span class="font-bold text-slate-500 text-[11px] uppercase tracking-wider">Role:</span>
+                        <select id="filter-role" class="bg-slate-50 border border-slate-300 rounded px-2.5 py-1 text-xs text-slate-800 font-semibold focus:border-blue-500">
+                            <option value="all">All Roles (14 batches)</option>
+                            <option value="primary">Primary (Frozen Winner)</option>
+                            <option value="baseline">Baseline (Comparison)</option>
+                            <option value="exploratory">Exploratory</option>
+                            <option value="development">Development</option>
+                        </select>
+                    </div>
+
+                    <div class="flex items-center gap-1.5">
+                        <span class="font-bold text-slate-500 text-[11px] uppercase tracking-wider">Search:</span>
+                        <input type="text" id="filter-runs" placeholder="Folder, prompt, or model..." class="bg-slate-50 border border-slate-300 rounded px-2.5 py-1 text-xs text-slate-800 focus:border-blue-500 w-52">
+                    </div>
+                </div>
+
+                <div class="text-[11px] font-mono text-slate-500">
+                    Showing <strong id="count-runs" class="text-slate-900">14</strong> batches
+                </div>
+            </div>
+
+            <!-- Table -->
+            <div class="overflow-x-auto w-full max-h-[500px] overflow-y-auto">
+                <table class="w-full text-xs text-left font-mono">
+                    <thead class="sticky top-0 bg-slate-50 z-10">
+                        <tr class="border-b border-slate-200 text-slate-600 font-semibold font-sans">
+                            <th class="py-2.5 px-3">Run Folder</th>
+                            <th class="py-2.5 px-2.5">Date</th>
+                            <th class="py-2.5 px-2.5">Set</th>
+                            <th class="py-2.5 px-2.5">Prompt</th>
+                            <th class="py-2.5 px-3">Model</th>
+                            <th class="py-2.5 px-3">Strict Pass</th>
+                            <th class="py-2.5 px-2.5">Single</th>
+                            <th class="py-2.5 px-2.5">Syntax</th>
+                            <th class="py-2.5 px-2.5">Role</th>
+                            <th class="py-2.5 px-3 text-right">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="runs-body" class="divide-y divide-slate-100"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="pt-2.5 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-mono">
+            <span>Storage: results/runs/</span>
+            <span>Gate Standard: Catch Shown + Catch Hidden Variant</span>
+        </div>
+    </div>
+
+    <!-- Right: Live Batch Inspector (4 cols) -->
+    <div class="xl:col-span-4 card p-5 flex flex-col justify-between space-y-4" id="batch-inspector">
+        <div class="space-y-4">
+            <div class="border-b border-slate-100 pb-3">
+                <div class="flex items-center justify-between">
+                    <span class="text-[10px] font-mono uppercase tracking-wider text-slate-400 font-bold">Batch Telemetry Inspector</span>
+                    <span id="inspect-role" class="text-[10px] font-bold px-2 py-0.5 rounded border uppercase bg-blue-50 text-blue-700 border-blue-200">
+                        PRIMARY
+                    </span>
+                </div>
+                <h2 id="inspect-folder" class="text-base font-extrabold text-slate-900 font-mono mt-1 break-all">20261111_1500_set3_v3b</h2>
+                <div id="inspect-date" class="text-xs text-slate-500 font-sans mt-0.5">Executed on 2026-11-11</div>
+            </div>
+
+            <!-- Parameters Grid -->
+            <div class="grid grid-cols-2 gap-2 text-xs">
+                <div class="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
+                    <div class="text-[10px] font-bold text-slate-400 uppercase">Model Architecture</div>
+                    <div id="inspect-model" class="font-semibold text-slate-800 mt-0.5 truncate">qwen2.5-coder:14b</div>
+                </div>
+                <div class="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
+                    <div class="text-[10px] font-bold text-slate-400 uppercase">Prompt Revision</div>
+                    <div id="inspect-prompt" class="font-bold text-blue-700 mt-0.5">Prompt v3b</div>
+                </div>
+                <div class="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
+                    <div class="text-[10px] font-bold text-slate-400 uppercase">Test Corpus</div>
+                    <div id="inspect-set" class="font-semibold text-slate-800 mt-0.5">Set 3 (Locked Test)</div>
+                </div>
+                <div class="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
+                    <div class="text-[10px] font-bold text-slate-400 uppercase">Inference Config</div>
+                    <div id="inspect-config" class="font-semibold text-slate-800 mt-0.5 font-mono">T=0.2 | Rep=3</div>
+                </div>
+            </div>
+
+            <!-- Progress Meters -->
+            <div class="space-y-3">
+                <div class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Gate Verification Progress</div>
+
+                <div class="space-y-1">
+                    <div class="flex justify-between text-xs font-semibold">
+                        <span class="text-slate-700">Strict Pass (Caught + Variant)</span>
+                        <span id="inspect-strict-text" class="font-mono text-emerald-700">57 / 60 (95.0%)</span>
+                    </div>
+                    <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+                        <div id="inspect-strict-bar" class="bg-emerald-500 h-2 rounded-full" style="width: 95%;"></div>
+                    </div>
+                </div>
+
+                <div class="space-y-1">
+                    <div class="flex justify-between text-xs font-semibold">
+                        <span class="text-slate-700">Single Pass (Shown Line)</span>
+                        <span id="inspect-single-text" class="font-mono text-blue-700">60 / 60 (100.0%)</span>
+                    </div>
+                    <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+                        <div id="inspect-single-bar" class="bg-blue-500 h-2 rounded-full" style="width: 100%;"></div>
+                    </div>
+                </div>
+
+                <div class="space-y-1">
+                    <div class="flex justify-between text-xs font-semibold">
+                        <span class="text-slate-700">Syntax Integrity</span>
+                        <span id="inspect-syntax-text" class="font-mono text-slate-700">60 / 60 (100.0%)</span>
+                    </div>
+                    <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+                        <div id="inspect-syntax-bar" class="bg-slate-700 h-2 rounded-full" style="width: 100%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Error Attribution -->
+            <div class="space-y-2">
+                <div class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Failure Mode Attribution</div>
+                <div class="grid grid-cols-2 gap-2 text-xs font-mono">
+                    <div class="p-2 rounded-lg bg-amber-50/70 border border-amber-200">
+                        <div class="text-[10px] text-amber-800 font-sans font-bold">Too Narrow</div>
+                        <div id="inspect-narrow" class="text-base font-extrabold text-amber-900 mt-0.5">3</div>
+                    </div>
+                    <div class="p-2 rounded-lg bg-red-50/70 border border-red-200">
+                        <div class="text-[10px] text-red-800 font-sans font-bold">Syntax Failures</div>
+                        <div id="inspect-syntax-err" class="text-base font-extrabold text-red-900 mt-0.5">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="pt-3 border-t border-slate-100 flex items-center gap-2">
+            <a href="/coverage" class="flex-1 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold shadow-xs flex items-center justify-center gap-1.5">
+                <span>ATT&CK Matrix View</span>
+            </a>
+            <a href="/gate" class="py-2 px-3 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold">
+                Gate Tester
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Lower Benchmark & Methodology Deck (Fills entire lower screen) -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+    <!-- Card 1: Set 3 Tournament -->
+    <div class="card p-4.5 flex flex-col justify-between space-y-3">
+        <div>
+            <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+                <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Set 3 Final Benchmark Tournament</h3>
+                <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                    20 Fresh Techniques
+                </span>
+            </div>
+            <p class="text-xs text-slate-500 mt-1">Evaluated across 3 repeats (60 trials each) with zero data contamination.</p>
+
+            <div class="space-y-2 mt-3 text-xs">
+                <div>
+                    <div class="flex justify-between text-[11px] font-semibold mb-0.5">
+                        <span class="text-slate-800 font-bold">qwen2.5-coder:14b (v3b) [Winner]</span>
+                        <span class="font-mono font-bold text-blue-700">57 / 60 (95.0%)</span>
+                    </div>
+                    <div class="w-full bg-slate-100 rounded-full h-2">
+                        <div class="bg-blue-600 h-2 rounded-full" style="width: 95%;"></div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="flex justify-between text-[11px] font-semibold mb-0.5">
+                        <span class="text-slate-700">qwen2.5-coder:7b (v3a) [Comparison]</span>
+                        <span class="font-mono font-bold text-indigo-700">54 / 60 (90.0%)</span>
+                    </div>
+                    <div class="w-full bg-slate-100 rounded-full h-2">
+                        <div class="bg-indigo-500 h-2 rounded-full" style="width: 90%;"></div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="flex justify-between text-[11px] font-semibold mb-0.5">
+                        <span class="text-slate-600">Prompt v1 Baseline (14b & 7b)</span>
+                        <span class="font-mono text-amber-700">83 / 120 (69.2%)</span>
+                    </div>
+                    <div class="w-full bg-slate-100 rounded-full h-2">
+                        <div class="bg-amber-400 h-2 rounded-full" style="width: 69.2%;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="pt-2 border-t border-slate-100 text-[11px] text-slate-500">
+            Winner Decision: 14b under v3b achieved highest generalization with zero syntax failures.
+        </div>
+    </div>
+
+    <!-- Card 2: Prompt Trajectory -->
+    <div class="card p-4.5 flex flex-col justify-between space-y-3">
+        <div>
+            <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+                <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Prompt Evolution Trajectory</h3>
+                <span class="text-[10px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
+                    Set 1 Strict Pass
+                </span>
+            </div>
+            <p class="text-xs text-slate-500 mt-1">Iterative refinement of SigmaHQ syntax constraints and generalization cues.</p>
+
+            <div class="space-y-2 mt-3 text-xs">
+                <div class="p-2 rounded bg-slate-50 border border-slate-200 flex items-center justify-between">
+                    <div>
+                        <div class="font-bold text-slate-800">Prompt v1 (Initial Baseline)</div>
+                        <div class="text-[10px] text-slate-500">Copy-the-line overfit vulnerability</div>
+                    </div>
+                    <span class="font-mono font-bold text-amber-700">27.8%</span>
+                </div>
+
+                <div class="p-2 rounded bg-slate-50 border border-slate-200 flex items-center justify-between">
+                    <div>
+                        <div class="font-bold text-slate-800">Prompt v2 (Syntax Guidance)</div>
+                        <div class="text-[10px] text-slate-500">Windash nested mapping issue</div>
+                    </div>
+                    <span class="font-mono font-bold text-slate-700">72.2%</span>
+                </div>
+
+                <div class="p-2 rounded bg-slate-50 border border-slate-200 flex items-center justify-between">
+                    <div>
+                        <div class="font-bold text-slate-800">Prompt v2.1 & v3b (Final Optimization)</div>
+                        <div class="text-[10px] text-slate-500">Clean list format, zero syntax defects</div>
+                    </div>
+                    <span class="font-mono font-bold text-emerald-700">95.0% (Set 3)</span>
+                </div>
+            </div>
+        </div>
+        <div class="pt-2 border-t border-slate-100 text-[11px] text-slate-500">
+            Guidance frozen in llm/prompts/v3b.py for reproducibility.
+        </div>
+    </div>
+
+    <!-- Card 3: Research Rigor -->
+    <div class="card p-4.5 flex flex-col justify-between space-y-3">
+        <div>
+            <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+                <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Empirical Research Rigor</h3>
+                <span class="text-[10px] font-bold text-purple-700 bg-purple-50 px-2 py-0.5 rounded border border-purple-200">
+                    FYP-1 Protocol
+                </span>
+            </div>
+            <p class="text-xs text-slate-500 mt-1">Pre-registered evaluation controls to guarantee scientific validity.</p>
+
+            <div class="space-y-2 mt-3 text-xs text-slate-600">
+                <div class="p-2 rounded bg-slate-50 border border-slate-200">
+                    <div class="font-bold text-slate-800 mb-0.5">Strict Gate Anti-Cheat</div>
+                    <p class="text-[11px]">Rules copying the observed command line fail the strict gate with <code class="text-amber-800 font-bold">TOO_NARROW</code>.</p>
+                </div>
+                <div class="p-2 rounded bg-slate-50 border border-slate-200">
+                    <div class="font-bold text-slate-800 mb-0.5">100% Offline Local Inference</div>
+                    <p class="text-[11px]">Dell Precision 3680 (RTX 4000 Ada 20GB). No cloud API calls.</p>
+                </div>
+                <div class="p-2 rounded bg-slate-50 border border-slate-200">
+                    <div class="font-bold text-slate-800 mb-0.5">Clean Set 3 Test Partition</div>
+                    <p class="text-[11px]">Set 3 was built and locked before testing; prompts were never tuned against it.</p>
+                </div>
+            </div>
+        </div>
+        <div class="pt-2 border-t border-slate-100 text-[11px] text-slate-500">
+            Supervised by Dr. Shahbaz Siddiqui, FAST-NUCES.
+        </div>
     </div>
 </div>
 {% endblock %}
 
 {% block scripts %}
 <script>
+let allRuns = [];
+let selectedFolder = '';
+
 async function loadRuns() {
-    const runs = await (await fetch('/api/runs')).json();
+    try {
+        allRuns = await (await fetch('/api/runs')).json();
+        if (allRuns.length > 0) {
+            allRuns.sort((a, b) => b.folder.localeCompare(a.folder));
+            selectedFolder = allRuns[0].folder;
+        }
+    } catch (e) {
+        console.error('Failed to load runs:', e);
+    }
+    renderRuns();
+}
+
+function selectRun(folder) {
+    selectedFolder = folder;
+    renderRuns();
+}
+
+function renderRuns() {
+    const roleFilter = document.getElementById('filter-role').value;
+    const searchFilter = document.getElementById('filter-runs').value.toLowerCase().trim();
     const body = document.getElementById('runs-body');
-    runs.reverse().forEach(r => {
+    body.innerHTML = '';
+
+    const filtered = allRuns.filter(r => {
+        if (roleFilter !== 'all' && r.label !== roleFilter) return false;
+        if (searchFilter) {
+            const matchesFolder = r.folder.toLowerCase().includes(searchFilter);
+            const matchesPrompt = (r.prompt || '').toLowerCase().includes(searchFilter);
+            const matchesModel = (r.models.join(' ') || '').toLowerCase().includes(searchFilter);
+            if (!matchesFolder && !matchesPrompt && !matchesModel) return false;
+        }
+        return true;
+    });
+
+    document.getElementById('count-runs').textContent = filtered.length;
+
+    const currentRun = filtered.find(r => r.folder === selectedFolder) || filtered[0] || allRuns[0];
+    if (currentRun) {
+        updateInspector(currentRun);
+    }
+
+    filtered.forEach(r => {
+        const isSelected = currentRun && currentRun.folder === r.folder;
         const labelClass = r.label === 'primary' ? 'bg-blue-50 text-blue-700 border-blue-200'
             : r.label === 'exploratory' ? 'bg-purple-50 text-purple-700 border-purple-200'
             : r.label === 'baseline' ? 'bg-amber-50 text-amber-700 border-amber-200'
             : 'bg-slate-100 text-slate-600 border-slate-200';
+
+        const pct = Math.round(100 * r.strict_pass / (r.total || 1));
         const row = document.createElement('tr');
-        row.className = 'hover:bg-slate-50 transition-colors';
+        row.className = `cursor-pointer transition-colors ${isSelected ? 'bg-blue-50/50 font-semibold' : 'hover:bg-slate-50/80'}`;
+        row.onclick = () => selectRun(r.folder);
         row.innerHTML = `
-            <td class="py-2.5 px-4 font-bold text-slate-900">${r.folder}</td>
-            <td class="py-2.5 px-4 text-slate-500">${r.date ? r.date.split('T')[0] : 'N/A'}</td>
-            <td class="py-2.5 px-4 font-bold text-slate-800">Set ${r.set}</td>
-            <td class="py-2.5 px-4 text-blue-600 font-bold">${r.prompt}</td>
-            <td class="py-2.5 px-4 text-slate-700">${r.models.join(', ')}</td>
-            <td class="py-2.5 px-4 font-bold text-emerald-600">${r.strict_pass}/${r.total}</td>
-            <td class="py-2.5 px-4 text-blue-600">${r.single_pass}/${r.total}</td>
-            <td class="py-2.5 px-4 ${r.syntax_errors > 0 ? 'text-red-600 font-bold' : 'text-slate-400'}">${r.syntax_errors}</td>
-            <td class="py-2.5 px-4">
-                <span class="px-2 py-0.5 rounded text-[10px] font-sans uppercase font-bold border ${labelClass}">
+            <td class="py-2.5 px-3 font-bold text-slate-900 font-mono text-[11px]">${r.folder}</td>
+            <td class="py-2.5 px-2.5 text-slate-500 font-sans text-[11px]">${r.date ? r.date.split('T')[0] : 'N/A'}</td>
+            <td class="py-2.5 px-2.5 font-bold text-slate-800">Set ${r.set}</td>
+            <td class="py-2.5 px-2.5 text-blue-700 font-bold">${r.prompt}</td>
+            <td class="py-2.5 px-3 text-slate-700 truncate max-w-[120px]" title="${r.models.join(', ')}">${r.models.map(m => m.replace('qwen2.5-coder:', '')).join(', ')}</td>
+            <td class="py-2.5 px-3 font-bold text-emerald-600">
+                <div class="flex items-center gap-1.5">
+                    <span>${r.strict_pass}/${r.total}</span>
+                    <span class="text-[10px] text-slate-400 font-normal">(${pct}%)</span>
+                </div>
+            </td>
+            <td class="py-2.5 px-2.5 text-blue-600">${r.single_pass}/${r.total}</td>
+            <td class="py-2.5 px-2.5 ${r.syntax_errors > 0 ? 'text-red-600 font-bold' : 'text-slate-400'}">${r.syntax_errors}</td>
+            <td class="py-2.5 px-2.5">
+                <span class="px-1.5 py-0.5 rounded text-[9px] font-sans uppercase font-bold border ${labelClass}">
                     ${r.label}
                 </span>
             </td>
-            <td class="py-2.5 px-4 text-right font-sans">
-                <a href="/run/${r.folder}" class="text-blue-600 hover:text-blue-800 font-semibold hover:underline">
-                    View Details &rarr;
-                </a>
+            <td class="py-2.5 px-3 text-right font-sans">
+                <span class="text-blue-700 font-semibold text-[11px]">Inspect &rarr;</span>
             </td>
         `;
         body.appendChild(row);
     });
 }
+
+function updateInspector(run) {
+    document.getElementById('inspect-folder').textContent = run.folder;
+    document.getElementById('inspect-date').textContent = 'Executed on ' + (run.date ? run.date.replace('T', ' ') : 'N/A');
+    document.getElementById('inspect-model').textContent = run.models.join(', ');
+    document.getElementById('inspect-prompt').textContent = 'Prompt ' + run.prompt;
+    document.getElementById('inspect-set').textContent = 'Set ' + run.set + (run.set === 3 ? ' (Locked Test)' : ' (Development)');
+    document.getElementById('inspect-config').textContent = 'T=' + run.temperature + ' | Rep=' + run.repeats;
+
+    const labelElem = document.getElementById('inspect-role');
+    labelElem.textContent = run.label.toUpperCase();
+    labelElem.className = 'text-[10px] font-bold px-2 py-0.5 rounded border uppercase ' + (
+        run.label === 'primary' ? 'bg-blue-50 text-blue-700 border-blue-200' :
+        run.label === 'exploratory' ? 'bg-purple-50 text-purple-700 border-purple-200' :
+        run.label === 'baseline' ? 'bg-amber-50 text-amber-700 border-amber-200' :
+        'bg-slate-100 text-slate-600 border-slate-200'
+    );
+
+    const strictPct = Math.round(100 * run.strict_pass / (run.total || 1));
+    const singlePct = Math.round(100 * run.single_pass / (run.total || 1));
+    const syntaxPct = Math.round(100 * (run.total - run.syntax_errors) / (run.total || 1));
+
+    document.getElementById('inspect-strict-text').textContent = `${run.strict_pass} / ${run.total} (${strictPct}%)`;
+    document.getElementById('inspect-strict-bar').style.width = strictPct + '%';
+
+    document.getElementById('inspect-single-text').textContent = `${run.single_pass} / ${run.total} (${singlePct}%)`;
+    document.getElementById('inspect-single-bar').style.width = singlePct + '%';
+
+    document.getElementById('inspect-syntax-text').textContent = `${run.total - run.syntax_errors} / ${run.total} (${syntaxPct}%)`;
+    document.getElementById('inspect-syntax-bar').style.width = syntaxPct + '%';
+
+    document.getElementById('inspect-narrow').textContent = run.too_narrow;
+    document.getElementById('inspect-syntax-err').textContent = run.syntax_errors;
+}
+
+document.getElementById('filter-role').addEventListener('change', renderRuns);
+document.getElementById('filter-runs').addEventListener('input', renderRuns);
 document.addEventListener('DOMContentLoaded', loadRuns);
 </script>
 {% endblock %}

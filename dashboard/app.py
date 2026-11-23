@@ -11,7 +11,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
 
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, jsonify, render_template, request, send_from_directory
 
 from dashboard.data_loader import (
     load_overview,
@@ -31,7 +31,19 @@ app = Flask(
 )
 
 
+FRONTEND_DIST = os.path.join(os.path.dirname(__file__), "frontend", "dist")
+
+
 # ---- HTML pages ----
+
+@app.route("/app")
+@app.route("/app/<path:path>")
+def serve_react_app(path=""):
+    if path and os.path.exists(os.path.join(FRONTEND_DIST, path)):
+        return send_from_directory(FRONTEND_DIST, path)
+    if os.path.exists(os.path.join(FRONTEND_DIST, "index.html")):
+        return send_from_directory(FRONTEND_DIST, "index.html")
+    return "React frontend build not found. Run: npm --prefix dashboard/frontend run build", 404
 
 @app.route("/")
 def page_overview():

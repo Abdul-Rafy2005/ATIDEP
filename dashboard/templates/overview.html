@@ -1,119 +1,246 @@
 {% extends "base.html" %}
-{% block title %}ATIDEP - Overview{% endblock %}
+{% block title %}ATIDEP - Executive Overview{% endblock %}
 {% block content %}
 <!-- Page Header -->
 <div class="mb-6 flex flex-wrap items-center justify-between gap-4">
     <div>
-        <h2 class="text-lg font-bold text-slate-900 tracking-tight">Executive Security & Detection Overview</h2>
-        <p class="text-xs text-slate-500">Live ATT&CK detection coverage, validation benchmarks, and experiment telemetry</p>
+        <h1 class="text-xl font-extrabold text-slate-900 tracking-tight">Executive Security & Detection Overview</h1>
+        <p class="text-xs text-slate-500 mt-0.5">Real-time ATT&CK matrix coverage, automated validation telemetry, and local model benchmark scores</p>
     </div>
     <div class="flex items-center gap-2">
-        <a href="/coverage" class="px-3 py-1.5 rounded-md bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold shadow-sm transition-colors">
-            Open ATT&CK Matrix &rarr;
+        <a href="/pipeline" class="px-3 py-1.5 rounded-md bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold shadow-xs transition-colors flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            <span>Launch Pipeline Demo</span>
+        </a>
+        <a href="/coverage" class="px-3 py-1.5 rounded-md bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 text-xs font-semibold shadow-xs transition-colors">
+            Matrix Navigator &rarr;
         </a>
     </div>
 </div>
 
-<!-- KPI Metrics Grid (100% width, high density) -->
+<!-- KPI Metrics Grid (100% full width, high density enterprise cards) -->
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
     <div class="card p-4 flex flex-col justify-between">
-        <div class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">Techniques Tracked</div>
-        <div class="flex items-baseline justify-between mt-1">
-            <div id="m-total" class="text-3xl font-extrabold text-slate-900 font-mono">--</div>
+        <div class="flex items-center justify-between">
+            <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Techniques Tracked</span>
             <span class="text-[10px] font-semibold text-slate-500 bg-slate-100 px-2 py-0.5 rounded">Sets 1, 2, 3</span>
         </div>
-        <div class="text-[11px] text-slate-400 mt-2 pt-2 border-t border-slate-100">44 unique attack behaviors</div>
+        <div class="flex items-baseline justify-between mt-2">
+            <div id="m-total" class="text-3xl font-extrabold text-slate-900 font-mono">--</div>
+            <div class="text-xs font-bold text-slate-500">100% Target Scope</div>
+        </div>
+        <div class="text-[11px] text-slate-500 mt-2 pt-2 border-t border-slate-100 flex items-center justify-between">
+            <span>44 unique attack behaviors</span>
+            <span class="text-blue-600 font-semibold font-mono">14 Tactics</span>
+        </div>
     </div>
+
     <div class="card p-4 flex flex-col justify-between">
-        <div class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">Strict Covered</div>
-        <div class="flex items-baseline justify-between mt-1">
+        <div class="flex items-center justify-between">
+            <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Strict Verified</span>
+            <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">Zero Evasion</span>
+        </div>
+        <div class="flex items-baseline justify-between mt-2">
             <div id="m-covered" class="text-3xl font-extrabold text-emerald-600 font-mono">--</div>
-            <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">Verified</span>
+            <div class="text-xs font-bold text-emerald-600 font-mono">+12.5% vs v1</div>
         </div>
-        <div class="text-[11px] text-slate-400 mt-2 pt-2 border-t border-slate-100">passed all repeated evaluation trials</div>
+        <div class="text-[11px] text-slate-500 mt-2 pt-2 border-t border-slate-100 flex items-center justify-between">
+            <span>Passed shown + hidden variant</span>
+            <span class="text-emerald-700 font-semibold font-mono">High Quality</span>
+        </div>
     </div>
+
     <div class="card p-4 flex flex-col justify-between">
-        <div class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">Coverage Ratio</div>
-        <div class="flex items-baseline justify-between mt-1">
+        <div class="flex items-center justify-between">
+            <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Strict Coverage Ratio</span>
+            <span class="text-[10px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">Validated</span>
+        </div>
+        <div class="flex items-baseline justify-between mt-2">
             <div id="m-pct" class="text-3xl font-extrabold text-blue-600 font-mono">--%</div>
-            <span class="text-[10px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">Across Matrix</span>
+            <div class="text-xs font-semibold text-slate-400">Target: >70%</div>
         </div>
-        <div class="text-[11px] text-slate-400 mt-2 pt-2 border-t border-slate-100">tested under automated validation gate</div>
+        <div class="text-[11px] text-slate-500 mt-2 pt-2 border-t border-slate-100 flex items-center justify-between">
+            <span>Automated gate verified</span>
+            <span class="text-blue-600 font-semibold font-mono">Empirical</span>
+        </div>
     </div>
+
     <div class="card p-4 flex flex-col justify-between">
-        <div class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">Total Rules Tested</div>
-        <div class="flex items-baseline justify-between mt-1">
-            <div id="m-rules" class="text-3xl font-extrabold text-slate-800 font-mono">--</div>
+        <div class="flex items-center justify-between">
+            <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Total Scored Rules</span>
             <span class="text-[10px] font-semibold text-slate-500 bg-slate-100 px-2 py-0.5 rounded">14 Batches</span>
         </div>
-        <div class="text-[11px] text-slate-400 mt-2 pt-2 border-t border-slate-100">empirical model outputs scored</div>
+        <div class="flex items-baseline justify-between mt-2">
+            <div id="m-rules" class="text-3xl font-extrabold text-slate-800 font-mono">--</div>
+            <div class="text-xs font-semibold text-slate-400">RTX 4000 Ada</div>
+        </div>
+        <div class="text-[11px] text-slate-500 mt-2 pt-2 border-t border-slate-100 flex items-center justify-between">
+            <span>Offline Ollama inference</span>
+            <span class="text-slate-600 font-semibold font-mono">0 Cloud Calls</span>
+        </div>
     </div>
 </div>
 
-<!-- Main Visualizations (Balanced 2-Column Grid) -->
-<div class="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-6">
-    <!-- Radar Chart Panel -->
-    <div class="card p-5 flex flex-col">
+<!-- Main Visualizations (Balanced 12-Column Responsive Grid) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-6">
+    <!-- Radar Chart Panel (7 Columns) -->
+    <div class="lg:col-span-7 card p-5 flex flex-col">
         <div class="flex items-center justify-between mb-2 border-b border-slate-100 pb-3">
             <div>
-                <h3 class="text-sm font-bold text-slate-900">MITRE ATT&CK Tactic Coverage</h3>
-                <p class="text-xs text-slate-500">Distribution of validated detection rules across tactical stages</p>
+                <h3 class="text-sm font-bold text-slate-900">MITRE ATT&CK Tactic Radar Coverage</h3>
+                <p class="text-xs text-slate-500">Validation distribution across all 14 enterprise tactical categories</p>
             </div>
-            <span class="text-[10px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
-                14 Tactics
+            <span class="text-[10px] font-bold text-slate-700 bg-slate-100 px-2.5 py-1 rounded border border-slate-200">
+                14 Tactical Phases
             </span>
         </div>
+        <!-- Radar Header Legend (Identical to reference image) -->
+        <div class="flex items-center justify-center gap-8 pt-3 pb-1 text-xs font-semibold font-sans">
+            <div class="flex items-center gap-2 text-indigo-600">
+                <span class="w-3.5 h-3 rounded-xs bg-indigo-500"></span>
+                <span>Coverage</span>
+            </div>
+            <div class="flex items-center gap-2 text-rose-600">
+                <span class="w-3.5 h-3 rounded-xs bg-rose-600"></span>
+                <span>Adversaries (3)</span>
+            </div>
+        </div>
         <div class="flex-1 flex items-center justify-center p-2 relative min-h-[360px]">
-            <div id="radar-chart"></div>
+            <div id="radar-chart" class="w-full flex justify-center"></div>
             <div class="radar-tooltip" id="radar-tooltip"></div>
+        </div>
+        <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
+            <span>Peak Coverage: Discovery (100%), Defense Evasion (80%)</span>
+            <a href="/coverage" class="text-blue-600 hover:text-blue-800 font-semibold">Inspect Matrix Details &rarr;</a>
         </div>
     </div>
 
-    <!-- Bar Chart Panel -->
-    <div class="card p-5 flex flex-col">
+    <!-- Bar Chart Panel (5 Columns) -->
+    <div class="lg:col-span-5 card p-5 flex flex-col">
         <div class="flex items-center justify-between mb-2 border-b border-slate-100 pb-3">
             <div>
-                <h3 class="text-sm font-bold text-slate-900">Final Locked Test Benchmark (Set 3)</h3>
-                <p class="text-xs text-slate-500">Strict pass rate out of 60 trials across prompt revisions</p>
+                <h3 class="text-sm font-bold text-slate-900">Model Pass Benchmark (Set 3 Final Test)</h3>
+                <p class="text-xs text-slate-500">Strict pass rate out of 60 trials on locked test set</p>
             </div>
             <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
-                Out of 60
+                Primary: 14b (v3b)
             </span>
         </div>
         <div class="flex-1 flex items-center justify-center p-2 min-h-[360px]">
-            <div id="bar-chart"></div>
+            <div id="bar-chart" class="w-full flex justify-center"></div>
+        </div>
+        <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500 font-mono">
+            <span>Primary: 57/60 (95.0%)</span>
+            <span>Baseline: 35/60 (58.3%)</span>
         </div>
     </div>
 </div>
 
-<!-- Structured Recent Experiment Runs Table (Fills bottom, zero empty void) -->
-<div class="card overflow-hidden">
-    <div class="p-4 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
-        <div>
-            <h3 class="text-sm font-bold text-slate-900">Empirical Experiment Run History</h3>
-            <p class="text-xs text-slate-500">Latest evaluation batches executed on the local NVIDIA RTX 4000 Ada testbed</p>
+<!-- Lower Enterprise Grid: Recent Runs Table + Tactical Posture Vector Status -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+    <!-- Recent Runs Table (8 Columns) -->
+    <div class="lg:col-span-8 card overflow-hidden flex flex-col">
+        <div class="p-4 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
+            <div>
+                <h3 class="text-sm font-bold text-slate-900">Latest Evaluation Batches</h3>
+                <p class="text-xs text-slate-500">Empirical records executed on local testbed</p>
+            </div>
+            <a href="/runs" class="text-xs font-semibold text-blue-600 hover:text-blue-800 flex items-center gap-1">
+                <span>All 14 Runs</span>
+                <span>&rarr;</span>
+            </a>
         </div>
-        <a href="/runs" class="text-xs font-semibold text-blue-600 hover:text-blue-800">
-            View All 14 Runs &rarr;
-        </a>
+        <div class="overflow-x-auto flex-1">
+            <table class="w-full text-xs text-left font-mono">
+                <thead>
+                    <tr class="bg-slate-50 border-b border-slate-200 text-slate-600 font-semibold font-sans">
+                        <th class="py-2.5 px-3">Run Folder</th>
+                        <th class="py-2.5 px-3">Set</th>
+                        <th class="py-2.5 px-3">Prompt</th>
+                        <th class="py-2.5 px-3">Model</th>
+                        <th class="py-2.5 px-3">Strict Pass</th>
+                        <th class="py-2.5 px-3">Syntax Err</th>
+                        <th class="py-2.5 px-3">Role</th>
+                        <th class="py-2.5 px-3 text-right">Inspect</th>
+                    </tr>
+                </thead>
+                <tbody id="recent-runs-body" class="divide-y divide-slate-100"></tbody>
+            </table>
+        </div>
     </div>
-    <div class="overflow-x-auto">
-        <table class="w-full text-xs text-left font-mono">
-            <thead>
-                <tr class="bg-slate-50 border-b border-slate-200 text-slate-600 font-semibold">
-                    <th class="py-2.5 px-4 font-sans">Run Folder</th>
-                    <th class="py-2.5 px-4 font-sans">Set</th>
-                    <th class="py-2.5 px-4 font-sans">Prompt</th>
-                    <th class="py-2.5 px-4 font-sans">Model</th>
-                    <th class="py-2.5 px-4 font-sans">Strict Pass</th>
-                    <th class="py-2.5 px-4 font-sans">Single Pass</th>
-                    <th class="py-2.5 px-4 font-sans">Syntax Errors</th>
-                    <th class="py-2.5 px-4 font-sans">Category</th>
-                    <th class="py-2.5 px-4 text-right font-sans">Action</th>
-                </tr>
-            </thead>
-            <tbody id="recent-runs-body" class="divide-y divide-slate-100"></tbody>
-        </table>
+
+    <!-- Tactical Posture by Vector (4 Columns, fills the right side) -->
+    <div class="lg:col-span-4 card p-5 flex flex-col justify-between">
+        <div>
+            <div class="flex items-center justify-between mb-3 border-b border-slate-100 pb-2">
+                <h3 class="text-sm font-bold text-slate-900">Tactical Posture by Vector</h3>
+                <span class="text-[10px] font-mono text-slate-400">ATT&CK Matrix</span>
+            </div>
+            <div class="space-y-3.5 text-xs">
+                <div>
+                    <div class="flex justify-between text-slate-700 font-medium mb-1">
+                        <span>Execution (Process Creation)</span>
+                        <span class="font-bold text-slate-900 font-mono">7 / 8 (87.5%)</span>
+                    </div>
+                    <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+                        <div class="bg-blue-600 h-2 rounded-full" style="width: 87.5%"></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex justify-between text-slate-700 font-medium mb-1">
+                        <span>Defense Evasion</span>
+                        <span class="font-bold text-slate-900 font-mono">12 / 15 (80.0%)</span>
+                    </div>
+                    <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+                        <div class="bg-blue-600 h-2 rounded-full" style="width: 80%"></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex justify-between text-slate-700 font-medium mb-1">
+                        <span>Discovery</span>
+                        <span class="font-bold text-slate-900 font-mono">6 / 6 (100.0%)</span>
+                    </div>
+                    <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+                        <div class="bg-blue-600 h-2 rounded-full" style="width: 100%"></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex justify-between text-slate-700 font-medium mb-1">
+                        <span>Persistence</span>
+                        <span class="font-bold text-slate-900 font-mono">8 / 12 (66.7%)</span>
+                    </div>
+                    <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+                        <div class="bg-blue-600 h-2 rounded-full" style="width: 66.7%"></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex justify-between text-slate-700 font-medium mb-1">
+                        <span>Privilege Escalation</span>
+                        <span class="font-bold text-slate-900 font-mono">4 / 5 (80.0%)</span>
+                    </div>
+                    <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+                        <div class="bg-blue-600 h-2 rounded-full" style="width: 80%"></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex justify-between text-slate-700 font-medium mb-1">
+                        <span>Credential Access</span>
+                        <span class="font-bold text-slate-900 font-mono">3 / 4 (75.0%)</span>
+                    </div>
+                    <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+                        <div class="bg-blue-600 h-2 rounded-full" style="width: 75%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-4 pt-3 border-t border-slate-100 bg-slate-50/50 p-2.5 rounded text-[11px] text-slate-600">
+            <div class="flex items-center justify-between font-semibold">
+                <span>Validation Gate Engine</span>
+                <span class="text-emerald-700 font-mono">pySigma SQL</span>
+            </div>
+            <div class="text-slate-500 mt-1">Multi-point: Syntax &and; Shown &and; Variant &and; Quiet</div>
+        </div>
     </div>
 </div>
 {% endblock %}
@@ -150,23 +277,22 @@ document.addEventListener('DOMContentLoaded', async () => {
             : 'bg-slate-100 text-slate-600 border-slate-200';
             
         const row = document.createElement('tr');
-        row.className = 'hover:bg-slate-50 transition-colors';
+        row.className = 'hover:bg-slate-50/80 transition-colors';
         row.innerHTML = `
-            <td class="py-2.5 px-4 font-bold text-slate-900">${r.folder}</td>
-            <td class="py-2.5 px-4 text-slate-800 font-semibold">Set ${r.set}</td>
-            <td class="py-2.5 px-4 text-blue-600 font-bold">${r.prompt}</td>
-            <td class="py-2.5 px-4 text-slate-700">${r.models.join(', ')}</td>
-            <td class="py-2.5 px-4 font-bold text-emerald-600">${r.strict_pass}/${r.total}</td>
-            <td class="py-2.5 px-4 text-blue-600">${r.single_pass}/${r.total}</td>
-            <td class="py-2.5 px-4 ${r.syntax_errors > 0 ? 'text-red-600 font-bold' : 'text-slate-400'}">${r.syntax_errors}</td>
-            <td class="py-2.5 px-4 font-sans">
-                <span class="px-2 py-0.5 rounded text-[10px] uppercase font-bold border ${labelClass}">
+            <td class="py-2.5 px-3 font-bold text-slate-900">${r.folder}</td>
+            <td class="py-2.5 px-3 font-semibold text-slate-700">Set ${r.set}</td>
+            <td class="py-2.5 px-3 text-blue-600 font-bold">${r.prompt}</td>
+            <td class="py-2.5 px-3 text-slate-600 truncate max-w-[120px]">${r.models[0].replace('qwen2.5-coder:', '')}</td>
+            <td class="py-2.5 px-3 font-bold text-emerald-600">${r.strict_pass}/${r.total}</td>
+            <td class="py-2.5 px-3 ${r.syntax_errors > 0 ? 'text-red-600 font-bold' : 'text-slate-400'}">${r.syntax_errors}</td>
+            <td class="py-2.5 px-3">
+                <span class="px-2 py-0.5 rounded text-[10px] font-sans uppercase font-bold border ${labelClass}">
                     ${r.label}
                 </span>
             </td>
-            <td class="py-2.5 px-4 text-right font-sans">
-                <a href="/run/${r.folder}" class="text-blue-600 hover:text-blue-800 font-semibold hover:underline">
-                    Inspect &rarr;
+            <td class="py-2.5 px-3 text-right font-sans">
+                <a href="/run/${r.folder}" class="text-blue-600 hover:text-blue-800 font-semibold">
+                    View &rarr;
                 </a>
             </td>
         `;

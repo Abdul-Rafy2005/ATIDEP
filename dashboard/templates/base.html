@@ -1,147 +1,178 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}ATIDEP - Detection Engineering Platform{% endblock %}</title>
+    <title>{% block title %}ATIDEP - Automated Threat-Informed Detection Engineering Platform{% endblock %}</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <link rel="stylesheet" href="/static/css/custom.css">
     <style>
-        body { 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: #f1f5f9;
-            color: #0f172a;
+        .sidebar-link {
+            transition: all 0.15s ease;
+            border-radius: 6px;
         }
-        
-        /* Modern enterprise badges */
-        .verdict-pass { background-color: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; }
-        .verdict-narrow { background-color: #fffbeb; color: #92400e; border: 1px solid #fde68a; }
-        .verdict-missed { background-color: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
-        .verdict-syntax { background-color: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; }
-        .verdict-noisy { background-color: #fff7ed; color: #9a3412; border: 1px solid #fed7aa; }
-        .verdict-not-tested { background-color: #ffffff; color: #64748b; border: 1px solid #e2e8f0; }
-        
-        .nav-link { transition: all 0.15s ease; border-radius: 6px; }
-        .nav-link:hover { background-color: #f1f5f9; color: #0f172a; }
-        .nav-link.active { background-color: #eff6ff; color: #1d4ed8; font-weight: 600; }
-        
-        .card { 
-            background-color: #ffffff; 
-            border: 1px solid #e2e8f0; 
-            border-radius: 0.5rem;
-            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04);
+        .sidebar-link:hover {
+            background-color: rgba(255, 255, 255, 0.06);
+            color: #ffffff;
+        }
+        .sidebar-link.active {
+            background-color: #2563eb;
+            color: #ffffff;
+            font-weight: 600;
+            box-shadow: 0 1px 3px 0 rgba(37, 99, 235, 0.3);
+        }
+        .sidebar-link.active svg {
+            color: #ffffff;
         }
         
         .radar-tooltip {
-            position: absolute; 
-            background: #0f172a; 
+            position: absolute;
+            background: #0f172a;
             border: 1px solid #334155;
-            border-radius: 6px; 
-            padding: 8px 12px; 
-            color: #f8fafc; 
+            border-radius: 6px;
+            padding: 8px 12px;
+            color: #f8fafc;
             font-size: 12px;
-            pointer-events: none; 
-            opacity: 0; 
-            transition: opacity 0.15s; 
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.15s;
             z-index: 100;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
         }
 
         #slideover-panel {
             transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        
-        /* Matrix board styling */
-        .matrix-container {
-            display: flex;
-            gap: 12px;
-            overflow-x: auto;
-            padding-bottom: 16px;
-        }
-        .matrix-column {
-            flex: 0 0 210px;
-            min-width: 210px;
-        }
     </style>
     {% block head %}{% endblock %}
 </head>
-<body class="min-h-screen flex flex-col">
-    <!-- Top header bar -->
-    <header class="bg-white border-b border-slate-200 px-6 py-2.5 flex items-center justify-between sticky top-0 z-40">
-        <div class="flex items-center gap-3">
-            <div class="w-7 h-7 bg-blue-600 rounded flex items-center justify-center font-bold text-white text-xs tracking-wide shadow-sm">
-                A
-            </div>
+<body class="h-full flex flex-col bg-slate-50 text-slate-900 overflow-x-hidden">
+    <!-- Top Enterprise Header Bar -->
+    <header class="bg-white border-b border-slate-200 px-6 py-2.5 flex items-center justify-between sticky top-0 z-40 shadow-xs">
+        <div class="flex items-center gap-4">
             <div class="flex items-center gap-2">
-                <span class="text-sm font-bold text-slate-900 tracking-tight">ATIDEP</span>
-                <span class="text-[11px] font-semibold text-slate-400">/</span>
-                <span class="text-xs font-semibold text-slate-600">Detection Engineering Platform</span>
-                <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200 ml-1">
-                    Prototype
-                </span>
+                <div class="w-7 h-7 bg-blue-600 rounded flex items-center justify-center font-bold text-white text-xs tracking-wider shadow-sm">
+                    A
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-sm font-extrabold text-slate-900 tracking-tight">ATIDEP</span>
+                        <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200">
+                            Prototype
+                        </span>
+                        <span class="text-[11px] font-mono text-slate-400">v3.4</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hidden md:flex items-center gap-1.5 ml-4 pl-4 border-l border-slate-200">
+                <div class="relative">
+                    <svg class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    <input type="text" placeholder="Search threats, tactics, rules, runs..." class="bg-slate-50 border border-slate-200 rounded-md pl-8 pr-3 py-1 text-xs text-slate-700 w-64 focus:bg-white focus:border-blue-500 focus:w-80 transition-all">
+                </div>
             </div>
         </div>
         
-        <div class="flex items-center gap-4 text-xs">
-            <div class="flex items-center gap-2 px-2.5 py-1 rounded bg-slate-50 border border-slate-200 text-slate-700 font-mono text-[11px]">
-                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                <span>Ollama (qwen2.5-coder:14b)</span>
+        <div class="flex items-center gap-3 text-xs">
+            <!-- Hardware / Environment pill -->
+            <div class="hidden xl:flex items-center gap-1.5 px-2.5 py-1 rounded bg-slate-50 border border-slate-200 text-slate-600 font-mono text-[11px]">
+                <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                <span>RTX 4000 Ada (32GB)</span>
             </div>
-            <span class="text-slate-400 font-mono text-[11px]">FAST FYP-1</span>
+
+            <!-- Model pill -->
+            <div class="flex items-center gap-2 px-2.5 py-1 rounded bg-slate-50 border border-slate-200 text-slate-700 font-mono text-[11px]">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span>Ollama: <strong class="text-slate-900 font-sans">qwen2.5-coder:14b</strong> (v3b)</span>
+            </div>
+
+            <!-- React Next-Gen App Pill -->
+            <a href="/app/" class="flex items-center gap-1.5 px-2.5 py-1 rounded bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold border border-indigo-200 transition-colors">
+                <svg class="w-3.5 h-3.5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                <span>React UI (Vite)</span>
+            </a>
+
+            <!-- Academic Tag -->
+            <div class="hidden sm:flex items-center px-2 py-0.5 rounded bg-blue-50 text-blue-700 font-mono text-[10px] font-bold border border-blue-200">
+                FAST FYP-1
+            </div>
         </div>
     </header>
 
-    <div class="flex flex-1">
-        <!-- Sidebar -->
-        <nav class="w-56 bg-white border-r border-slate-200 min-h-[calc(100vh-53px)] p-3 flex-shrink-0 flex flex-col justify-between">
-            <div class="space-y-1">
-                <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">
-                    Navigation
+    <div class="flex flex-1 overflow-hidden">
+        <!-- Enterprise Dark Navy Sidebar (matching reference SOC designs) -->
+        <aside class="w-60 bg-slate-900 text-slate-300 border-r border-slate-800 flex-shrink-0 flex flex-col justify-between select-none">
+            <div class="p-4 space-y-6">
+                <!-- Section 1 -->
+                <div>
+                    <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">
+                        Operations & Benchmarks
+                    </div>
+                    <nav class="space-y-1">
+                        <a href="/" class="sidebar-link flex items-center gap-2.5 px-3 py-2 text-xs text-slate-300 {% if request.path == '/' %}active{% endif %}">
+                            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                            <span>Executive Overview</span>
+                        </a>
+                        <a href="/coverage" class="sidebar-link flex items-center gap-2.5 px-3 py-2 text-xs text-slate-300 {% if request.path == '/coverage' %}active{% endif %}">
+                            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                            <span>ATT&CK Matrix</span>
+                        </a>
+                        <a href="/runs" class="sidebar-link flex items-center gap-2.5 px-3 py-2 text-xs text-slate-300 {% if '/run' in request.path %}active{% endif %}">
+                            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+                            <span>Evaluation Runs</span>
+                        </a>
+                    </nav>
                 </div>
-                <a href="/" class="nav-link flex items-center gap-2.5 px-3 py-2 text-xs text-slate-700 {% if request.path == '/' %}active{% endif %}">
-                    <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-                    <span>Overview</span>
-                </a>
-                <a href="/coverage" class="nav-link flex items-center gap-2.5 px-3 py-2 text-xs text-slate-700 {% if request.path == '/coverage' %}active{% endif %}">
-                    <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
-                    <span>ATT&CK Matrix</span>
-                </a>
-                <a href="/runs" class="nav-link flex items-center gap-2.5 px-3 py-2 text-xs text-slate-700 {% if '/run' in request.path %}active{% endif %}">
-                    <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
-                    <span>Experiment Runs</span>
-                </a>
-                
-                <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-3 pt-4 mb-2">
-                    Workbench
-                </div>
-                <a href="/gate" class="nav-link flex items-center gap-2.5 px-3 py-2 text-xs text-slate-700 {% if request.path == '/gate' %}active{% endif %}">
-                    <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                    <span>Gate Tester</span>
-                </a>
-                <a href="/pipeline" class="nav-link flex items-center gap-2.5 px-3 py-2 text-xs text-slate-700 {% if request.path == '/pipeline' %}active{% endif %}">
-                    <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-                    <span>Pipeline Workbench</span>
-                </a>
-            </div>
-            
-            <div class="pt-3 border-t border-slate-100 text-[11px] text-slate-500 font-mono">
-                <div class="flex items-center justify-between">
-                    <span>Validation Gate</span>
-                    <span class="text-emerald-700 font-bold font-sans">Active</span>
-                </div>
-            </div>
-        </nav>
 
-        <!-- Main full-width fluid container (No max-w-7xl cutoff) -->
-        <main class="flex-1 p-6 lg:p-8 w-full overflow-y-auto">
+                <!-- Section 2 -->
+                <div>
+                    <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">
+                        Validation Tools
+                    </div>
+                    <nav class="space-y-1">
+                        <a href="/gate" class="sidebar-link flex items-center gap-2.5 px-3 py-2 text-xs text-slate-300 {% if request.path == '/gate' %}active{% endif %}">
+                            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            <span>Gate Validator</span>
+                        </a>
+                        <a href="/pipeline" class="sidebar-link flex items-center gap-2.5 px-3 py-2 text-xs text-slate-300 {% if request.path == '/pipeline' %}active{% endif %}">
+                            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                            <span>Pipeline Workbench</span>
+                        </a>
+                    </nav>
+                </div>
+            </div>
+
+            <!-- Sidebar Footer with Operator & System Health -->
+            <div class="p-4 border-t border-slate-800 space-y-3">
+                <div class="flex items-center justify-between text-[11px] text-slate-400">
+                    <span class="flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                        <span class="font-mono text-[10px] text-slate-300">SYSTEM HEALTHY</span>
+                    </span>
+                    <span class="font-mono text-[10px] text-emerald-400">99.98%</span>
+                </div>
+                <div class="flex items-center gap-2.5 pt-2 border-t border-slate-800/80">
+                    <div class="w-7 h-7 rounded-full bg-blue-700 text-white font-bold text-xs flex items-center justify-center">
+                        AR
+                    </div>
+                    <div class="overflow-hidden">
+                        <div class="text-xs font-semibold text-slate-200 truncate">Abdul Rafy</div>
+                        <div class="text-[10px] text-slate-400 truncate">Detection Engineer / FAST</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Fluid Content Container (100% full width, structured padding) -->
+        <main class="flex-1 overflow-y-auto bg-slate-50 p-6 lg:p-8">
             {% block content %}{% endblock %}
         </main>
     </div>
 
     <!-- Slide-over drawer container for technique inspection -->
     <div id="slideover-container" class="fixed inset-0 z-50 overflow-hidden hidden" aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
-        <div class="absolute inset-0 bg-slate-900/30 backdrop-blur-sm transition-opacity" id="slideover-backdrop" onclick="closeDrawer()"></div>
+        <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-xs transition-opacity" id="slideover-backdrop" onclick="closeDrawer()"></div>
         <div class="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
             <div id="slideover-panel" class="pointer-events-auto w-screen max-w-2xl bg-white shadow-2xl border-l border-slate-200 transform translate-x-full overflow-y-auto">
                 <div id="slideover-content" class="p-6">
@@ -152,146 +183,107 @@
     </div>
 
     <script>
-        function closeDrawer() {
-            const panel = document.getElementById('slideover-panel');
-            panel.classList.add('translate-x-full');
-            setTimeout(() => {
-                document.getElementById('slideover-container').classList.add('hidden');
-            }, 250);
-        }
-
-        async function openTechniqueDrawer(techniqueId) {
+        function openDrawer() {
             const container = document.getElementById('slideover-container');
             const panel = document.getElementById('slideover-panel');
-            const content = document.getElementById('slideover-content');
-            
             container.classList.remove('hidden');
             setTimeout(() => {
                 panel.classList.remove('translate-x-full');
             }, 10);
-            
-            content.innerHTML = '<div class="py-12 text-center text-slate-400 text-sm">Loading technique data...</div>';
+        }
+
+        function closeDrawer() {
+            const container = document.getElementById('slideover-container');
+            const panel = document.getElementById('slideover-panel');
+            panel.classList.add('translate-x-full');
+            setTimeout(() => {
+                container.classList.add('hidden');
+            }, 260);
+        }
+
+        async function openTechniqueDrawer(techniqueId) {
+            openDrawer();
+            const content = document.getElementById('slideover-content');
+            content.innerHTML = `
+                <div class="flex items-center justify-center py-20 text-slate-400 text-xs">
+                    <svg class="animate-spin h-5 w-5 text-blue-600 mr-2" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg>
+                    Loading technique telemetry...
+                </div>
+            `;
 
             try {
                 const res = await fetch(`/api/technique/${techniqueId}`);
-                if (!res.ok) {
-                    content.innerHTML = '<div class="p-4 text-red-600 text-sm">Technique not found.</div>';
-                    return;
-                }
-                const tech = await res.json();
+                if (!res.ok) throw new Error('Not found');
+                const t = await res.json();
                 
-                const verdictClass = {
-                    'PASS': 'verdict-pass', 'TOO_NARROW': 'verdict-narrow',
-                    'NOISY': 'verdict-noisy', 'MISSED_SHOWN': 'verdict-missed',
-                    'SYNTAX_ERROR': 'verdict-syntax', 'NOT_TESTED': 'verdict-not-tested'
-                };
-
-                let html = `
-                    <div class="flex items-center justify-between pb-4 border-b border-slate-200 mb-6">
-                        <div>
-                            <div class="flex items-center gap-2">
-                                <span class="font-mono text-lg font-bold text-slate-900">${tech.id}</span>
-                                <span class="px-2 py-0.5 rounded text-xs font-semibold ${verdictClass[tech.best_verdict]}">
-                                    ${tech.best_verdict}
-                                </span>
-                            </div>
-                            <h2 class="text-sm font-medium text-slate-700 mt-1">${tech.title || 'Untitled Technique'}</h2>
-                        </div>
-                        <button onclick="closeDrawer()" class="text-slate-400 hover:text-slate-600 p-1.5 rounded-lg hover:bg-slate-100 text-lg">&times;</button>
-                    </div>
-
-                    <div class="space-y-6">
-                        <div>
-                            <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Tactical Classification</h3>
-                            <div class="flex flex-wrap gap-2 text-xs">
-                                ${tech.tactics.map(t => `<span class="px-2.5 py-1 rounded bg-slate-100 text-slate-700 border border-slate-200 font-medium">${t}</span>`).join('')}
-                                <span class="px-2.5 py-1 rounded bg-blue-50 text-blue-700 border border-blue-200 font-medium">${tech.sets.map(s => 'Set ' + s).join(', ')}</span>
-                            </div>
-                        </div>
-                `;
-
-                if (tech.events && Object.keys(tech.events).length > 0) {
-                    html += `<div><h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Validation Test Events</h3><div class="space-y-2 text-xs font-mono">`;
-                    for (const [setNum, ev] of Object.entries(tech.events)) {
-                        html += `
-                            <div class="p-3 rounded-lg border border-slate-200 bg-slate-50 space-y-2">
-                                <div class="text-[11px] font-sans font-semibold text-slate-500">Synthetic Log Events (Set ${setNum})</div>
-                                <div class="p-2 rounded bg-white border border-slate-200">
-                                    <span class="text-red-700 font-bold block text-[10px] uppercase font-sans">Observed Attack Line:</span>
-                                    <span class="text-slate-800 break-all select-all">${ev.shown || 'N/A'}</span>
-                                </div>
-                                <div class="p-2 rounded bg-white border border-slate-200">
-                                    <span class="text-amber-700 font-bold block text-[10px] uppercase font-sans">Hidden Attack Variant Line:</span>
-                                    <span class="text-slate-800 break-all select-all">${ev.variant || 'N/A'}</span>
-                                </div>
-                                <div class="p-2 rounded bg-white border border-slate-200">
-                                    <span class="text-emerald-700 font-bold block text-[10px] uppercase font-sans">Harmless Near-Miss Line:</span>
-                                    <span class="text-slate-800 break-all select-all">${ev.benign || 'N/A'}</span>
+                let eventsHtml = '';
+                if (t.events && Object.keys(t.events).length > 0) {
+                    for (const [setNum, ev] of Object.entries(t.events)) {
+                        eventsHtml += `
+                            <div class="mt-3 p-3 bg-slate-50 border border-slate-200 rounded-md text-xs font-mono">
+                                <div class="text-[11px] font-bold text-slate-700 uppercase mb-2">Test Log Set ${setNum} (Ground Truth)</div>
+                                <div class="space-y-2">
+                                    <div>
+                                        <div class="text-[10px] text-red-600 font-bold uppercase">Shown Attack Line:</div>
+                                        <div class="text-slate-800 bg-white p-1.5 rounded border border-slate-200 break-all">${ev.shown || 'N/A'}</div>
+                                    </div>
+                                    <div>
+                                        <div class="text-[10px] text-amber-600 font-bold uppercase">Hidden Attack Variant:</div>
+                                        <div class="text-slate-800 bg-white p-1.5 rounded border border-slate-200 break-all">${ev.variant || 'N/A'}</div>
+                                    </div>
+                                    <div>
+                                        <div class="text-[10px] text-emerald-600 font-bold uppercase">Benign Baseline Line:</div>
+                                        <div class="text-slate-800 bg-white p-1.5 rounded border border-slate-200 break-all">${ev.benign || 'N/A'}</div>
+                                    </div>
                                 </div>
                             </div>
                         `;
                     }
-                    html += `</div></div>`;
                 }
 
-                const configs = Object.values(tech.configs || {});
-                if (configs.length > 0) {
-                    html += `
+                content.innerHTML = `
+                    <div class="flex items-center justify-between pb-4 border-b border-slate-200">
                         <div>
-                            <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Evaluations Across Models (${configs.length})</h3>
-                            <div class="border border-slate-200 rounded-lg overflow-hidden">
-                                <table class="w-full text-xs font-mono">
-                                    <thead class="bg-slate-50 text-slate-500 border-b border-slate-200">
-                                        <tr>
-                                            <th class="py-2 px-3 text-left">Model</th>
-                                            <th class="py-2 px-3 text-left">Prompt</th>
-                                            <th class="py-2 px-3 text-left">Verdict</th>
-                                            <th class="py-2 px-3 text-right">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="divide-y divide-slate-100">
-                    `;
-                    configs.forEach(c => {
-                        html += `
-                            <tr class="hover:bg-slate-50">
-                                <td class="py-2 px-3 text-slate-800">${c.model.replace('qwen2.5-coder:', '')}</td>
-                                <td class="py-2 px-3 text-blue-600 font-semibold">${c.prompt} r${c.repeat}</td>
-                                <td class="py-2 px-3"><span class="px-2 py-0.5 rounded text-[10px] font-semibold ${verdictClass[c.verdict]}">${c.verdict}</span></td>
-                                <td class="py-2 px-3 text-right font-sans">
-                                    <button onclick="loadDrawerRule('${c.run_folder}', '${c.model}', '${tech.id}', ${c.repeat})" class="text-blue-600 hover:text-blue-800 text-[11px] font-semibold hover:underline">
-                                        Rule YAML &rarr;
-                                    </button>
-                                </td>
-                            </tr>
-                        `;
-                    });
-                    html += `</tbody></table></div></div>`;
-                }
-
-                html += `
-                    <div id="drawer-rule-box" class="hidden">
-                        <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Generated Sigma Detection Rule</h3>
-                        <pre id="drawer-rule-text" class="p-4 rounded-lg bg-slate-900 text-slate-200 text-xs font-mono overflow-x-auto select-all leading-relaxed"></pre>
+                            <div class="flex items-center gap-2">
+                                <span class="text-lg font-bold text-slate-900 font-mono">${t.id}</span>
+                                <span class="px-2 py-0.5 rounded text-[10px] font-bold verdict-${t.best_verdict ? t.best_verdict.toLowerCase().replace('_', '-') : 'not-tested'}">
+                                    ${t.best_verdict || 'NOT_TESTED'}
+                                </span>
+                            </div>
+                            <div class="text-sm font-semibold text-slate-700 mt-0.5">${t.title || 'Untitled Technique'}</div>
+                        </div>
+                        <button onclick="closeDrawer()" class="text-slate-400 hover:text-slate-600 p-1.5 rounded-md hover:bg-slate-100">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                        </button>
                     </div>
+
+                    <div class="py-4 space-y-4">
+                        <div class="grid grid-cols-2 gap-3 text-xs">
+                            <div class="p-2.5 bg-slate-50 rounded border border-slate-200">
+                                <div class="text-[10px] font-bold text-slate-400 uppercase">Tactics</div>
+                                <div class="font-semibold text-slate-800 mt-0.5">${t.tactics.join(', ')}</div>
+                            </div>
+                            <div class="p-2.5 bg-slate-50 rounded border border-slate-200">
+                                <div class="text-[10px] font-bold text-slate-400 uppercase">Sets Tested</div>
+                                <div class="font-semibold text-slate-800 mt-0.5">${t.sets.map(s => 'Set ' + s).join(', ')}</div>
+                            </div>
+                        </div>
+
+                        ${eventsHtml}
+
+                        <div class="pt-4 flex items-center justify-between border-t border-slate-200">
+                            <a href="/technique/${t.id}" class="text-xs font-semibold text-blue-600 hover:text-blue-800 flex items-center gap-1">
+                                <span>Open Full Technique Telemetry</span>
+                                <span>&rarr;</span>
+                            </a>
+                            <a href="/gate" class="px-3 py-1.5 rounded bg-blue-600 text-white text-xs font-semibold hover:bg-blue-700">
+                                Test in Gate
+                            </a>
+                        </div>
                     </div>
                 `;
-                content.innerHTML = html;
             } catch (err) {
-                content.innerHTML = `<div class="p-4 text-red-600 text-sm">Failed to load technique details: ${err.message}</div>`;
-            }
-        }
-
-        async function loadDrawerRule(folder, model, technique, repeat) {
-            const res = await fetch(`/api/rule/${folder}/${encodeURIComponent(model)}/${technique}/${repeat}`);
-            const box = document.getElementById('drawer-rule-box');
-            const text = document.getElementById('drawer-rule-text');
-            if (res.ok) {
-                const data = await res.json();
-                text.textContent = data.rule_text;
-                box.classList.remove('hidden');
-                box.scrollIntoView({ behavior: 'smooth' });
-            } else {
-                alert('Rule file not found.');
+                content.innerHTML = `<div class="p-6 text-center text-red-600 text-xs">Failed to load technique data.</div>`;
             }
         }
     </script>
