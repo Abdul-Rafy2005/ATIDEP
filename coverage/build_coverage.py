@@ -30,6 +30,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
 
+from data.attack_lookup import get_technique as attack_lookup
 from llm.scoring import score_rule
 
 
@@ -406,7 +407,18 @@ def build_coverage_table(runs_dir=None, root_dir=None):
             tech_id = tech_row["technique"]
             rule_file = tech_row["rule_file"]
             rule_path = os.path.join(rule_dir, rule_file)
-            title, tactic = read_rule_metadata(rule_path)
+            sigma_title, sigma_tactic = read_rule_metadata(rule_path)
+
+            attack_entry = attack_lookup(tech_id)
+            if attack_entry:
+                attack_name = attack_entry["name"]
+                attack_tactics = "; ".join(attack_entry["tactics"])
+            else:
+                attack_name = ""
+                attack_tactics = ""
+
+            tactic = attack_tactics if attack_tactics else sigma_tactic
+            title = sigma_title
 
             if set_number == 1:
                 ref_status = val_results.get(tech_id, "PASS")
@@ -415,6 +427,7 @@ def build_coverage_table(runs_dir=None, root_dir=None):
 
             row = {
                 "technique_id": tech_id,
+                "attack_name": attack_name,
                 "tactic": tactic,
                 "reference_rule_title": title,
                 "reference_rule_file": rule_file,
@@ -495,6 +508,7 @@ def write_csv(rows, config_keys, path=None):
     os.makedirs(os.path.dirname(path), exist_ok=True)
     fieldnames = [
         "technique_id",
+        "attack_name",
         "tactic",
         "reference_rule_title",
         "reference_rule_file",
@@ -703,6 +717,7 @@ def write_html(rows, config_keys, config_summaries=None, path=None):
     lines.append("<table>")
     lines.append("<thead><tr>")
     lines.append("<th>Technique ID</th>")
+    lines.append("<th>ATT&amp;CK Name</th>")
     lines.append("<th>Tactic</th>")
     lines.append("<th>Reference Rule</th>")
     lines.append("<th style='text-align:center;'>Reference Status</th>")
@@ -722,6 +737,7 @@ def write_html(rows, config_keys, config_summaries=None, path=None):
     for row in rows:
         lines.append("<tr>")
         lines.append(f"<td class='tech-id'>{_html_escape(row['technique_id'])}</td>")
+        lines.append(f"<td class='title'>{_html_escape(row.get('attack_name', ''))}</td>")
         lines.append(f"<td class='tactic'>{_html_escape(row['tactic'])}</td>")
         lines.append(f"<td class='title' title='{_html_escape(row['reference_rule_title'])}'>{_html_escape(row['reference_rule_title'])}</td>")
         ref_color = VERDICT_COLORS.get(row['reference_rule_status'], "#9e9e9e")
@@ -735,7 +751,7 @@ def write_html(rows, config_keys, config_summaries=None, path=None):
 
     # Footer with column totals
     lines.append("<tfoot><tr>")
-    lines.append("<td colspan='4' style='text-align:right;'>Strict Pass Total (matches RESULTS_SUMMARY.md):</td>")
+    lines.append("<td colspan='5' style='text-align:right;'>Strict Pass Total (matches RESULTS_SUMMARY.md):</td>")
     for ck in config_keys:
         summary = config_summaries.get(ck, {})
         ratio = summary.get("ratio", "-")
@@ -754,8 +770,10 @@ def write_html(rows, config_keys, config_summaries=None, path=None):
     lines.append("<ul>")
     for r in never_covered_by_set[1]:
         tid = r["technique_id"]
+        aname = r.get("attack_name", "")
+        label = f"{_html_escape(tid)} ({_html_escape(aname)})" if aname else _html_escape(tid)
         reason = NEVER_COVERED_REASONS.get(tid, "no cause recorded")
-        lines.append(f"<li><code>{_html_escape(tid)}</code>: {_html_escape(reason)}</li>")
+        lines.append(f"<li><code>{label}</code>: {_html_escape(reason)}</li>")
     lines.append("</ul>")
 
     # Set 2
@@ -764,8 +782,10 @@ def write_html(rows, config_keys, config_summaries=None, path=None):
     lines.append("<ul>")
     for r in never_covered_by_set[2]:
         tid = r["technique_id"]
+        aname = r.get("attack_name", "")
+        label = f"{_html_escape(tid)} ({_html_escape(aname)})" if aname else _html_escape(tid)
         reason = NEVER_COVERED_REASONS.get(tid, "no cause recorded")
-        lines.append(f"<li><code>{_html_escape(tid)}</code>: {_html_escape(reason)}</li>")
+        lines.append(f"<li><code>{label}</code>: {_html_escape(reason)}</li>")
     lines.append("</ul>")
 
     # Set 3
@@ -775,8 +795,10 @@ def write_html(rows, config_keys, config_summaries=None, path=None):
     lines.append("<ul>")
     for r in never_covered_by_set[3]:
         tid = r["technique_id"]
+        aname = r.get("attack_name", "")
+        label = f"{_html_escape(tid)} ({_html_escape(aname)})" if aname else _html_escape(tid)
         reason = NEVER_COVERED_REASONS.get(tid, "no cause recorded")
-        lines.append(f"<li><code>{_html_escape(tid)}</code>: {_html_escape(reason)}</li>")
+        lines.append(f"<li><code>{label}</code>: {_html_escape(reason)}</li>")
     lines.append("</ul>")
     lines.append("</div>")
 
@@ -870,13 +892,13 @@ def write_coverage_md(rows, config_keys, config_summaries=None, path=None):
         "",
         "## Covered Techniques (29 of 44)",
         "",
-        "| Technique ID | Set | Tactic | Reference Rule Title |",
-        "|---|---|---|---|",
+        "| Technique ID | ATT&CK Name | Set | Tactic | Reference Rule Title |",
+        "|---|---|---|---|---|",
     ]
 
     for s in (1, 2, 3):
         for r in covered_by_set[s]:
-            lines.append(f"| `{r['technique_id']}` | Set {s} | {r['tactic']} | {r['reference_rule_title']} |")
+            lines.append(f"| `{r['technique_id']}` | {r.get('attack_name', '')} | Set {s} | {r['tactic']} | {r['reference_rule_title']} |")
 
     lines.extend([
         "",
@@ -889,8 +911,10 @@ def write_coverage_md(rows, config_keys, config_summaries=None, path=None):
 
     for r in never_covered_by_set[1]:
         tid = r["technique_id"]
+        aname = r.get("attack_name", "")
+        label = f"{tid} ({aname})" if aname else tid
         reason = NEVER_COVERED_REASONS.get(tid, "no cause recorded")
-        lines.append(f"- `{tid}`: {reason}")
+        lines.append(f"- `{label}`: {reason}")
 
     lines.extend([
         "",
@@ -900,8 +924,10 @@ def write_coverage_md(rows, config_keys, config_summaries=None, path=None):
 
     for r in never_covered_by_set[2]:
         tid = r["technique_id"]
+        aname = r.get("attack_name", "")
+        label = f"{tid} ({aname})" if aname else tid
         reason = NEVER_COVERED_REASONS.get(tid, "no cause recorded")
-        lines.append(f"- `{tid}`: {reason}")
+        lines.append(f"- `{label}`: {reason}")
 
     s3_count = len(never_covered_by_set[3])
     s3_label = f"### Set 3 ({s3_count} technique{'s' if s3_count != 1 else ''})"
@@ -912,6 +938,8 @@ def write_coverage_md(rows, config_keys, config_summaries=None, path=None):
 
     for r in never_covered_by_set[3]:
         tid = r["technique_id"]
+        aname = r.get("attack_name", "")
+        label = f"{tid} ({aname})" if aname else tid
         reason = NEVER_COVERED_REASONS.get(tid, "no cause recorded")
         lines.append(f"- `{tid}`: {reason}")
 

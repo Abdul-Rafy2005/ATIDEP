@@ -186,11 +186,14 @@ def load_techniques():
                 tid = row["technique_id"]
                 tactics_raw = row.get("tactic", "")
                 tactics = [t.strip() for t in tactics_raw.split(";") if t.strip()]
+                attack_name = row.get("attack_name", "")
+                display_title = attack_name if attack_name else row.get("reference_rule_title", "")
                 techniques[tid] = {
                     "id": tid,
                     "tactics": tactics,
                     "tactic_ids": [TACTIC_NAME_TO_ID.get(t, "") for t in tactics],
-                    "title": row.get("reference_rule_title", ""),
+                    "title": display_title,
+                    "attack_name": attack_name,
                     "sets": _technique_set(tid),
                     "ref_status": row.get("reference_rule_status", ""),
                     "best_verdict": "NOT_TESTED",

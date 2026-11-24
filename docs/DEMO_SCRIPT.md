@@ -89,6 +89,28 @@ Start-Process coverage\coverage.html
 
 ---
 
+### 4b. Web Dashboard (optional, if time permits)
+**Commands**:
+```powershell
+# Start Flask backend
+python dashboard/app.py
+
+# In second terminal, start React frontend
+cd dashboard/frontend
+npm run dev
+```
+
+**Spoken line**:
+> "We also built a web dashboard that shows all results interactively. You can browse the ATT&CK coverage matrix, inspect individual runs, and test Sigma rules live against our synthetic logs."
+
+**What to point out on screen** (open http://localhost:5173):
+- Overview page: KPI cards, radar chart, benchmark bars showing Set 3 results.
+- Coverage Matrix: click a technique tile to see its test events and rule history.
+- Gate Validator: paste any Sigma rule and test it live against a technique's logs.
+- Dark mode toggle in the header.
+
+---
+
 ### 5. Limits and Next Steps (30 seconds)
 **Spoken line**:
 > "Currently ATIDEP covers Windows process creation logs on 44 hand-authored templates; FYP-2 will extend coverage to registry, network, and file events with sandboxed malware execution."

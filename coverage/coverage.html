@@ -37,7 +37,7 @@ code { font-family: monospace; background: #f0f0f0; padding: 2px 4px; border-rad
 <p class='subtitle'>Automated Threat-Informed Detection Engineering Platform</p>
 <div class='totals'>
 <strong>Coverage Summary:</strong> 29 of 44 techniques covered (at least one configuration passes all repeats).<br>
-Sets included: sets 1, 2, and 3 (44 techniques total). Sets with results: 1, 2, 3. Date: 2026-11-13.<br><br>
+Sets included: sets 1, 2, and 3 (44 techniques total). Sets with results: 1, 2, 3. Date: 2026-11-24.<br><br>
 <strong>Coverage Definition:</strong> Covered means at least one of the tested configurations passed every repeat. Up to 10 configurations were tried per technique on set 1 and 6 on set 3, so this number is optimistic. The next section shows the frozen configurations alone.
 </div>
 <div class='frozen-section'>
@@ -70,6 +70,7 @@ Sets included: sets 1, 2, and 3 (44 techniques total). Sets with results: 1, 2, 
 <table>
 <thead><tr>
 <th>Technique ID</th>
+<th>ATT&amp;CK Name</th>
 <th>Tactic</th>
 <th>Reference Rule</th>
 <th style='text-align:center;'>Reference Status</th>
@@ -96,6 +97,7 @@ Sets included: sets 1, 2, and 3 (44 techniques total). Sets with results: 1, 2, 
 <tbody>
 <tr>
 <td class='tech-id'>T1059.001</td>
+<td class='title'>PowerShell</td>
 <td class='tactic'>Execution</td>
 <td class='title' title='Suspicious PowerShell Download and Execute Pattern'>Suspicious PowerShell Download and Execute Pattern</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
@@ -121,6 +123,7 @@ Sets included: sets 1, 2, and 3 (44 techniques total). Sets with results: 1, 2, 
 </tr>
 <tr>
 <td class='tech-id'>T1218.011</td>
+<td class='title'>Rundll32</td>
 <td class='tactic'>Defense Evasion</td>
 <td class='title' title='Suspicious Rundll32 Activity Invoking Sys File'>Suspicious Rundll32 Activity Invoking Sys File</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
@@ -146,6 +149,7 @@ Sets included: sets 1, 2, and 3 (44 techniques total). Sets with results: 1, 2, 
 </tr>
 <tr>
 <td class='tech-id'>T1218.005</td>
+<td class='title'>Mshta</td>
 <td class='tactic'>Defense Evasion</td>
 <td class='title' title='Suspicious JavaScript Execution Via Mshta.EXE'>Suspicious JavaScript Execution Via Mshta.EXE</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
@@ -171,6 +175,7 @@ Sets included: sets 1, 2, and 3 (44 techniques total). Sets with results: 1, 2, 
 </tr>
 <tr>
 <td class='tech-id'>T1218.010</td>
+<td class='title'>Regsvr32</td>
 <td class='tactic'>Defense Evasion</td>
 <td class='title' title='Potentially Suspicious Regsvr32 HTTP IP Pattern'>Potentially Suspicious Regsvr32 HTTP IP Pattern</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
@@ -196,7 +201,8 @@ Sets included: sets 1, 2, and 3 (44 techniques total). Sets with results: 1, 2, 
 </tr>
 <tr>
 <td class='tech-id'>T1105</td>
-<td class='tactic'>Defense Evasion; Command and Control</td>
+<td class='title'>Ingress Tool Transfer</td>
+<td class='tactic'>Command and Control</td>
 <td class='title' title='Suspicious Download Via Certutil.EXE'>Suspicious Download Via Certutil.EXE</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -221,7 +227,8 @@ Sets included: sets 1, 2, and 3 (44 techniques total). Sets with results: 1, 2, 
 </tr>
 <tr>
 <td class='tech-id'>T1053.005</td>
-<td class='tactic'>Privilege Escalation; Execution; Persistence</td>
+<td class='title'>Scheduled Task</td>
+<td class='tactic'>Execution; Persistence; Privilege Escalation</td>
 <td class='title' title='Suspicious Scheduled Task Creation Involving Temp Folder'>Suspicious Scheduled Task Creation Involving Temp Folder</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -246,7 +253,8 @@ Sets included: sets 1, 2, and 3 (44 techniques total). Sets with results: 1, 2, 
 </tr>
 <tr>
 <td class='tech-id'>T1547.001</td>
-<td class='tactic'>Privilege Escalation; Persistence</td>
+<td class='title'>Registry Run Keys / Startup Folder</td>
+<td class='tactic'>Persistence; Privilege Escalation</td>
 <td class='title' title='Potential Persistence Attempt Via Run Keys Using Reg.EXE'>Potential Persistence Attempt Via Run Keys Using Reg.EXE</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -271,6 +279,7 @@ Sets included: sets 1, 2, and 3 (44 techniques total). Sets with results: 1, 2, 
 </tr>
 <tr>
 <td class='tech-id'>T1136.001</td>
+<td class='title'>Local Account</td>
 <td class='tactic'>Persistence</td>
 <td class='title' title='New User Created Via Net.EXE'>New User Created Via Net.EXE</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
@@ -296,7 +305,8 @@ Sets included: sets 1, 2, and 3 (44 techniques total). Sets with results: 1, 2, 
 </tr>
 <tr>
 <td class='tech-id'>T1003.001</td>
-<td class='tactic'>Defense Evasion; Credential Access</td>
+<td class='title'>LSASS Memory</td>
+<td class='tactic'>Credential Access</td>
 <td class='title' title='Potential LSASS Process Dump Via Procdump'>Potential LSASS Process Dump Via Procdump</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -321,7 +331,8 @@ Sets included: sets 1, 2, and 3 (44 techniques total). Sets with results: 1, 2, 
 </tr>
 <tr>
 <td class='tech-id'>T1197</td>
-<td class='tactic'>Persistence; Execution; Defense Evasion; Command and Control</td>
+<td class='title'>BITS Jobs</td>
+<td class='tactic'>Defense Evasion; Persistence; Execution</td>
 <td class='title' title='File With Suspicious Extension Downloaded Via Bitsadmin'>File With Suspicious Extension Downloaded Via Bitsadmin</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -346,6 +357,7 @@ Sets included: sets 1, 2, and 3 (44 techniques total). Sets with results: 1, 2, 
 </tr>
 <tr>
 <td class='tech-id'>T1047</td>
+<td class='title'>Windows Management Instrumentation</td>
 <td class='tactic'>Execution</td>
 <td class='title' title='Process Creation Attempt via Wmic.EXE'>Process Creation Attempt via Wmic.EXE</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
@@ -371,7 +383,8 @@ Sets included: sets 1, 2, and 3 (44 techniques total). Sets with results: 1, 2, 
 </tr>
 <tr>
 <td class='tech-id'>T1033</td>
-<td class='tactic'>Privilege Escalation; Discovery</td>
+<td class='title'>System Owner/User Discovery</td>
+<td class='tactic'>Discovery</td>
 <td class='title' title='Security Privileges Enumeration Via Whoami.EXE'>Security Privileges Enumeration Via Whoami.EXE</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -396,6 +409,7 @@ Sets included: sets 1, 2, and 3 (44 techniques total). Sets with results: 1, 2, 
 </tr>
 <tr>
 <td class='tech-id'>T1218.001</td>
+<td class='title'>Compiled HTML File</td>
 <td class='tactic'>Defense Evasion</td>
 <td class='title' title='Remote CHM File Download/Execution Via HH.EXE'>Remote CHM File Download/Execution Via HH.EXE</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
@@ -421,6 +435,7 @@ Sets included: sets 1, 2, and 3 (44 techniques total). Sets with results: 1, 2, 
 </tr>
 <tr>
 <td class='tech-id'>T1021.002</td>
+<td class='title'>SMB/Windows Admin Shares</td>
 <td class='tactic'>Lateral Movement</td>
 <td class='title' title='Windows Admin Share Mount Via Net.EXE'>Windows Admin Share Mount Via Net.EXE</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
@@ -446,6 +461,7 @@ Sets included: sets 1, 2, and 3 (44 techniques total). Sets with results: 1, 2, 
 </tr>
 <tr>
 <td class='tech-id'>T1560.001</td>
+<td class='title'>Archive via Utility</td>
 <td class='tactic'>Collection</td>
 <td class='title' title='Rar Usage with Password and Compression Level'>Rar Usage with Password and Compression Level</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
@@ -471,6 +487,7 @@ Sets included: sets 1, 2, and 3 (44 techniques total). Sets with results: 1, 2, 
 </tr>
 <tr>
 <td class='tech-id'>T1222.001</td>
+<td class='title'>Windows Permissions</td>
 <td class='tactic'>Defense Evasion</td>
 <td class='title' title='Suspicious Recursive Takeown'>Suspicious Recursive Takeown</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
@@ -496,6 +513,7 @@ Sets included: sets 1, 2, and 3 (44 techniques total). Sets with results: 1, 2, 
 </tr>
 <tr>
 <td class='tech-id'>T1489</td>
+<td class='title'>Service Stop</td>
 <td class='tactic'>Impact</td>
 <td class='title' title='Stop Windows Service Via Net.EXE'>Stop Windows Service Via Net.EXE</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
@@ -521,6 +539,7 @@ Sets included: sets 1, 2, and 3 (44 techniques total). Sets with results: 1, 2, 
 </tr>
 <tr>
 <td class='tech-id'>T1482</td>
+<td class='title'>Domain Trust Discovery</td>
 <td class='tactic'>Discovery</td>
 <td class='title' title='Domain Trust Discovery Via Dsquery'>Domain Trust Discovery Via Dsquery</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
@@ -546,6 +565,7 @@ Sets included: sets 1, 2, and 3 (44 techniques total). Sets with results: 1, 2, 
 </tr>
 <tr>
 <td class='tech-id'>T1218.008</td>
+<td class='title'>Odbcconf</td>
 <td class='tactic'>Defense Evasion</td>
 <td class='title' title='New DLL Registered Via Odbcconf.EXE'>New DLL Registered Via Odbcconf.EXE</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
@@ -571,6 +591,7 @@ Sets included: sets 1, 2, and 3 (44 techniques total). Sets with results: 1, 2, 
 </tr>
 <tr>
 <td class='tech-id'>T1546.007</td>
+<td class='title'>Netsh Helper DLL</td>
 <td class='tactic'>Privilege Escalation; Persistence</td>
 <td class='title' title='Potential Persistence Via Netsh Helper DLL'>Potential Persistence Via Netsh Helper DLL</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
@@ -596,7 +617,8 @@ Sets included: sets 1, 2, and 3 (44 techniques total). Sets with results: 1, 2, 
 </tr>
 <tr>
 <td class='tech-id'>T1090</td>
-<td class='tactic'>Lateral Movement; Command and Control</td>
+<td class='title'>Proxy</td>
+<td class='tactic'>Command and Control</td>
 <td class='title' title='RDP Port Forwarding Rule Added Via Netsh.EXE'>RDP Port Forwarding Rule Added Via Netsh.EXE</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
 <td class='verdict' style='background:#f44336;'>MISSED</td>
@@ -621,6 +643,7 @@ Sets included: sets 1, 2, and 3 (44 techniques total). Sets with results: 1, 2, 
 </tr>
 <tr>
 <td class='tech-id'>T1485</td>
+<td class='title'>Data Destruction</td>
 <td class='tactic'>Impact</td>
 <td class='title' title='Deleted Data Overwritten Via Cipher.EXE'>Deleted Data Overwritten Via Cipher.EXE</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
@@ -646,6 +669,7 @@ Sets included: sets 1, 2, and 3 (44 techniques total). Sets with results: 1, 2, 
 </tr>
 <tr>
 <td class='tech-id'>T1490</td>
+<td class='title'>Inhibit System Recovery</td>
 <td class='tactic'>Impact</td>
 <td class='title' title='Boot Configuration Tampering Via Bcdedit.EXE'>Boot Configuration Tampering Via Bcdedit.EXE</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
@@ -671,6 +695,7 @@ Sets included: sets 1, 2, and 3 (44 techniques total). Sets with results: 1, 2, 
 </tr>
 <tr>
 <td class='tech-id'>T1059</td>
+<td class='title'>Command and Scripting Interpreter</td>
 <td class='tactic'>Execution</td>
 <td class='title' title='Forfiles Command Execution'>Forfiles Command Execution</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
@@ -696,6 +721,7 @@ Sets included: sets 1, 2, and 3 (44 techniques total). Sets with results: 1, 2, 
 </tr>
 <tr>
 <td class='tech-id'>T1003.002</td>
+<td class='title'>Security Account Manager</td>
 <td class='tactic'>Credential Access</td>
 <td class='title' title='HackTool - Pypykatz Credentials Dumping Activity'>HackTool - Pypykatz Credentials Dumping Activity</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
@@ -721,6 +747,7 @@ Sets included: sets 1, 2, and 3 (44 techniques total). Sets with results: 1, 2, 
 </tr>
 <tr>
 <td class='tech-id'>T1021.006</td>
+<td class='title'>Windows Remote Management</td>
 <td class='tactic'>Lateral Movement</td>
 <td class='title' title='HackTool - WinRM Access Via Evil-WinRM'>HackTool - WinRM Access Via Evil-WinRM</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
@@ -746,6 +773,7 @@ Sets included: sets 1, 2, and 3 (44 techniques total). Sets with results: 1, 2, 
 </tr>
 <tr>
 <td class='tech-id'>T1040</td>
+<td class='title'>Network Sniffing</td>
 <td class='tactic'>Credential Access; Discovery</td>
 <td class='title' title='Potential Network Sniffing Activity Using Network Tools'>Potential Network Sniffing Activity Using Network Tools</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
@@ -771,7 +799,8 @@ Sets included: sets 1, 2, and 3 (44 techniques total). Sets with results: 1, 2, 
 </tr>
 <tr>
 <td class='tech-id'>T1053.002</td>
-<td class='tactic'>Persistence; Execution; Privilege Escalation</td>
+<td class='title'>At</td>
+<td class='tactic'>Execution; Persistence; Privilege Escalation</td>
 <td class='title' title='Interactive AT Job'>Interactive AT Job</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -796,6 +825,7 @@ Sets included: sets 1, 2, and 3 (44 techniques total). Sets with results: 1, 2, 
 </tr>
 <tr>
 <td class='tech-id'>T1082</td>
+<td class='title'>System Information Discovery</td>
 <td class='tactic'>Discovery</td>
 <td class='title' title='Suspicious Kernel Dump Using Dtrace'>Suspicious Kernel Dump Using Dtrace</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
@@ -821,7 +851,8 @@ Sets included: sets 1, 2, and 3 (44 techniques total). Sets with results: 1, 2, 
 </tr>
 <tr>
 <td class='tech-id'>T1112</td>
-<td class='tactic'>Persistence; Defense Evasion</td>
+<td class='title'>Modify Registry</td>
+<td class='tactic'>Defense Evasion; Persistence</td>
 <td class='title' title='Suspicious VBoxDrvInst.exe Parameters'>Suspicious VBoxDrvInst.exe Parameters</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -846,6 +877,7 @@ Sets included: sets 1, 2, and 3 (44 techniques total). Sets with results: 1, 2, 
 </tr>
 <tr>
 <td class='tech-id'>T1113</td>
+<td class='title'>Screen Capture</td>
 <td class='tactic'>Collection</td>
 <td class='title' title='Screen Capture Activity Via Psr.EXE'>Screen Capture Activity Via Psr.EXE</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
@@ -871,6 +903,7 @@ Sets included: sets 1, 2, and 3 (44 techniques total). Sets with results: 1, 2, 
 </tr>
 <tr>
 <td class='tech-id'>T1123</td>
+<td class='title'>Audio Capture</td>
 <td class='tactic'>Collection</td>
 <td class='title' title='Audio Capture via SoundRecorder'>Audio Capture via SoundRecorder</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
@@ -896,6 +929,7 @@ Sets included: sets 1, 2, and 3 (44 techniques total). Sets with results: 1, 2, 
 </tr>
 <tr>
 <td class='tech-id'>T1176.001</td>
+<td class='title'>Browser Extensions</td>
 <td class='tactic'>Persistence</td>
 <td class='title' title='Chromium Browser Instance Executed With Custom Extension'>Chromium Browser Instance Executed With Custom Extension</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
@@ -921,7 +955,8 @@ Sets included: sets 1, 2, and 3 (44 techniques total). Sets with results: 1, 2, 
 </tr>
 <tr>
 <td class='tech-id'>T1185</td>
-<td class='tactic'>Credential Access; Collection</td>
+<td class='title'>Browser Session Hijacking</td>
+<td class='tactic'>Collection</td>
 <td class='title' title='Browser Started with Remote Debugging'>Browser Started with Remote Debugging</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -946,7 +981,8 @@ Sets included: sets 1, 2, and 3 (44 techniques total). Sets with results: 1, 2, 
 </tr>
 <tr>
 <td class='tech-id'>T1202</td>
-<td class='tactic'>Execution; Defense Evasion</td>
+<td class='title'>Indirect Command Execution</td>
+<td class='tactic'>Defense Evasion</td>
 <td class='title' title='Suspicious Runscripthelper.exe'>Suspicious Runscripthelper.exe</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -971,6 +1007,7 @@ Sets included: sets 1, 2, and 3 (44 techniques total). Sets with results: 1, 2, 
 </tr>
 <tr>
 <td class='tech-id'>T1218</td>
+<td class='title'>System Binary Proxy Execution</td>
 <td class='tactic'>Defense Evasion</td>
 <td class='title' title='Potential Password Spraying Attempt Using Dsacls.EXE'>Potential Password Spraying Attempt Using Dsacls.EXE</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
@@ -996,7 +1033,8 @@ Sets included: sets 1, 2, and 3 (44 techniques total). Sets with results: 1, 2, 
 </tr>
 <tr>
 <td class='tech-id'>T1219.002</td>
-<td class='tactic'>Command and Control; Persistence</td>
+<td class='title'>Remote Desktop Software</td>
+<td class='tactic'>Command and Control</td>
 <td class='title' title='Potential Amazon SSM Agent Hijacking'>Potential Amazon SSM Agent Hijacking</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -1021,6 +1059,7 @@ Sets included: sets 1, 2, and 3 (44 techniques total). Sets with results: 1, 2, 
 </tr>
 <tr>
 <td class='tech-id'>T1220</td>
+<td class='title'>XSL Script Processing</td>
 <td class='tactic'>Defense Evasion</td>
 <td class='title' title='Remote XSL Execution Via Msxsl.EXE'>Remote XSL Execution Via Msxsl.EXE</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
@@ -1046,6 +1085,7 @@ Sets included: sets 1, 2, and 3 (44 techniques total). Sets with results: 1, 2, 
 </tr>
 <tr>
 <td class='tech-id'>T1529</td>
+<td class='title'>System Shutdown/Reboot</td>
 <td class='tactic'>Impact</td>
 <td class='title' title='Suspicious Execution of Shutdown'>Suspicious Execution of Shutdown</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
@@ -1071,6 +1111,7 @@ Sets included: sets 1, 2, and 3 (44 techniques total). Sets with results: 1, 2, 
 </tr>
 <tr>
 <td class='tech-id'>T1563.002</td>
+<td class='title'>RDP Hijacking</td>
 <td class='tactic'>Lateral Movement</td>
 <td class='title' title='Potential MSTSC Shadowing Activity'>Potential MSTSC Shadowing Activity</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
@@ -1096,7 +1137,8 @@ Sets included: sets 1, 2, and 3 (44 techniques total). Sets with results: 1, 2, 
 </tr>
 <tr>
 <td class='tech-id'>T1564.004</td>
-<td class='tactic'>Command and Control; Defense Evasion</td>
+<td class='title'>NTFS File Attributes</td>
+<td class='tactic'>Defense Evasion</td>
 <td class='title' title='PrintBrm ZIP Creation of Extraction'>PrintBrm ZIP Creation of Extraction</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -1121,7 +1163,8 @@ Sets included: sets 1, 2, and 3 (44 techniques total). Sets with results: 1, 2, 
 </tr>
 <tr>
 <td class='tech-id'>T1572</td>
-<td class='tactic'>Command and Control; Lateral Movement</td>
+<td class='title'>Protocol Tunneling</td>
+<td class='tactic'>Command and Control</td>
 <td class='title' title='Port Forwarding Activity Via SSH.EXE'>Port Forwarding Activity Via SSH.EXE</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -1146,7 +1189,8 @@ Sets included: sets 1, 2, and 3 (44 techniques total). Sets with results: 1, 2, 
 </tr>
 <tr>
 <td class='tech-id'>T1574</td>
-<td class='tactic'>Privilege Escalation; Persistence; Execution; Defense Evasion</td>
+<td class='title'>Hijack Execution Flow</td>
+<td class='tactic'>Defense Evasion; Execution</td>
 <td class='title' title='DLL Execution Via Register-cimprovider.exe'>DLL Execution Via Register-cimprovider.exe</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
 <td class='verdict' style='background:#9e9e9e;'>NOT_TESTED</td>
@@ -1171,6 +1215,7 @@ Sets included: sets 1, 2, and 3 (44 techniques total). Sets with results: 1, 2, 
 </tr>
 <tr>
 <td class='tech-id'>T1615</td>
+<td class='title'>Group Policy Discovery</td>
 <td class='tactic'>Discovery</td>
 <td class='title' title='Gpresult Display Group Policy Information'>Gpresult Display Group Policy Information</td>
 <td class='status' style='background:#4caf50;'>PASS</td>
@@ -1196,7 +1241,7 @@ Sets included: sets 1, 2, and 3 (44 techniques total). Sets with results: 1, 2, 
 </tr>
 </tbody>
 <tfoot><tr>
-<td colspan='4' style='text-align:right;'>Strict Pass Total (matches RESULTS_SUMMARY.md):</td>
+<td colspan='5' style='text-align:right;'>Strict Pass Total (matches RESULTS_SUMMARY.md):</td>
 <td style='text-align:center;'>0/12</td>
 <td style='text-align:center;'>3/36</td>
 <td style='text-align:center;'>2/12</td>
@@ -1223,28 +1268,28 @@ Sets included: sets 1, 2, and 3 (44 techniques total). Sets with results: 1, 2, 
 <p>The following techniques did not achieve an all-repeat strict pass under any tested configuration:</p>
 <h3>Set 1 (4 techniques)</h3>
 <ul>
-<li><code>T1059.001</code>: Blocking values in the saved rules were -nop, -w hidden and http://, which are in the shown line but not in the variant.</li>
-<li><code>T1547.001</code>: Blocking value was the exact key path HKCU\Software\Microsoft\Windows\CurrentVersion\Run. The variant uses HKLM and RunOnce.</li>
-<li><code>T1136.001</code>: The variant runs net1.exe instead of net.exe (alias). Needs outside knowledge. Left out of the &quot;out of 30&quot; numbers.</li>
-<li><code>T1003.001</code>: The variant runs procdump64.exe instead of procdump.exe (alias). Needs outside knowledge. Left out of the &quot;out of 30&quot; numbers.</li>
+<li><code>T1059.001 (PowerShell)</code>: Blocking values in the saved rules were -nop, -w hidden and http://, which are in the shown line but not in the variant.</li>
+<li><code>T1547.001 (Registry Run Keys / Startup Folder)</code>: Blocking value was the exact key path HKCU\Software\Microsoft\Windows\CurrentVersion\Run. The variant uses HKLM and RunOnce.</li>
+<li><code>T1136.001 (Local Account)</code>: The variant runs net1.exe instead of net.exe (alias). Needs outside knowledge. Left out of the &quot;out of 30&quot; numbers.</li>
+<li><code>T1003.001 (LSASS Memory)</code>: The variant runs procdump64.exe instead of procdump.exe (alias). Needs outside knowledge. Left out of the &quot;out of 30&quot; numbers.</li>
 </ul>
 <h3>Set 2 (10 techniques)</h3>
 <p>Set 2 was run once, with the basic prompt (v1), and never with the final prompts. Some of its variants need outside knowledge (T1489 net1.exe, T1090 which port, T1490 another bcdedit setting, T1059 -c versus /c). Do not read this list as a result about the final system.</p>
 <ul>
-<li><code>T1218.001</code>: no cause recorded</li>
-<li><code>T1021.002</code>: no cause recorded</li>
-<li><code>T1560.001</code>: no cause recorded</li>
-<li><code>T1222.001</code>: no cause recorded</li>
-<li><code>T1489</code>: no cause recorded</li>
-<li><code>T1482</code>: no cause recorded</li>
-<li><code>T1218.008</code>: no cause recorded</li>
-<li><code>T1090</code>: no cause recorded</li>
-<li><code>T1490</code>: no cause recorded</li>
-<li><code>T1059</code>: no cause recorded</li>
+<li><code>T1218.001 (Compiled HTML File)</code>: no cause recorded</li>
+<li><code>T1021.002 (SMB/Windows Admin Shares)</code>: no cause recorded</li>
+<li><code>T1560.001 (Archive via Utility)</code>: no cause recorded</li>
+<li><code>T1222.001 (Windows Permissions)</code>: no cause recorded</li>
+<li><code>T1489 (Service Stop)</code>: no cause recorded</li>
+<li><code>T1482 (Domain Trust Discovery)</code>: no cause recorded</li>
+<li><code>T1218.008 (Odbcconf)</code>: no cause recorded</li>
+<li><code>T1090 (Proxy)</code>: no cause recorded</li>
+<li><code>T1490 (Inhibit System Recovery)</code>: no cause recorded</li>
+<li><code>T1059 (Command and Scripting Interpreter)</code>: no cause recorded</li>
 </ul>
-<h3>Set 3 (1 techniques)</h3>
+<h3>Set 3 (1 technique)</h3>
 <ul>
-<li><code>T1529</code>: Known flaw in our test: the description says &quot;immediate reboot&quot; but the variant is a 30 second delay (/t 30), so rules that kept /t 0 failed.</li>
+<li><code>T1529 (System Shutdown/Reboot)</code>: Known flaw in our test: the description says &quot;immediate reboot&quot; but the variant is a 30 second delay (/t 30), so rules that kept /t 0 failed.</li>
 </ul>
 </div>
 </body></html>

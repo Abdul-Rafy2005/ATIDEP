@@ -274,6 +274,23 @@ Antigravity started on 2026-11-06
   - PROGRESS.md (updated)
 - WARN lines: none
 
+### 2026-11-24: Task 12 - MITRE ATT&CK STIX lookup (file-only, no TAXII)
+- Status: DONE
+- Files created or changed:
+  - data/enterprise-attack.json (downloaded: 55 MB STIX 2.1 bundle from MITRE GitHub, gitignored)
+  - data/build_attack_lookup.py (created: parses STIX bundle into small lookup JSON, maps stealth and defense-impairment slugs to Defense Evasion)
+  - data/attack_lookup.json (created: 706 techniques with official name, tactics, and URL)
+  - data/attack_lookup.py (created: accessor module with get_technique, get_name, get_tactics, get_url)
+  - coverage/build_coverage.py (updated: imports attack_lookup, adds attack_name column to CSV/HTML/MD, uses ATT&CK tactics when available)
+  - coverage/coverage.csv (regenerated with attack_name column and ATT&CK tactics)
+  - coverage/coverage.html (regenerated with ATT&CK Name column and official tactic names)
+  - coverage/COVERAGE.md (regenerated with ATT&CK names in covered and never-covered lists)
+  - coverage/README.md (regenerated)
+  - dashboard/data_loader.py (updated: reads attack_name from coverage.csv, uses it as display title)
+  - .gitignore (updated: added enterprise-attack.json)
+  - tests/test_attack_lookup.py (created: 12 tests covering file structure, accessor functions, tactic mapping, and all 44 techniques present)
+  - PROGRESS.md (updated)
+- WARN lines: none
 
 ### 2026-11-23: Task 11c - Comprehensive feature audit, interactive API wiring, and inter-view handoffs
 - Status: DONE
@@ -324,4 +341,19 @@ Antigravity started on 2026-11-06
   - PROGRESS.md (updated)
 - Build: npm run build passes clean (485.94 kB JS, 44.50 kB CSS)
 - Tests: 13/13 pytest tests pass
+- WARN lines: none
+
+### 2026-11-24: Task 13 - Full system unit test run
+- Status: DONE
+- What: Ran all 20 test files across the system (16 in tests/, 4 in validator/) individually and as a full suite.
+- Results:
+  - tests/ (pytest): 99/99 passed (after fixing one stale assertion, see below)
+  - validator/test_real.py: 7/7 real SigmaHQ rules fire correctly on attack logs
+  - validator/test_set2_real_rules.py: 12/12 set 2 rules pass strict gate (attack + variant + no harmless)
+  - validator/test_set1_variants.py: 12/12 set 1 rules pass strict gate
+  - validator/test_set3_real_rules.py: 20/20 set 3 rules pass strict gate
+- Fix applied: tests/test_set3_guard.py::test_no_log_or_folder_created assumed set3_use_log.csv never exists. After the actual set 3 experiment was run, this file legitimately exists. Changed the assertion to verify the guard does not modify the file (mtime check) rather than asserting it does not exist.
+- Files changed:
+  - tests/test_set3_guard.py (updated: test_no_log_or_folder_created now checks mtime instead of non-existence)
+  - PROGRESS.md (updated)
 - WARN lines: none

@@ -11,3 +11,6 @@ dashboard/frontend/node_modules/
 dashboard/frontend/dist/
 .DS_Store
 Thumbs.db
+
+# Large STIX bundle (re-download with: python data/build_attack_lookup.py)
+data/enterprise-attack.json

@@ -57,9 +57,21 @@ def test_guard_refuses_when_frozen_missing():
 
 
 def test_no_log_or_folder_created():
-    # Ensure set3_use_log.csv was not created during these refused attempts
+    # The guard tests above must not append to the set3 use log.
+    # The file may already exist from a legitimate prior run, so check
+    # that the guard tests did not modify it (mtime unchanged).
     log_file = os.path.join(REPO_ROOT, "results", "set3_use_log.csv")
-    assert not os.path.exists(log_file), f"results/set3_use_log.csv should not exist, but found it"
+    if os.path.exists(log_file):
+        mtime = os.path.getmtime(log_file)
+        # Re-run a refused command and verify mtime is unchanged
+        run_experiment_cmd([
+            "--set", "3",
+            "--prompt", "v2_1",
+            "--models", "qwen2.5-coder:7b",
+            "--reason", "testing guard again"
+        ])
+        assert os.path.getmtime(log_file) == mtime, \
+            "set3_use_log.csv was modified by a refused guard attempt"
 
 
 if __name__ == "__main__":

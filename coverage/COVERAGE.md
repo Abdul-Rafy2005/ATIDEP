@@ -36,62 +36,62 @@ Techniques with a strict pass in all 3 repeats under the frozen configurations:
 
 ## Covered Techniques (29 of 44)
 
-| Technique ID | Set | Tactic | Reference Rule Title |
-|---|---|---|---|
-| `T1218.011` | Set 1 | Defense Evasion | Suspicious Rundll32 Activity Invoking Sys File |
-| `T1218.005` | Set 1 | Defense Evasion | Suspicious JavaScript Execution Via Mshta.EXE |
-| `T1218.010` | Set 1 | Defense Evasion | Potentially Suspicious Regsvr32 HTTP IP Pattern |
-| `T1105` | Set 1 | Defense Evasion; Command and Control | Suspicious Download Via Certutil.EXE |
-| `T1053.005` | Set 1 | Privilege Escalation; Execution; Persistence | Suspicious Scheduled Task Creation Involving Temp Folder |
-| `T1197` | Set 1 | Persistence; Execution; Defense Evasion; Command and Control | File With Suspicious Extension Downloaded Via Bitsadmin |
-| `T1047` | Set 1 | Execution | Process Creation Attempt via Wmic.EXE |
-| `T1033` | Set 1 | Privilege Escalation; Discovery | Security Privileges Enumeration Via Whoami.EXE |
-| `T1546.007` | Set 2 | Privilege Escalation; Persistence | Potential Persistence Via Netsh Helper DLL |
-| `T1485` | Set 2 | Impact | Deleted Data Overwritten Via Cipher.EXE |
-| `T1003.002` | Set 3 | Credential Access | HackTool - Pypykatz Credentials Dumping Activity |
-| `T1021.006` | Set 3 | Lateral Movement | HackTool - WinRM Access Via Evil-WinRM |
-| `T1040` | Set 3 | Credential Access; Discovery | Potential Network Sniffing Activity Using Network Tools |
-| `T1053.002` | Set 3 | Persistence; Execution; Privilege Escalation | Interactive AT Job |
-| `T1082` | Set 3 | Discovery | Suspicious Kernel Dump Using Dtrace |
-| `T1112` | Set 3 | Persistence; Defense Evasion | Suspicious VBoxDrvInst.exe Parameters |
-| `T1113` | Set 3 | Collection | Screen Capture Activity Via Psr.EXE |
-| `T1123` | Set 3 | Collection | Audio Capture via SoundRecorder |
-| `T1176.001` | Set 3 | Persistence | Chromium Browser Instance Executed With Custom Extension |
-| `T1185` | Set 3 | Credential Access; Collection | Browser Started with Remote Debugging |
-| `T1202` | Set 3 | Execution; Defense Evasion | Suspicious Runscripthelper.exe |
-| `T1218` | Set 3 | Defense Evasion | Potential Password Spraying Attempt Using Dsacls.EXE |
-| `T1219.002` | Set 3 | Command and Control; Persistence | Potential Amazon SSM Agent Hijacking |
-| `T1220` | Set 3 | Defense Evasion | Remote XSL Execution Via Msxsl.EXE |
-| `T1563.002` | Set 3 | Lateral Movement | Potential MSTSC Shadowing Activity |
-| `T1564.004` | Set 3 | Command and Control; Defense Evasion | PrintBrm ZIP Creation of Extraction |
-| `T1572` | Set 3 | Command and Control; Lateral Movement | Port Forwarding Activity Via SSH.EXE |
-| `T1574` | Set 3 | Privilege Escalation; Persistence; Execution; Defense Evasion | DLL Execution Via Register-cimprovider.exe |
-| `T1615` | Set 3 | Discovery | Gpresult Display Group Policy Information |
+| Technique ID | ATT&CK Name | Set | Tactic | Reference Rule Title |
+|---|---|---|---|---|
+| `T1218.011` | Rundll32 | Set 1 | Defense Evasion | Suspicious Rundll32 Activity Invoking Sys File |
+| `T1218.005` | Mshta | Set 1 | Defense Evasion | Suspicious JavaScript Execution Via Mshta.EXE |
+| `T1218.010` | Regsvr32 | Set 1 | Defense Evasion | Potentially Suspicious Regsvr32 HTTP IP Pattern |
+| `T1105` | Ingress Tool Transfer | Set 1 | Command and Control | Suspicious Download Via Certutil.EXE |
+| `T1053.005` | Scheduled Task | Set 1 | Execution; Persistence; Privilege Escalation | Suspicious Scheduled Task Creation Involving Temp Folder |
+| `T1197` | BITS Jobs | Set 1 | Defense Evasion; Persistence; Execution | File With Suspicious Extension Downloaded Via Bitsadmin |
+| `T1047` | Windows Management Instrumentation | Set 1 | Execution | Process Creation Attempt via Wmic.EXE |
+| `T1033` | System Owner/User Discovery | Set 1 | Discovery | Security Privileges Enumeration Via Whoami.EXE |
+| `T1546.007` | Netsh Helper DLL | Set 2 | Privilege Escalation; Persistence | Potential Persistence Via Netsh Helper DLL |
+| `T1485` | Data Destruction | Set 2 | Impact | Deleted Data Overwritten Via Cipher.EXE |
+| `T1003.002` | Security Account Manager | Set 3 | Credential Access | HackTool - Pypykatz Credentials Dumping Activity |
+| `T1021.006` | Windows Remote Management | Set 3 | Lateral Movement | HackTool - WinRM Access Via Evil-WinRM |
+| `T1040` | Network Sniffing | Set 3 | Credential Access; Discovery | Potential Network Sniffing Activity Using Network Tools |
+| `T1053.002` | At | Set 3 | Execution; Persistence; Privilege Escalation | Interactive AT Job |
+| `T1082` | System Information Discovery | Set 3 | Discovery | Suspicious Kernel Dump Using Dtrace |
+| `T1112` | Modify Registry | Set 3 | Defense Evasion; Persistence | Suspicious VBoxDrvInst.exe Parameters |
+| `T1113` | Screen Capture | Set 3 | Collection | Screen Capture Activity Via Psr.EXE |
+| `T1123` | Audio Capture | Set 3 | Collection | Audio Capture via SoundRecorder |
+| `T1176.001` | Browser Extensions | Set 3 | Persistence | Chromium Browser Instance Executed With Custom Extension |
+| `T1185` | Browser Session Hijacking | Set 3 | Collection | Browser Started with Remote Debugging |
+| `T1202` | Indirect Command Execution | Set 3 | Defense Evasion | Suspicious Runscripthelper.exe |
+| `T1218` | System Binary Proxy Execution | Set 3 | Defense Evasion | Potential Password Spraying Attempt Using Dsacls.EXE |
+| `T1219.002` | Remote Desktop Software | Set 3 | Command and Control | Potential Amazon SSM Agent Hijacking |
+| `T1220` | XSL Script Processing | Set 3 | Defense Evasion | Remote XSL Execution Via Msxsl.EXE |
+| `T1563.002` | RDP Hijacking | Set 3 | Lateral Movement | Potential MSTSC Shadowing Activity |
+| `T1564.004` | NTFS File Attributes | Set 3 | Defense Evasion | PrintBrm ZIP Creation of Extraction |
+| `T1572` | Protocol Tunneling | Set 3 | Command and Control | Port Forwarding Activity Via SSH.EXE |
+| `T1574` | Hijack Execution Flow | Set 3 | Defense Evasion; Execution | DLL Execution Via Register-cimprovider.exe |
+| `T1615` | Group Policy Discovery | Set 3 | Discovery | Gpresult Display Group Policy Information |
 
 ## Never-Covered Techniques (15 of 44)
 
 The following 15 techniques did not achieve an all-repeat strict pass under any tested configuration:
 
 ### Set 1 (4 techniques)
-- `T1059.001`: Blocking values in the saved rules were -nop, -w hidden and http://, which are in the shown line but not in the variant.
-- `T1547.001`: Blocking value was the exact key path HKCU\Software\Microsoft\Windows\CurrentVersion\Run. The variant uses HKLM and RunOnce.
-- `T1136.001`: The variant runs net1.exe instead of net.exe (alias). Needs outside knowledge. Left out of the "out of 30" numbers.
-- `T1003.001`: The variant runs procdump64.exe instead of procdump.exe (alias). Needs outside knowledge. Left out of the "out of 30" numbers.
+- `T1059.001 (PowerShell)`: Blocking values in the saved rules were -nop, -w hidden and http://, which are in the shown line but not in the variant.
+- `T1547.001 (Registry Run Keys / Startup Folder)`: Blocking value was the exact key path HKCU\Software\Microsoft\Windows\CurrentVersion\Run. The variant uses HKLM and RunOnce.
+- `T1136.001 (Local Account)`: The variant runs net1.exe instead of net.exe (alias). Needs outside knowledge. Left out of the "out of 30" numbers.
+- `T1003.001 (LSASS Memory)`: The variant runs procdump64.exe instead of procdump.exe (alias). Needs outside knowledge. Left out of the "out of 30" numbers.
 
 ### Set 2 (10 techniques)
 Set 2 was run once, with the basic prompt (v1), and never with the final prompts. Some of its variants need outside knowledge (T1489 net1.exe, T1090 which port, T1490 another bcdedit setting, T1059 -c versus /c). Do not read this list as a result about the final system.
-- `T1218.001`: no cause recorded
-- `T1021.002`: no cause recorded
-- `T1560.001`: no cause recorded
-- `T1222.001`: no cause recorded
-- `T1489`: no cause recorded
-- `T1482`: no cause recorded
-- `T1218.008`: no cause recorded
-- `T1090`: no cause recorded
-- `T1490`: no cause recorded
-- `T1059`: no cause recorded
+- `T1218.001 (Compiled HTML File)`: no cause recorded
+- `T1021.002 (SMB/Windows Admin Shares)`: no cause recorded
+- `T1560.001 (Archive via Utility)`: no cause recorded
+- `T1222.001 (Windows Permissions)`: no cause recorded
+- `T1489 (Service Stop)`: no cause recorded
+- `T1482 (Domain Trust Discovery)`: no cause recorded
+- `T1218.008 (Odbcconf)`: no cause recorded
+- `T1090 (Proxy)`: no cause recorded
+- `T1490 (Inhibit System Recovery)`: no cause recorded
+- `T1059 (Command and Scripting Interpreter)`: no cause recorded
 
-### Set 3 (1 techniques)
+### Set 3 (1 technique)
 - `T1529`: Known flaw in our test: the description says "immediate reboot" but the variant is a 30 second delay (/t 30), so rules that kept /t 0 failed.
 
 ## Configuration Strict Pass Totals
