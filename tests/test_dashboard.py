@@ -77,6 +77,8 @@ class TestDashboardRoutes(unittest.TestCase):
             "/pipeline",
             "/technique/T1615",
             "/run/20261111_1500_set3_v3b",
+            "/app",
+            "/app/",
         ]
         for route in routes:
             res = self.client.get(route)
@@ -128,6 +130,67 @@ class TestDashboardRoutes(unittest.TestCase):
         self.assertTrue(data["fires_shown"])
         self.assertTrue(data["fires_variant"])
         self.assertFalse(data["fires_benign"])
+        self.assertIn("reason", data)
+
+    def test_gate_api_noisy(self):
+        rule = (
+            "title: Overly Broad Reg Add\n"
+            "status: test\n"
+            "logsource:\n"
+            "    category: process_creation\n"
+            "    product: windows\n"
+            "detection:\n"
+            "    selection:\n"
+            "        Image|endswith: '\\reg.exe'\n"
+            "        CommandLine|contains: 'add'\n"
+            "    condition: selection\n"
+            "level: low\n"
+        )
+        payload = {
+            "rule_yaml": rule,
+            "set": 1,
+            "technique": "T1547.001",
+        }
+        res = self.client.post("/api/gate", json=payload)
+        self.assertEqual(res.status_code, 200)
+        data = res.get_json()
+        self.assertEqual(data["verdict"], "NOISY")
+        self.assertTrue(data["fires_benign"])
+        self.assertIn("reason", data)
+
+    def test_gate_api_syntax_error(self):
+        rule = "invalid: yaml: [syntax error"
+        payload = {
+            "rule_yaml": rule,
+            "set": 3,
+            "technique": "T1615",
+        }
+        res = self.client.post("/api/gate", json=payload)
+        self.assertEqual(res.status_code, 200)
+        data = res.get_json()
+        self.assertEqual(data["verdict"], "SYNTAX_ERROR")
+        self.assertFalse(data["syntax_ok"])
+        self.assertIn("reason", data)
+
+    def test_pipeline_run_endpoint(self):
+        text = "The attacker executed reg.exe add HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run /v Updater /d C:\\Users\\student\\x.exe to establish persistence."
+        res = self.client.post("/api/pipeline/run", json={"text": text})
+        self.assertEqual(res.status_code, 200)
+        data = res.get_json()
+        self.assertEqual(data["technique_id"], "T1547.001")
+        self.assertIn("reg.exe", data["extracted_command"])
+        self.assertIn("rule_yaml", data)
+        self.assertIn("verdict", data)
+        self.assertIn("model", data)
+
+    def test_pipeline_legacy_endpoint(self):
+        text = "During lateral movement net.exe use \\\\10.0.0.5\\C$ /user:admin Passw0rd was executed."
+        res = self.client.post("/api/pipeline", json={"report_text": text})
+        self.assertEqual(res.status_code, 200)
+        data = res.get_json()
+        self.assertEqual(data["technique_id"], "T1021.002")
+        self.assertIn("net", data["extracted_command"].lower())
+        self.assertIn("rule_yaml", data)
 
 
 if __name__ == "__main__":

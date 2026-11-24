@@ -256,3 +256,72 @@ Antigravity started on 2026-11-06
   - PROGRESS.md (updated)
 - WARN lines: none
 
+### 2026-11-23: Task 11c - Enterprise design system: dark mode, tokens, data density
+- Status: DONE
+- Files created or changed:
+  - dashboard/frontend/src/index.css (rewritten: 34 custom CSS tokens, dark-first theme with light opt-in, verdict and brand tokens, always-dark sidebar tokens)
+  - dashboard/frontend/src/App.tsx (updated: theme state with localStorage, data-theme attribute, dark class toggle, theme props to Header)
+  - dashboard/frontend/src/components/Header.tsx (updated: theme toggle with Sun/Moon icons, token-based classes)
+  - dashboard/frontend/src/components/Sidebar.tsx (updated: always-dark sidebar with fixed zinc/cyan, tighter w-52 width, cyan accent)
+  - dashboard/frontend/src/components/ui/metric-card.tsx (updated: token-based colors, monospace tabular values)
+  - dashboard/frontend/src/components/ui/verdict-badge.tsx (updated: token-based verdict colors with muted/edge variants, role badges)
+  - dashboard/frontend/src/components/ui/skeleton.tsx (created: loading skeleton component)
+  - dashboard/frontend/src/views/OverviewView.tsx (rewritten: token-based colors, SVG radar uses CSS vars, loading pulse, brand-muted hero card)
+  - dashboard/frontend/src/views/CoverageMatrixView.tsx (rewritten: token-based colors, loading state, verdict badges, always-dark code blocks)
+  - dashboard/frontend/src/views/GateValidatorView.tsx (rewritten: token-based colors, always-dark YAML editor, focus rings, verdict tokens)
+  - dashboard/frontend/src/views/RunsView.tsx (rewritten: token-based colors, sortable columns with sort indicators, sticky headers, loading state)
+  - dashboard/frontend/src/views/PipelineView.tsx (rewritten: token-based colors, always-dark code blocks, brand stepper)
+  - PROGRESS.md (updated)
+- WARN lines: none
+
+
+### 2026-11-23: Task 11c - Comprehensive feature audit, interactive API wiring, and inter-view handoffs
+- Status: DONE
+- Files created or changed:
+  - dashboard/pipeline_service.py (created: production pipeline service for TTP extraction, rule drafting, and strict SQLite gate verification across all 44 techniques without crash or exit)
+  - dashboard/app.py (updated: added /api/pipeline/run and /api/pipeline POST routes with dual payload schema, hardened /api/gate with string-to-int set parsing, error handling, reason explanation, and added /app/ route)
+  - dashboard/frontend/src/App.tsx (updated: wired cross-page state handoffs for gateInitialData and selectedRunFolder)
+  - dashboard/frontend/src/views/GateValidatorView.tsx (updated: fixed noisy sample from invalid T1082 to real T1547.001 Reg Add, added initialData hook to auto-load and evaluate rules passed from ATT&CK matrix)
+  - dashboard/frontend/src/views/CoverageMatrixView.tsx (updated: wired Test in Gate Validator button to hand off technique and rule YAML to gate validator, added NOISY and SYNTAX_ERROR status filter options)
+  - dashboard/frontend/src/views/RunsView.tsx (updated: fixed ATT&CK Matrix View button navigation target from invalid matrix to coverage, added initialFolder support)
+  - dashboard/frontend/src/views/OverviewView.tsx (updated: made all run rows in Latest Evaluation Batches interactive with direct navigation to deep-dive inspector in Runs tab)
+  - tests/test_dashboard.py (updated: added automated test cases for /api/pipeline/run, /api/pipeline, /api/gate noisy/syntax-error, and /app /app/ routes)
+  - PROGRESS.md (updated)
+- WARN lines: none
+
+### 2026-11-23: Task 11d - Vector security logo emblem, arrow removal, and browser back/forward history routing
+- Status: DONE
+- Files created or changed:
+  - dashboard/frontend/src/components/AtidepLogo.tsx (created: vector cyber defense shield emblem with gradient precision geometry and detection interceptor glyph)
+  - dashboard/frontend/src/components/Sidebar.tsx (updated: replaced generic square with AtidepLogo)
+  - dashboard/frontend/src/views/OverviewView.tsx (updated: removed ArrowRight from Launch Pipeline Studio button and ArrowUpRight from View All 14 Runs button)
+  - dashboard/frontend/src/views/PipelineView.tsx (updated: removed ArrowRight from Execute Detection Pipeline button)
+  - dashboard/frontend/src/App.tsx (updated: integrated URL hash history synchronization with popstate/hashchange listeners so browser Back and Forward buttons navigate cleanly between tabs without routing away)
+  - PROGRESS.md (updated)
+- WARN lines: none
+
+### 2026-11-23: Task 12 - Enterprise UI polish (5-phase frontend transformation)
+- Status: DONE
+- Summary: Transformed the React dashboard from AI-generated appearance to polished enterprise-grade design through systematic audit, design system definition, and component-level implementation across all views.
+- Design decisions:
+  - Primary accent: indigo-600 (replacing generic blue-600)
+  - Verdict palette: PASS=emerald, TOO_NARROW=amber, NOISY=orange, SYNTAX_ERROR/MISSED_SHOWN=rose
+  - Role badges: primary=indigo, baseline=slate
+  - Typography: semibold headers (not extrabold), normal case labels, font-mono for data values only
+  - Removed: fake SOC chrome, spotlight animation, excessive uppercase/tracking-wider, font-extrabold overuse, animate-pulse decorations, hardcoded stat values
+- Files created or changed:
+  - dashboard/frontend/src/components/ui/metric-card.tsx (created: reusable KPI card component replacing repeated inline card patterns)
+  - dashboard/frontend/src/components/ui/verdict-badge.tsx (created: shared VerdictBadge component with semantic verdict and role badge color utilities)
+  - dashboard/frontend/src/index.css (updated: removed spotlight animation keyframes and .animate-spotlight class)
+  - dashboard/frontend/src/components/AtidepLogo.tsx (rewritten: simplified from complex gradient SVG to clean flat shield with currentColor)
+  - dashboard/frontend/src/components/Sidebar.tsx (rewritten: removed SOC Sentinel branding, PROTOTYPE badge, SYSTEM HEALTHY pulse, Lead Detection Engineer title; simplified nav labels and group names)
+  - dashboard/frontend/src/components/Header.tsx (rewritten: removed ATIDEP Operations label, RTX chip, animate-pulse Ollama dot, FAST FYP-1 badge; simplified page titles)
+  - dashboard/frontend/src/views/OverviewView.tsx (rewritten: removed Spotlight hero, used MetricCard for KPIs, semantic benchmark colors, cleaner radar inspector)
+  - dashboard/frontend/src/views/CoverageMatrixView.tsx (rewritten: imported VerdictBadge for semantic verdict colors, used MetricCard for stats, indigo selection states, cleaner matrix tiles and inspector)
+  - dashboard/frontend/src/views/GateValidatorView.tsx (rewritten: semantic checklist colors emerald/rose, semantic verdict banner via getVerdictStyle, indigo primary button)
+  - dashboard/frontend/src/views/RunsView.tsx (rewritten: computed stats from data, imported shared badge styles, semantic indigo progress bars, cleaner analytics cards)
+  - dashboard/frontend/src/views/PipelineView.tsx (rewritten: indigo stepper and buttons, semantic verdict display via getVerdictStyle, cleaner architecture cards)
+  - PROGRESS.md (updated)
+- Build: npm run build passes clean (485.94 kB JS, 44.50 kB CSS)
+- Tests: 13/13 pytest tests pass
+- WARN lines: none

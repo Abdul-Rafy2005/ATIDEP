@@ -37,6 +37,7 @@ FRONTEND_DIST = os.path.join(os.path.dirname(__file__), "frontend", "dist")
 # ---- HTML pages ----
 
 @app.route("/app")
+@app.route("/app/")
 @app.route("/app/<path:path>")
 def serve_react_app(path=""):
     if path and os.path.exists(os.path.join(FRONTEND_DIST, path)):
@@ -153,8 +154,11 @@ def api_gate():
     if not data:
         return jsonify({"error": "No JSON body"}), 400
     rule_yaml = data.get("rule_yaml", "")
-    set_id = data.get("set", 1)
-    technique = data.get("technique", "")
+    try:
+        set_id = int(data.get("set", 1))
+    except (ValueError, TypeError):
+        set_id = 1
+    technique = (data.get("technique") or "").strip()
     if not rule_yaml or not technique:
         return jsonify({"error": "Missing rule_yaml or technique"}), 400
     try:
@@ -164,6 +168,20 @@ def api_gate():
         from dashboard.data_loader import load_technique_detail
         detail = load_technique_detail(technique)
         events = detail.get("events", {}).get(str(set_id), {}) if detail else {}
+
+        reason = res.error
+        if not reason:
+            if res.verdict == "PASS":
+                reason = "Caught shown attack and hidden variant, quiet on harmless near-miss line"
+            elif res.verdict == "TOO_NARROW":
+                reason = "Caught shown line but missed hidden evasion variant"
+            elif res.verdict == "NOISY":
+                reason = "Fired on harmless near-miss baseline commands"
+            elif res.verdict == "MISSED_SHOWN":
+                reason = "Missed the shown attack line"
+            elif res.verdict == "SYNTAX_ERROR":
+                reason = f"Syntax error: {res.error}"
+
         return jsonify({
             "syntax_ok": res.syntax_ok,
             "fires_shown": res.fires_shown,
@@ -173,27 +191,27 @@ def api_gate():
             "strict_pass": res.strict_pass,
             "verdict": res.verdict,
             "error": res.error,
+            "reason": reason,
             "events": events,
         })
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return jsonify({"error": str(e), "reason": f"Evaluation error: {str(e)}"}), 500
 
 
 @app.route("/api/pipeline", methods=["POST"])
+@app.route("/api/pipeline/run", methods=["POST"])
 def api_pipeline():
-    """Run the full end-to-end pipeline. Requires Ollama running."""
+    """Run the CTI-to-Detection pipeline on input threat report."""
     data = request.get_json()
     if not data:
         return jsonify({"error": "No JSON body"}), 400
-    report_text = data.get("report_text", "")
-    if not report_text:
-        return jsonify({"error": "Missing report_text"}), 400
+    report_text = data.get("text") or data.get("report_text") or ""
+    if not report_text.strip():
+        return jsonify({"error": "Missing report text"}), 400
     try:
-        from demo.demo import run_pipeline
+        from dashboard.pipeline_service import run_pipeline
         result = run_pipeline(report_text)
         return jsonify(result)
-    except ImportError:
-        return jsonify({"error": "Pipeline module not available"}), 500
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 

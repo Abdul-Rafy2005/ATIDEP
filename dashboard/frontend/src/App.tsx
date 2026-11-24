@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Sidebar } from './components/Sidebar';
 import { Header } from './components/Header';
 import { OverviewView } from './views/OverviewView';
@@ -7,27 +7,63 @@ import { RunsView } from './views/RunsView';
 import { GateValidatorView } from './views/GateValidatorView';
 import { PipelineView } from './views/PipelineView';
 
+const VALID_TABS = ['overview', 'coverage', 'runs', 'gate', 'pipeline'] as const;
+
+const getTabFromHash = (): string => {
+  const hash = window.location.hash.replace(/^#\/?/, '').trim();
+  return (VALID_TABS as readonly string[]).includes(hash) ? hash : 'overview';
+};
+
 function App() {
-  const [activeTab, setActiveTab] = useState<string>('overview');
+  const [activeTab, setActiveTab] = useState<string>(getTabFromHash);
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [selectedRunFolder, setSelectedRunFolder] = useState<string | null>(null);
+  const [gateInitialData, setGateInitialData] = useState<{ techniqueId: string; set: number; ruleYaml: string } | null>(null);
+  const [theme, setTheme] = useState<'dark' | 'light'>(() => {
+    try { return (localStorage.getItem('atidep-theme') as 'dark' | 'light') || 'dark'; }
+    catch { return 'dark'; }
+  });
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    document.documentElement.classList.toggle('dark', theme === 'dark');
+    try { localStorage.setItem('atidep-theme', theme); } catch {}
+  }, [theme]);
+
+  useEffect(() => {
+    const handlePopState = () => setActiveTab(getTabFromHash());
+    window.addEventListener('popstate', handlePopState);
+    window.addEventListener('hashchange', handlePopState);
+    if (!window.location.hash) {
+      window.history.replaceState({ tab: 'overview' }, '', '#/overview');
+    }
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+      window.removeEventListener('hashchange', handlePopState);
+    };
+  }, []);
+
+  const navigateTab = useCallback((tab: string) => {
+    setActiveTab(tab);
+    const targetHash = `#/${tab}`;
+    if (window.location.hash !== targetHash) {
+      window.history.pushState({ tab }, '', targetHash);
+    }
+  }, []);
+
+  const toggleTheme = useCallback(() => setTheme(t => t === 'dark' ? 'light' : 'dark'), []);
 
   return (
-    <div className="flex h-screen w-full bg-slate-50 text-slate-900 font-sans antialiased overflow-hidden">
-      {/* Deep Dark Navy Enterprise Sidebar */}
-      <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
-
-      {/* Main App Layout */}
+    <div className="flex h-screen w-full bg-background text-foreground font-sans antialiased overflow-hidden">
+      <Sidebar activeTab={activeTab} setActiveTab={navigateTab} />
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-        {/* Top Header Bar */}
-        <Header searchQuery={searchQuery} setSearchQuery={setSearchQuery} activeTab={activeTab} />
-
-        {/* Scrollable Viewport (full-width, tight elegant margins) */}
-        <main className="flex-1 overflow-y-auto p-4 lg:p-6 w-full">
+        <Header searchQuery={searchQuery} setSearchQuery={setSearchQuery} activeTab={activeTab} theme={theme} onToggleTheme={toggleTheme} />
+        <main className="flex-1 overflow-y-auto p-3 lg:p-5 w-full">
           <div className="w-full">
-            {activeTab === 'overview' && <OverviewView onNavigateTab={setActiveTab} />}
-            {activeTab === 'coverage' && <CoverageMatrixView onNavigateTab={setActiveTab} searchFilter={searchQuery} />}
-            {activeTab === 'runs' && <RunsView onNavigateTab={setActiveTab} searchFilter={searchQuery} />}
-            {activeTab === 'gate' && <GateValidatorView />}
+            {activeTab === 'overview' && <OverviewView onNavigateTab={navigateTab} onSelectRun={(folder) => setSelectedRunFolder(folder)} />}
+            {activeTab === 'coverage' && <CoverageMatrixView onNavigateTab={navigateTab} onTestInGate={(data) => { setGateInitialData(data); navigateTab('gate'); }} searchFilter={searchQuery} />}
+            {activeTab === 'runs' && <RunsView onNavigateTab={navigateTab} initialFolder={selectedRunFolder} searchFilter={searchQuery} />}
+            {activeTab === 'gate' && <GateValidatorView initialData={gateInitialData} />}
             {activeTab === 'pipeline' && <PipelineView />}
           </div>
         </main>
