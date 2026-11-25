@@ -193,6 +193,82 @@ class TestDashboardRoutes(unittest.TestCase):
         self.assertIn("rule_yaml", data)
 
 
+    def test_export_api_splunk(self):
+        rule = (
+            "title: Test Export\n"
+            "status: test\n"
+            "logsource:\n"
+            "    category: process_creation\n"
+            "    product: windows\n"
+            "detection:\n"
+            "    selection:\n"
+            "        Image|endswith: '\\\\whoami.exe'\n"
+            "        CommandLine|contains: '/priv'\n"
+            "    condition: selection\n"
+        )
+        res = self.client.post("/api/export", json={"rule_yaml": rule, "format": "splunk"})
+        self.assertEqual(res.status_code, 200)
+        data = res.get_json()
+        self.assertEqual(data["format"], "splunk")
+        self.assertIn("CommandLine", data["result"])
+
+    def test_export_api_kql(self):
+        rule = (
+            "title: Test Export KQL\n"
+            "status: test\n"
+            "logsource:\n"
+            "    category: process_creation\n"
+            "    product: windows\n"
+            "detection:\n"
+            "    selection:\n"
+            "        Image|endswith: '\\\\whoami.exe'\n"
+            "        CommandLine|contains: '/priv'\n"
+            "    condition: selection\n"
+        )
+        res = self.client.post("/api/export", json={"rule_yaml": rule, "format": "kql"})
+        self.assertEqual(res.status_code, 200)
+        data = res.get_json()
+        self.assertEqual(data["format"], "kql")
+        self.assertIn("CommandLine", data["result"])
+
+    def test_export_api_all_formats(self):
+        rule = (
+            "title: Test All Formats\n"
+            "status: test\n"
+            "logsource:\n"
+            "    category: process_creation\n"
+            "    product: windows\n"
+            "detection:\n"
+            "    selection:\n"
+            "        Image|endswith: '\\\\whoami.exe'\n"
+            "    condition: selection\n"
+        )
+        res = self.client.post("/api/export", json={"rule_yaml": rule, "format": "all"})
+        self.assertEqual(res.status_code, 200)
+        data = res.get_json()
+        self.assertIn("formats", data)
+        self.assertIn("splunk", data["formats"])
+        self.assertIn("kql", data["formats"])
+        self.assertIn("sqlite", data["formats"])
+        self.assertIn("sigma", data["formats"])
+
+    def test_export_api_bad_format(self):
+        rule = "title: T\nstatus: test\nlogsource:\n    category: process_creation\n    product: windows\ndetection:\n    sel:\n        Image: x\n    condition: sel\n"
+        res = self.client.post("/api/export", json={"rule_yaml": rule, "format": "nosuchformat"})
+        self.assertEqual(res.status_code, 400)
+
+    def test_export_api_missing_rule(self):
+        res = self.client.post("/api/export", json={"format": "splunk"})
+        self.assertEqual(res.status_code, 400)
+
+    def test_export_formats_endpoint(self):
+        res = self.client.get("/api/export/formats")
+        self.assertEqual(res.status_code, 200)
+        data = res.get_json()
+        self.assertIn("splunk", data)
+        self.assertIn("kql", data)
+
+
 if __name__ == "__main__":
     unittest.main()
 

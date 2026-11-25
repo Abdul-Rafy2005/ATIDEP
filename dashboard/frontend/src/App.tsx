@@ -6,8 +6,9 @@ import { CoverageMatrixView } from './views/CoverageMatrixView';
 import { RunsView } from './views/RunsView';
 import { GateValidatorView } from './views/GateValidatorView';
 import { PipelineView } from './views/PipelineView';
+import { PriorityBacklogView } from './views/PriorityBacklogView';
 
-const VALID_TABS = ['overview', 'coverage', 'runs', 'gate', 'pipeline'] as const;
+const VALID_TABS = ['overview', 'coverage', 'runs', 'gate', 'pipeline', 'priority'] as const;
 
 const getTabFromHash = (): string => {
   const hash = window.location.hash.replace(/^#\/?/, '').trim();
@@ -58,13 +59,14 @@ function App() {
       <Sidebar activeTab={activeTab} setActiveTab={navigateTab} />
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         <Header searchQuery={searchQuery} setSearchQuery={setSearchQuery} activeTab={activeTab} theme={theme} onToggleTheme={toggleTheme} />
-        <main className="flex-1 overflow-y-auto p-3 lg:p-5 w-full">
-          <div className="w-full">
+        <main className="flex-1 overflow-y-auto p-4 lg:p-6 w-full scroll-smooth">
+          <div className="w-full max-w-[1600px]">
             {activeTab === 'overview' && <OverviewView onNavigateTab={navigateTab} onSelectRun={(folder) => setSelectedRunFolder(folder)} />}
             {activeTab === 'coverage' && <CoverageMatrixView onNavigateTab={navigateTab} onTestInGate={(data) => { setGateInitialData(data); navigateTab('gate'); }} searchFilter={searchQuery} />}
             {activeTab === 'runs' && <RunsView onNavigateTab={navigateTab} initialFolder={selectedRunFolder} searchFilter={searchQuery} />}
             {activeTab === 'gate' && <GateValidatorView initialData={gateInitialData} />}
             {activeTab === 'pipeline' && <PipelineView />}
+            {activeTab === 'priority' && <PriorityBacklogView />}
           </div>
         </main>
       </div>

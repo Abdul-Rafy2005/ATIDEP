@@ -59,6 +59,18 @@ export interface GateTestResult {
   fires_benign: boolean;
 }
 
+export interface IocHash {
+  value: string;
+  type: 'md5' | 'sha1' | 'sha256';
+}
+
+export interface IocResult {
+  ipv4: string[];
+  domains: string[];
+  urls: string[];
+  hashes: IocHash[];
+}
+
 export interface PipelineExecutionResult {
   technique_id: string;
   technique_name: string;
@@ -70,4 +82,5 @@ export interface PipelineExecutionResult {
   extract_time: number;
   gen_time: number;
   model: string;
+  iocs?: IocResult;
 }

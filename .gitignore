@@ -14,3 +14,4 @@ Thumbs.db
 
 # Large STIX bundle (re-download with: python data/build_attack_lookup.py)
 data/enterprise-attack.json
+data/enterprise-attack-taxii.json

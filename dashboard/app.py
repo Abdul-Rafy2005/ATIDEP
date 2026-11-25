@@ -229,6 +229,162 @@ def api_sets():
     })
 
 
+# ---- TAXII ingestion endpoints ----
+
+@app.route("/api/taxii/status")
+def api_taxii_status():
+    """Check whether the TAXII server is reachable."""
+    try:
+        from data.taxii_connector import fetch_objects
+        objs = fetch_objects(timeout=15)
+        return jsonify({"status": "connected", "techniques": len(objs)})
+    except Exception as e:
+        return jsonify({"status": "unavailable", "error": str(e)})
+
+
+@app.route("/api/taxii/groups")
+def api_taxii_groups():
+    """List threat groups and how many of their techniques we can cover."""
+    try:
+        from data.taxii_ingest import ingest_all_groups
+        groups = ingest_all_groups(timeout=30)
+        if groups is None:
+            return jsonify({"error": "TAXII server unreachable"}), 503
+        return jsonify(groups)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route("/api/taxii/ingest", methods=["POST"])
+def api_taxii_ingest():
+    """Ingest techniques for a threat group from TAXII.
+
+    Request body: {"group": "APT29"}
+    Returns the group's techniques filtered to what our pipeline supports.
+    """
+    data = request.get_json()
+    if not data or not data.get("group"):
+        return jsonify({"error": "Missing 'group' in request body"}), 400
+    try:
+        from data.taxii_ingest import ingest_by_group
+        result = ingest_by_group(data["group"], timeout=30)
+        return jsonify(result)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route("/api/taxii/refresh", methods=["POST"])
+def api_taxii_refresh():
+    """Pull latest ATT&CK data from TAXII and update the local lookup."""
+    try:
+        from data.taxii_connector import fetch_objects, update_lookup
+        objects = fetch_objects(timeout=60)
+        new, old = update_lookup(objects, write=True)
+        added = sorted(set(new) - set(old))
+        removed = sorted(set(old) - set(new))
+        return jsonify({
+            "status": "updated",
+            "total": len(new),
+            "added": len(added),
+            "removed": len(removed),
+            "added_ids": added[:20],
+        })
+    except Exception as e:
+        return jsonify({"status": "failed", "error": str(e)}), 503
+
+
+# ---- Rule export endpoints ----
+
+@app.route("/api/export", methods=["POST"])
+def api_export():
+    """Convert a Sigma rule to another format (splunk, kql, sqlite).
+
+    Request body: {"rule_yaml": "...", "format": "splunk"}
+    Optional: {"format": "all"} returns all formats at once.
+    """
+    data = request.get_json()
+    if not data:
+        return jsonify({"error": "No JSON body"}), 400
+    rule_yaml = data.get("rule_yaml", "")
+    fmt = data.get("format", "splunk")
+    if not rule_yaml.strip():
+        return jsonify({"error": "Missing rule_yaml"}), 400
+    try:
+        from export.rule_export import convert, convert_all, FORMATS
+        if fmt == "all":
+            results = convert_all(rule_yaml)
+            return jsonify({"formats": results})
+        if fmt not in FORMATS:
+            return jsonify({"error": f"Unknown format: {fmt}. Supported: {', '.join(FORMATS)}"}), 400
+        converted = convert(rule_yaml, fmt)
+        return jsonify({"format": fmt, "result": converted})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route("/api/export/formats")
+def api_export_formats():
+    """List available export formats."""
+    from export.rule_export import FORMATS
+    return jsonify(FORMATS)
+
+
+# ---- IOC extraction endpoint ----
+
+@app.route("/api/ioc/extract", methods=["POST"])
+def api_ioc_extract():
+    """Extract IOCs (IPs, domains, URLs, hashes) from text.
+
+    Request body: {"text": "..."}
+    Returns: {"ipv4": [...], "domains": [...], "urls": [...], "hashes": [...]}
+    """
+    data = request.get_json()
+    if not data or not data.get("text", "").strip():
+        return jsonify({"error": "Missing text"}), 400
+    try:
+        from export.ioc_extract import extract_iocs, has_iocs
+        iocs = extract_iocs(data["text"])
+        iocs["has_iocs"] = has_iocs(iocs)
+        return jsonify(iocs)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+# ---- Prioritisation endpoints ----
+
+@app.route("/api/priority-backlog")
+def api_priority_backlog():
+    """Return the threat-informed priority backlog.
+
+    Optional query params:
+        limit: max rows to return (default 100, 0 for all)
+        filter: "uncovered", "in_pipeline", "all" (default "all")
+    """
+    try:
+        from export.prioritisation import build_priority_backlog
+        result = build_priority_backlog(timeout=15)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+    filt = request.args.get("filter", "all")
+    try:
+        limit = int(request.args.get("limit", 100))
+    except (ValueError, TypeError):
+        limit = 100
+
+    backlog = result["backlog"]
+    if filt == "uncovered":
+        backlog = [r for r in backlog if not r["covered"]]
+    elif filt == "in_pipeline":
+        backlog = [r for r in backlog if r["in_pipeline"]]
+
+    if limit > 0:
+        backlog = backlog[:limit]
+
+    result["backlog"] = backlog
+    return jsonify(result)
+
+
 if __name__ == "__main__":
     print("Starting ATIDEP Dashboard at http://127.0.0.1:5000")
     app.run(host="127.0.0.1", port=5000, debug=True)

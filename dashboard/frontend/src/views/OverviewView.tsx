@@ -36,6 +36,23 @@ const radarTactics: RadarTacticData[] = [
   { id: 'TA0040', name: 'Impact', coverage: 66.7, adversary: 20, coveredCount: 2, totalCount: 3, techniques: 'T1529, T1485, T1490' },
 ];
 
+const shortTacticName: Record<string, string> = {
+  'TA0043': 'Recon',
+  'TA0042': 'Resource Dev',
+  'TA0001': 'Initial Access',
+  'TA0002': 'Execution',
+  'TA0003': 'Persistence',
+  'TA0004': 'Priv Esc',
+  'TA0005': 'Def Evasion',
+  'TA0006': 'Cred Access',
+  'TA0007': 'Discovery',
+  'TA0008': 'Lateral Mvmt',
+  'TA0009': 'Collection',
+  'TA0011': 'C2',
+  'TA0010': 'Exfiltration',
+  'TA0040': 'Impact',
+};
+
 export const OverviewView = ({ onNavigateTab, onSelectRun }: OverviewViewProps) => {
   const [metrics, setMetrics] = useState<OverviewMetrics>(fallbackOverview);
   const [runs, setRuns] = useState<RunItem[]>(fallbackRuns);
@@ -66,7 +83,7 @@ export const OverviewView = ({ onNavigateTab, onSelectRun }: OverviewViewProps) 
 
   const getLabelCoordinates = (index: number) => {
     const angle = (index * 2 * Math.PI) / numTactics - Math.PI / 2;
-    const r = maxR + 25;
+    const r = maxR + 32;
     return { x: cx + r * Math.cos(angle), y: cy + r * Math.sin(angle) };
   };
 
@@ -81,23 +98,26 @@ export const OverviewView = ({ onNavigateTab, onSelectRun }: OverviewViewProps) 
   return (
     <div className="w-full space-y-4">
       {/* Project header */}
-      <div className="rounded-lg bg-brand-muted border border-brand-edge p-5">
-        <h1 className="text-lg font-bold tracking-tight text-fg">
-          Automated Threat-Informed Detection Engineering
-        </h1>
-        <p className="text-xs text-fg-secondary mt-1.5 leading-relaxed max-w-xl">
-          Local LLM Sigma rule generation with multi-point synthetic log validation.
-          44 techniques across 14 MITRE ATT&CK tactics, evaluated offline on Ollama.
-        </p>
-        <div className="flex gap-2.5 mt-3">
-          <button onClick={() => onNavigateTab('pipeline')}
-            className="px-3 py-1.5 rounded-md bg-brand hover:bg-brand-hover text-brand-fg text-xs font-semibold transition-colors cursor-pointer">
-            Pipeline Studio
-          </button>
-          <button onClick={() => onNavigateTab('coverage')}
-            className="px-3 py-1.5 rounded-md bg-panel hover:bg-panel-hover border border-edge text-fg-secondary text-xs font-semibold transition-colors cursor-pointer">
-            ATT&CK Coverage
-          </button>
+      <div className="rounded-xl bg-brand-muted border border-brand-edge p-5 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-brand/5 to-transparent pointer-events-none" />
+        <div className="relative">
+          <h1 className="text-lg font-bold tracking-tight text-fg">
+            Automated Threat-Informed Detection Engineering
+          </h1>
+          <p className="text-xs text-fg-secondary mt-1.5 leading-relaxed max-w-xl">
+            Local LLM Sigma rule generation with multi-point synthetic log validation.
+            44 techniques across 14 MITRE ATT&CK tactics, evaluated offline on Ollama.
+          </p>
+          <div className="flex gap-2.5 mt-4">
+            <button onClick={() => onNavigateTab('pipeline')}
+              className="px-4 py-2 rounded-lg bg-brand hover:bg-brand-hover text-brand-fg text-xs font-semibold transition-all duration-150 cursor-pointer shadow-sm hover:shadow-md">
+              Pipeline Studio
+            </button>
+            <button onClick={() => onNavigateTab('coverage')}
+              className="px-4 py-2 rounded-lg bg-panel hover:bg-panel-hover border border-edge text-fg-secondary text-xs font-semibold transition-all duration-150 cursor-pointer">
+              ATT&CK Coverage
+            </button>
+          </div>
         </div>
       </div>
 
@@ -175,13 +195,14 @@ export const OverviewView = ({ onNavigateTab, onSelectRun }: OverviewViewProps) 
                   const isSelected = selectedTactic.id === t.id;
                   return (
                     <text key={i} x={x} y={y}
-                      fontSize="10" fontWeight={isSelected ? '700' : '500'}
-                      fontFamily="monospace"
-                      fill={isSelected ? 'var(--fg)' : 'var(--fg-muted)'}
+                      fontSize="9" fontWeight={isSelected ? '700' : '500'}
+                      fontFamily="var(--font-sans)"
+                      fill={isSelected ? 'var(--brand)' : 'var(--fg-muted)'}
                       textAnchor="middle" dominantBaseline="middle"
                       onClick={() => setSelectedTactic(t)}
-                      className="cursor-pointer">
-                      {t.id}
+                      className="cursor-pointer"
+                      style={{ transition: 'fill 150ms' }}>
+                      {shortTacticName[t.id] || t.id}
                     </text>
                   );
                 })}
@@ -243,8 +264,8 @@ export const OverviewView = ({ onNavigateTab, onSelectRun }: OverviewViewProps) 
             <div className="py-4 space-y-3.5">
               {[
                 { label: '14b (v3b)', tag: 'Primary', score: '57/60 (95.0%)', pct: 95, barClass: 'bg-brand' },
-                { label: '7b (v3a)', tag: 'Comparison', score: '58/60 (96.7%)', pct: 96.7, barClass: 'bg-brand opacity-60' },
-                { label: '14b (v3a)', tag: 'Exploratory', score: '55/60 (91.7%)', pct: 91.7, barClass: 'bg-fg-muted' },
+                { label: '7b (v3a)', tag: 'Comparison', score: '58/60 (96.7%)', pct: 96.7, barClass: 'bg-bar-secondary' },
+                { label: '14b (v3a)', tag: 'Exploratory', score: '55/60 (91.7%)', pct: 91.7, barClass: 'bg-bar-tertiary' },
                 { label: '14b (v1)', tag: 'Baseline', score: '82/120 (68.3%)', pct: 68.3, barClass: 'bg-edge-hover' },
               ].map((m) => (
                 <div key={m.label}>
@@ -256,7 +277,7 @@ export const OverviewView = ({ onNavigateTab, onSelectRun }: OverviewViewProps) 
                     <span className="font-mono font-semibold text-fg">{m.score}</span>
                   </div>
                   <div className="w-full bg-panel-inset rounded-full h-2 overflow-hidden">
-                    <div className={`${m.barClass} h-2 rounded-full`} style={{ width: `${m.pct}%` }}></div>
+                    <div className={`${m.barClass} h-2 rounded-full transition-all duration-500`} style={{ width: `${m.pct}%` }}></div>
                   </div>
                 </div>
               ))}

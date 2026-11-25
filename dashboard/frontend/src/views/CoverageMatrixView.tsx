@@ -3,7 +3,7 @@ import type { TechniqueItem } from '../types';
 import { fallbackTechniques } from '../data/fallback';
 import { ExternalLink, Play, Search, Copy, Check, Terminal } from 'lucide-react';
 import { MetricCard } from '../components/ui/metric-card';
-import { VerdictBadge } from '../components/ui/verdict-badge';
+import { VerdictBadge, getVerdictAccent } from '../components/ui/verdict-badge';
 
 interface CoverageMatrixViewProps {
   onNavigateTab: (tab: string) => void;
@@ -156,44 +156,56 @@ tags:
               <span>Select a tile to inspect</span>
             </div>
 
-            <div className="flex gap-2.5 overflow-x-auto pb-3 max-h-[520px] select-none">
+            <div className="flex gap-3 overflow-x-auto pb-3 max-h-[520px] select-none">
               {tacticOrder.map((tac) => {
                 const items = byTactic[tac] || [];
                 const covered = items.filter(t => t.best_verdict === 'PASS').length;
+                const coveragePct = items.length > 0 ? Math.round((covered / items.length) * 100) : 0;
                 return (
-                  <div key={tac} className="w-48 min-w-[12rem] flex flex-col bg-panel-inset border border-edge rounded-md p-2 shrink-0 max-h-[490px]">
-                    <div className="pb-1.5 mb-1.5 border-b border-subtle shrink-0">
-                      <div className="text-[11px] font-semibold text-fg leading-tight">{tac}</div>
-                      <div className="flex items-center justify-between text-[10px] text-fg-muted mt-0.5">
+                  <div key={tac} className="w-52 min-w-[13rem] flex flex-col bg-panel border border-edge rounded-xl shrink-0 max-h-[490px] overflow-hidden">
+                    <div className="px-3 pt-3 pb-2 shrink-0 bg-panel-inset border-b border-edge">
+                      <div className="text-xs font-semibold text-fg leading-tight">{tac}</div>
+                      <div className="flex items-center justify-between text-[10px] text-fg-muted mt-1">
                         <span>{items.length} techniques</span>
-                        <span className={`font-mono font-medium ${covered > 0 ? 'text-pass' : 'text-fg-muted'}`}>
+                        <span className={`font-mono font-semibold text-[11px] ${covered === items.length && items.length > 0 ? 'text-pass' : covered > 0 ? 'text-brand' : 'text-fg-muted'}`}>
                           {covered}/{items.length}
                         </span>
                       </div>
+                      <div className="w-full bg-edge rounded-full h-1 mt-1.5 overflow-hidden">
+                        <div className={`h-1 rounded-full transition-all duration-300 ${coveragePct === 100 ? 'bg-pass' : coveragePct > 0 ? 'bg-brand' : 'bg-transparent'}`}
+                          style={{ width: `${coveragePct}%` }} />
+                      </div>
                     </div>
 
-                    <div className="space-y-1 flex-1 overflow-y-auto pr-1">
+                    <div className="space-y-1.5 flex-1 overflow-y-auto p-2">
                       {items.length === 0 ? (
-                        <div className="py-5 text-center text-[10px] text-fg-muted italic">No techniques</div>
+                        <div className="py-8 text-center">
+                          <div className="text-fg-muted text-[10px] italic">No techniques</div>
+                          <div className="text-fg-muted text-[10px] mt-1 opacity-50">in current filter</div>
+                        </div>
                       ) : (
                         items.sort((a, b) => a.id.localeCompare(b.id)).map((t) => {
                           const isSelected = selectedId === t.id;
                           return (
                             <div key={t.id} onClick={() => setSelectedId(t.id)}
-                              className={`p-2 rounded-md border text-left cursor-pointer transition-all bg-panel hover:border-edge-hover ${
-                                isSelected ? 'ring-1 ring-brand border-brand' : 'border-edge'
+                              className={`rounded-lg border-l-[3px] border border-edge text-left cursor-pointer transition-all duration-150 overflow-hidden ${getVerdictAccent(t.best_verdict)} ${
+                                isSelected
+                                  ? 'ring-1 ring-brand bg-brand-muted shadow-sm'
+                                  : 'bg-panel hover:bg-panel-hover hover:shadow-sm'
                               }`}>
-                              <div className="flex items-center justify-between text-[10px] font-mono font-medium">
-                                <span className="text-fg">{t.id}</span>
-                                <span className="text-[9px] px-1 rounded bg-panel-inset border border-edge text-fg-muted">
-                                  S{t.sets.join(',')}
-                                </span>
-                              </div>
-                              <div className="text-[10px] font-medium text-fg-secondary truncate mt-0.5" title={t.title}>
-                                {t.title || 'Untitled'}
-                              </div>
-                              <div className="mt-1">
-                                <VerdictBadge verdict={t.best_verdict} />
+                              <div className="px-2.5 py-2">
+                                <div className="flex items-center justify-between">
+                                  <span className="text-[11px] font-mono font-semibold text-fg">{t.id}</span>
+                                  <span className="text-[10px] px-1 py-px rounded bg-panel-inset border border-edge text-fg-muted font-mono">
+                                    S{t.sets.join(',')}
+                                  </span>
+                                </div>
+                                <div className="text-[10px] text-fg-secondary truncate mt-0.5 leading-snug" title={t.title}>
+                                  {t.title || 'Untitled'}
+                                </div>
+                                <div className="mt-1.5">
+                                  <VerdictBadge verdict={t.best_verdict} />
+                                </div>
                               </div>
                             </div>
                           );
@@ -277,7 +289,7 @@ tags:
                   <span>{copiedRule ? 'Copied' : 'Copy'}</span>
                 </button>
               </div>
-              <pre className="bg-zinc-950 p-3 rounded-lg text-zinc-100 text-[11px] font-mono overflow-x-auto select-all leading-relaxed min-h-[260px] border border-zinc-800">
+              <pre className="bg-code-bg p-3 rounded-lg text-code-fg text-[11px] font-mono overflow-x-auto select-all leading-relaxed min-h-[260px] border border-code-edge">
                 {getRulePreview(selectedTech)}
               </pre>
             </div>
@@ -292,12 +304,12 @@ tags:
                   onNavigateTab('gate');
                 }
               }}
-              className="flex-1 py-2 rounded-md bg-brand hover:bg-brand-hover text-brand-fg text-xs font-semibold flex items-center justify-center gap-1.5 cursor-pointer">
+              className="flex-1 py-2 rounded-lg bg-brand hover:bg-brand-hover text-brand-fg text-xs font-semibold flex items-center justify-center gap-1.5 cursor-pointer transition-all duration-150">
               <Play className="w-3.5 h-3.5" />
               <span>Test in Gate</span>
             </button>
             <button onClick={() => onNavigateTab('pipeline')}
-              className="py-2 px-3 rounded-md bg-panel-inset hover:bg-panel-hover border border-edge text-fg-secondary text-xs font-medium cursor-pointer">
+              className="py-2 px-3 rounded-lg bg-panel-inset hover:bg-panel-hover border border-edge text-fg-secondary text-xs font-medium cursor-pointer transition-all duration-150">
               Pipeline
             </button>
           </div>

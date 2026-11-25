@@ -357,3 +357,158 @@ Antigravity started on 2026-11-06
   - tests/test_set3_guard.py (updated: test_no_log_or_folder_created now checks mtime instead of non-existence)
   - PROGRESS.md (updated)
 - WARN lines: none
+
+## 2026-11-24: Task 16 -- Frontend visual polish
+- Status: DONE
+- Summary: Comprehensive visual improvement pass on the React dashboard frontend. All changes are in dashboard/frontend/src/.
+- Changes:
+  - index.css: Added 6 new design tokens (code-bg, code-fg, code-edge, code-muted, bar-secondary, bar-tertiary) for both dark and light themes. Added selection color, focus-visible outline, and smooth scroll to base layer.
+  - components/ui/metric-card.tsx: Added cyan left accent bar, hover border transition, improved spacing.
+  - components/Header.tsx: Improved padding, wider search input, animated Ollama status dot (ping animation), rounded-lg buttons, focus-visible ring.
+  - components/Sidebar.tsx: Bumped 9px text to 10px, uppercase group labels, larger nav items (py-2, w-4 icons), added ring on avatar, inner glow on active tab, 150ms transitions.
+  - views/OverviewView.tsx: Radar chart now shows short tactic names (Recon, Priv Esc, C2) instead of IDs. Fixed bar chart opacity hack (bg-brand opacity-60 to bg-bar-secondary token). Hero section gets gradient overlay and rounded-xl. Buttons use rounded-lg and transition-all.
+  - views/CoverageMatrixView.tsx: Code block uses token-based colors (bg-code-bg, etc.) instead of hardcoded zinc. Technique tiles get rounded-lg, hover shadow, 150ms transition. Bumped set badge from 9px to 10px.
+  - views/GateValidatorView.tsx: Code editor textarea uses token-based colors. Checklist items get bordered cards with colored circle indicators. Verdict box is larger with tracking-wide. Run button gets rounded-lg, disabled state, 150ms transition.
+  - views/PipelineView.tsx: Code block uses token-based colors. Stepper shows checkmarks for completed steps, animate-pulse for active step. Execute button gets rounded-lg, disabled state.
+  - views/RunsView.tsx: Fixed 2 opacity-60 bar hacks to use bar-secondary/bar-tertiary tokens. Buttons get rounded-lg and transitions.
+  - App.tsx: Main content padding from p-3/p-5 to p-4/p-6, added max-w-[1600px] constraint, smooth scroll.
+- Build: clean (0 errors, 0 warnings)
+- Tests: 99/99 passed
+- WARN lines: none
+
+### 2026-11-24: Task 17 - Coverage Matrix tile redesign and TAXII connector
+- Status: DONE
+- Coverage Matrix (dashboard/frontend/src/views/CoverageMatrixView.tsx, components/ui/verdict-badge.tsx): tiles have a verdict-colored left border, columns have a coverage progress bar, better empty state. Build clean.
+- TAXII: user approved adding taxii2-client 2.3.0 and stix2 3.0.2 (installed with pip).
+- Files created or changed:
+  - data/taxii_connector.py (created: pulls attack-pattern objects from https://attack-taxii.mitre.org/api/v21/ collection "Enterprise ATT&CK", reuses build_lookup from build_attack_lookup.py; --check compares without writing; keeps local attack_lookup.json if server is down or result has fewer than 500 techniques)
+  - tests/test_taxii_connector.py (created: 4 offline tests, server down, too few results, good update, check mode)
+  - .gitignore (added data/enterprise-attack-taxii.json)
+  - README.md (TAXII section, file map, test count 103)
+- Self-check:
+  | EXPECTED | ACTUAL | RESULT |
+  | Live TAXII fetch works | 867 attack-pattern objects, 706 active techniques | PASS |
+  | TAXII result equals local lookup | 0 new, 0 gone, 0 changed | PASS |
+  | Server down keeps local file | test_server_down_keeps_local_lookup | PASS |
+  | Full pytest suite | 103 passed (99 before plus 4 new) | PASS |
+- Not done: TAXII is not called automatically by the pipeline or dashboard. It is a manual refresh command. attack_lookup.json was not rewritten (check mode only).
+- WARN lines: none
+
+### 2026-11-24: Task 18 - TAXII structured ingestion into pipeline
+- Status: DONE
+- What was built:
+  - TAXII connector expanded to fetch intrusion-sets and relationships (group-to-technique mapping) in addition to attack-patterns.
+  - New ingestion module (data/taxii_ingest.py) maps threat groups to pipeline-supported techniques.
+  - 4 new Flask API endpoints: /api/taxii/status, /api/taxii/groups, /api/taxii/ingest, /api/taxii/refresh.
+  - Dashboard Pipeline view has a collapsible "STIX/TAXII Structured Ingestion" panel: load groups, filter, ingest a group's techniques, refresh the ATT&CK lookup.
+  - Proposal reworded: TAXII maps groups to techniques; command lines come from reports/templates, not TAXII; IOC extraction is future work; Flask replaces FastAPI.
+- Files created or changed:
+  - data/taxii_connector.py (expanded: fetch_all_types, build_group_techniques)
+  - data/taxii_ingest.py (created: ingest_by_group, ingest_all_groups, list_groups)
+  - dashboard/app.py (added 4 TAXII endpoints)
+  - dashboard/frontend/src/views/PipelineView.tsx (TAXII ingestion panel)
+  - tests/test_taxii_ingest.py (created: 7 offline tests)
+  - ATIDEP_FYP1_Proposal.md (reworded TAXII sections at lines 154, 167, 211, 259, 287)
+  - README.md (TAXII section expanded, file map updated, test count 110)
+  - PROGRESS.md (this entry)
+- Self-check:
+  | EXPECTED | ACTUAL | RESULT |
+  | Frontend builds clean | 0 errors | PASS |
+  | New tests pass | 7/7 | PASS |
+  | Full suite | 110 passed | PASS |
+  | TAXII panel renders in dashboard | Build succeeds, component compiles | PASS |
+  | Proposal matches implementation | Reworded 5 TAXII sections | PASS |
+- Limitations:
+  - TAXII maps groups to technique IDs. It does not provide command lines. Rule generation still needs a threat report or synthetic log template for the command context.
+  - IOC extraction (IPs, hashes, domains) is not built. IOCs are not used in process-creation Sigma rules.
+  - The "Ingest" button shows the group's techniques but does not auto-run the LLM pipeline on each one (that would need Ollama and would take minutes per technique).
+- WARN lines: none
+
+### 2026-11-25: Task 20 - Multi-format rule export (SPL, KQL)
+- Status: DONE
+- What was built:
+  - Export module (export/rule_export.py) converts Sigma YAML to Splunk SPL, Microsoft Defender KQL, and SQLite SQL using pySigma backends.
+  - 2 Flask API endpoints: POST /api/export (convert a rule to a format) and GET /api/export/formats (list available formats).
+  - Dashboard Gate Validator view has a new "Export Rule" panel: pick a format, click Convert, see the output, copy to clipboard.
+  - 20 unit tests for the export module (test_rule_export.py) and 6 API endpoint tests added to test_dashboard.py.
+- Dependencies installed: pysigma-backend-splunk, pysigma-backend-microsoft365defender.
+- Supported formats: Sigma YAML (passthrough), Splunk SPL, Microsoft Defender KQL, SQLite (gate query).
+- Files created or changed:
+  - export/rule_export.py (created: to_splunk, to_kql, to_sqlite, convert, convert_all, FORMATS)
+  - dashboard/app.py (added /api/export and /api/export/formats endpoints)
+  - dashboard/frontend/src/views/GateValidatorView.tsx (added Export Rule panel with format selector, convert button, output display, copy button)
+  - tests/test_rule_export.py (created: 20 tests)
+  - tests/test_dashboard.py (added 6 export API tests)
+  - PROGRESS.md (this entry)
+- Self-check:
+  | EXPECTED | ACTUAL | RESULT |
+  | Splunk SPL output contains field names | CommandLine="/priv*" Image="*\\whoami.exe" | PASS |
+  | KQL output uses contains operator | CommandLine contains "/priv" and Image endswith "\\whoami.exe" | PASS |
+  | Bad rule returns error | ValueError raised | PASS |
+  | Unknown format returns 400 | HTTP 400 with error message | PASS |
+  | Frontend builds clean | 0 TypeScript errors, 0 build errors | PASS |
+  | Full test suite | 136 passed (110 + 26 new) | PASS |
+- WARN lines: none
+
+### 2026-11-25: Task 21 - Threat-informed prioritisation
+- Status: DONE
+- What was built:
+  - Prioritisation module (export/prioritisation.py) ranks all ATT&CK techniques by how many active threat groups use them, using MITRE TAXII 2.1 group-to-technique mappings.
+  - Techniques are sorted: uncovered-in-pipeline first (by group count desc), then not-in-pipeline, then covered. Each entry includes group count, top group names, pipeline membership, coverage status, and set number.
+  - Coverage check reads run CSV verdicts directly (fast, no re-scoring from disk).
+  - Falls back to local-only mode (no group counts) when TAXII is unreachable.
+  - Flask API endpoint: GET /api/priority-backlog with optional ?filter= (all, uncovered, in_pipeline) and ?limit= query params.
+  - React dashboard view: "Priority Backlog" with metric cards (ATT&CK technique count, threat group count, pipeline count, uncovered gap), filter buttons, search bar, sortable table with threat-level bar, group count with expand, pipeline/coverage status badges.
+  - New sidebar entry under Engineering: "Priority Backlog" with Shield icon.
+  - 17 unit tests: 3 for _invert_groups, 2 for _supported_technique_ids, 8 for build_priority_backlog (including mock TAXII), 4 for the API endpoint.
+- Files created or changed:
+  - export/prioritisation.py (created: _invert_groups, _supported_technique_ids, _which_set, _covered_techniques, build_priority_backlog)
+  - dashboard/app.py (added GET /api/priority-backlog endpoint)
+  - dashboard/frontend/src/views/PriorityBacklogView.tsx (created: full priority backlog view)
+  - dashboard/frontend/src/components/Sidebar.tsx (added Priority Backlog nav item)
+  - dashboard/frontend/src/App.tsx (added priority tab and PriorityBacklogView import)
+  - tests/test_prioritisation.py (created: 17 tests)
+  - PROGRESS.md (this entry)
+- Self-check:
+  | EXPECTED | ACTUAL | RESULT |
+  | 44 pipeline techniques flagged | 44 in_pipeline entries | PASS |
+  | Covered count matches summary | covered_in_backlog == result["covered"] | PASS |
+  | Uncovered techniques sorted first | first uncovered idx < last covered idx | PASS |
+  | Mock TAXII returns group counts | T1059.001 group_count=3 with 3 mock groups | PASS |
+  | API filter=uncovered returns only uncovered | all entries have covered=false | PASS |
+  | API filter=in_pipeline returns only pipeline | all entries have in_pipeline=true | PASS |
+  | Frontend builds clean | 0 TypeScript errors, 0 build errors | PASS |
+  | Full test suite | 153 passed (136 + 17 new) | PASS |
+- WARN lines: none
+
+### 2026-11-25: Task 22 - IOC extraction from reports
+- Status: DONE
+- What was built:
+  - IOC extraction module (export/ioc_extract.py) pulls IPv4 addresses, domain names, URLs, and file hashes (MD5, SHA1, SHA256) from raw threat report text using regex.
+  - Handles defanged indicators: hxxp://, [.], [dot], [:] are re-fanged before extraction.
+  - Filters out common false positives (loopback IPs, well-known domains like microsoft.com, attack.mitre.org).
+  - Deduplicates results. SHA256 substrings are not also reported as MD5/SHA1. Domains already in a URL are not duplicated.
+  - Integrated into pipeline_service.py: run_pipeline() now returns an "iocs" field alongside technique/rule/verdict.
+  - Flask API endpoint: POST /api/ioc/extract (standalone IOC extraction from any text).
+  - Pipeline view updated: IOC panel shows extracted IPs, domains, URLs, and hashes with type badges. Appears only when IOCs are found. SMB sample scenario enriched with IOC data (IPs, hash, defanged URL).
+  - 29 unit tests: 5 for _refang, 5 for IPv4, 4 for domains, 3 for URLs, 4 for hashes, 3 for has_iocs, 1 mixed report, 4 for API endpoints (including pipeline integration).
+- Files created or changed:
+  - export/ioc_extract.py (created: _refang, extract_iocs, has_iocs)
+  - dashboard/pipeline_service.py (added IOC extraction to run_pipeline output)
+  - dashboard/app.py (added POST /api/ioc/extract endpoint)
+  - dashboard/frontend/src/types/index.ts (added IocHash, IocResult interfaces, iocs field on PipelineExecutionResult)
+  - dashboard/frontend/src/views/PipelineView.tsx (added IOC display panel with Fingerprint icon, type badges for hashes)
+  - tests/test_ioc_extract.py (created: 29 tests)
+  - PROGRESS.md (this entry)
+- Self-check:
+  | EXPECTED | ACTUAL | RESULT |
+  | IPv4 extraction works | "10.0.0.5" found in result["ipv4"] | PASS |
+  | Defanged indicators re-fanged | "evil[.]com" becomes "evil.com" | PASS |
+  | SHA256 not also reported as MD5 | 1 hash entry with type "sha256" | PASS |
+  | Loopback excluded | 127.0.0.1 not in results | PASS |
+  | URL domains not duplicated | domain in URLs only, not in domains list | PASS |
+  | Pipeline returns IOCs | /api/pipeline/run includes iocs field with IPs | PASS |
+  | Standalone API works | POST /api/ioc/extract returns IOCs | PASS |
+  | Frontend builds clean | 0 TypeScript errors, 0 build errors | PASS |
+  | Full test suite | 182 passed (153 + 29 new) | PASS |
+- WARN lines: none

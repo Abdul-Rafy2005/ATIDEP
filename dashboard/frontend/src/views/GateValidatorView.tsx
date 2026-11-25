@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import type { GateTestResult } from '../types';
-import { Play, Copy, Check, Terminal } from 'lucide-react';
+import { Play, Copy, Check, Terminal, Download, FileCode } from 'lucide-react';
 import { getVerdictStyle } from '../components/ui/verdict-badge';
 
 const samples: Record<string, { set: number; technique: string; rule: string; name: string }> = {
@@ -99,6 +99,10 @@ export const GateValidatorView = ({ initialData }: GateValidatorViewProps = {}) 
     fires_variant: true,
     fires_benign: false
   });
+  const [exportFormat, setExportFormat] = useState<string>('splunk');
+  const [exportResult, setExportResult] = useState<string>('');
+  const [exportLoading, setExportLoading] = useState<boolean>(false);
+  const [exportCopied, setExportCopied] = useState<boolean>(false);
 
   useEffect(() => {
     if (initialData && initialData.techniqueId) {
@@ -207,7 +211,7 @@ export const GateValidatorView = ({ initialData }: GateValidatorViewProps = {}) 
             </div>
 
             <textarea value={ruleYaml} onChange={(e) => setRuleYaml(e.target.value)}
-              className="w-full h-[460px] bg-zinc-950 border border-zinc-800 rounded-lg p-3.5 text-xs font-mono text-zinc-100 focus:border-brand focus:outline-none focus-visible:ring-1 focus-visible:ring-brand/40 resize-none leading-relaxed"
+              className="w-full h-[460px] bg-code-bg border border-code-edge rounded-lg p-3.5 text-xs font-mono text-code-fg focus:border-brand focus:outline-none focus-visible:ring-1 focus-visible:ring-brand/40 resize-none leading-relaxed placeholder:text-code-muted"
               placeholder="Paste or write Sigma detection rule YAML..." />
           </div>
 
@@ -245,7 +249,7 @@ export const GateValidatorView = ({ initialData }: GateValidatorViewProps = {}) 
             </div>
 
             <button onClick={() => runValidation()} disabled={isLoading}
-              className="w-full bg-brand hover:bg-brand-hover text-brand-fg font-semibold py-2 rounded-md transition-colors text-xs flex items-center justify-center gap-2 cursor-pointer">
+              className="w-full bg-brand hover:bg-brand-hover disabled:opacity-60 text-brand-fg font-semibold py-2.5 rounded-lg transition-all duration-150 text-xs flex items-center justify-center gap-2 cursor-pointer">
               <Play className="w-3.5 h-3.5" />
               <span>{isLoading ? 'Evaluating...' : 'Run Validation Gate'}</span>
             </button>
@@ -253,24 +257,88 @@ export const GateValidatorView = ({ initialData }: GateValidatorViewProps = {}) 
             {/* Checklist */}
             <div className="space-y-1.5">
               <div className="text-xs font-medium text-fg-secondary">Multi-point functional checklist</div>
-              <div className="space-y-1 bg-panel-inset p-2.5 rounded-md border border-edge text-xs">
+              <div className="space-y-1.5 bg-panel-inset p-3 rounded-lg border border-edge text-xs">
                 {checkItems.map((item, i) => (
-                  <div key={i} className={`flex items-center justify-between p-1.5 rounded ${
-                    item.pass ? 'bg-pass-muted text-pass' : 'bg-critical-muted text-critical'
+                  <div key={i} className={`flex items-center justify-between p-2 rounded-md border transition-colors ${
+                    item.pass ? 'bg-pass-muted text-pass border-pass-edge' : 'bg-critical-muted text-critical border-critical-edge'
                   }`}>
-                    <span className="font-medium">{item.label}</span>
-                    <span className="font-mono font-semibold">{item.pass ? `✓ ${item.passText}` : `✗ ${item.failText}`}</span>
+                    <span className="font-medium flex items-center gap-2">
+                      <span className={`w-4 h-4 rounded-full flex items-center justify-center text-[10px] font-bold shrink-0 ${
+                        item.pass ? 'bg-pass text-pass-muted' : 'bg-critical text-critical-muted'
+                      }`}>{item.pass ? '✓' : '✗'}</span>
+                      {item.label}
+                    </span>
+                    <span className="font-mono font-semibold text-[11px]">{item.pass ? item.passText : item.failText}</span>
                   </div>
                 ))}
               </div>
             </div>
 
             {/* Verdict */}
-            <div className={`p-3 rounded-lg border text-center font-mono font-bold text-base ${getVerdictStyle(result.verdict)}`}>
-              VERDICT: {result.verdict}
+            <div className={`p-3.5 rounded-lg border text-center font-mono font-bold text-lg tracking-wide ${getVerdictStyle(result.verdict)}`}>
+              {result.verdict}
             </div>
             <div className="text-xs text-fg-secondary text-center italic">
               {result.reason}
+            </div>
+
+            {/* Export Panel */}
+            <div className="pt-3 border-t border-subtle space-y-2">
+              <div className="flex items-center gap-2">
+                <FileCode className="w-3.5 h-3.5 text-brand" />
+                <span className="text-xs font-semibold text-fg">Export Rule</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <select value={exportFormat} onChange={(e) => setExportFormat(e.target.value)}
+                  className="flex-1 bg-panel-inset border border-edge rounded-md px-2 py-1.5 text-xs text-fg font-medium focus:border-brand focus:outline-none">
+                  <option value="splunk">Splunk SPL</option>
+                  <option value="kql">Microsoft Defender KQL</option>
+                  <option value="sqlite">SQLite (gate query)</option>
+                  <option value="sigma">Sigma YAML (original)</option>
+                </select>
+                <button onClick={async () => {
+                  if (!ruleYaml.trim()) return;
+                  setExportLoading(true);
+                  setExportResult('');
+                  try {
+                    const res = await fetch('/api/export', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ rule_yaml: ruleYaml, format: exportFormat })
+                    });
+                    const data = await res.json();
+                    if (data.error) {
+                      setExportResult(`Error: ${data.error}`);
+                    } else {
+                      setExportResult(data.result || '');
+                    }
+                  } catch {
+                    setExportResult('Error: Could not reach export API');
+                  } finally {
+                    setExportLoading(false);
+                  }
+                }} disabled={exportLoading || !ruleYaml.trim()}
+                  className="px-3 py-1.5 bg-brand hover:bg-brand-hover disabled:opacity-60 text-brand-fg font-semibold rounded-md text-xs flex items-center gap-1.5 cursor-pointer transition-colors">
+                  <Download className="w-3 h-3" />
+                  <span>{exportLoading ? 'Converting...' : 'Convert'}</span>
+                </button>
+              </div>
+              {exportResult && (
+                <div className="relative">
+                  <pre className="bg-code-bg border border-code-edge rounded-lg p-3 text-xs font-mono text-code-fg overflow-x-auto max-h-[120px] leading-relaxed whitespace-pre-wrap">
+                    {exportResult}
+                  </pre>
+                  <button onClick={() => {
+                    navigator.clipboard.writeText(exportResult);
+                    setExportCopied(true);
+                    setTimeout(() => setExportCopied(false), 2000);
+                  }}
+                    className="absolute top-2 right-2 px-2 py-0.5 text-[10px] font-medium text-fg-secondary hover:text-fg bg-panel-inset rounded border border-edge flex items-center gap-1 cursor-pointer">
+                    {exportCopied ? <Check className="w-2.5 h-2.5 text-pass" /> : <Copy className="w-2.5 h-2.5" />}
+                    <span>{exportCopied ? 'Copied' : 'Copy'}</span>
+                  </button>
+                </div>
+              )}
             </div>
           </div>
 

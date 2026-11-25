@@ -11,8 +11,21 @@ export function getVerdictStyle(verdict: string): string {
     case 'SYNTAX_ERROR':
     case 'MISSED_SHOWN':
       return 'bg-critical-muted text-critical border-critical-edge';
+    case 'NOT_TESTED':
+      return 'bg-panel-inset text-fg-muted border-edge';
     default:
       return 'bg-panel-inset text-fg-muted border-edge';
+  }
+}
+
+export function getVerdictAccent(verdict: string): string {
+  switch (verdict) {
+    case 'PASS': return 'border-l-pass';
+    case 'TOO_NARROW': return 'border-l-narrow';
+    case 'NOISY': return 'border-l-noisy';
+    case 'SYNTAX_ERROR':
+    case 'MISSED_SHOWN': return 'border-l-critical';
+    default: return 'border-l-edge-hover';
   }
 }
 

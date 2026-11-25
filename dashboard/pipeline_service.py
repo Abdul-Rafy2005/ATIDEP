@@ -205,6 +205,10 @@ def run_pipeline(text):
         verdict = "PASS"
         explanation = f"Validation completed (verified structure): {str(e)[:80]}"
 
+    # Stage 4: IOC extraction
+    from export.ioc_extract import extract_iocs
+    iocs = extract_iocs(text)
+
     return {
         "technique_id": tech_id,
         "technique_name": tech_info["description"],
@@ -216,6 +220,7 @@ def run_pipeline(text):
         "extract_time": extract_time,
         "gen_time": gen_time,
         "model": "qwen2.5-coder:14b (v3b)",
+        "iocs": iocs,
         # Backwards-compatible aliases
         "gate_verdict": verdict,
         "gate_reason": explanation,

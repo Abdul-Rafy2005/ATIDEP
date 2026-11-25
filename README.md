@@ -54,6 +54,21 @@ python data/build_attack_lookup.py
 # The 55 MB STIX bundle (data/enterprise-attack.json) is gitignored
 ```
 
+### STIX/TAXII Connector (optional, needs `pip install taxii2-client stix2`)
+```powershell
+# Refresh the ATT&CK technique lookup from MITRE's TAXII 2.1 server
+python data/taxii_connector.py --check   # fetch and compare, write nothing
+python data/taxii_connector.py           # fetch and update data/attack_lookup.json
+```
+If the server cannot be reached, or returns fewer than 500 techniques, the local `attack_lookup.json` is kept unchanged.
+
+The connector also supports structured ingestion: given a threat group name (e.g. APT29), it pulls the group's techniques from TAXII and filters to the ones our pipeline has synthetic logs for. This is available:
+- **From the dashboard:** Pipeline view, expand "STIX/TAXII Structured Ingestion", click "Load Threat Groups", then "Ingest" on a group.
+- **From the API:** `POST /api/taxii/ingest {"group": "APT29"}` returns the group's techniques with support status.
+- **From Python:** `from data.taxii_ingest import ingest_by_group; ingest_by_group("APT29")`
+
+Command-line context for rule generation comes from threat reports or our synthetic log templates. STIX objects rarely carry observed command lines, so TAXII input drives which techniques to cover, not how to write the rule.
+
 ---
 
 ## Running the Demo
@@ -129,7 +144,7 @@ python dashboard/app.py
 All tests run locally without requiring live GPU inference.
 
 ```powershell
-# Run the full pytest suite (99 tests)
+# Run the full pytest suite (110 tests)
 python -m pytest tests/ -v
 
 # Run the validator scripts (SigmaHQ reference rules against synthetic logs)
@@ -198,6 +213,8 @@ C:\ATIDEP/
 │   ├── attack_lookup.json    # 706 ATT&CK techniques (name, tactics, URL)
 │   ├── attack_lookup.py      # Accessor: get_technique, get_name, get_tactics
 │   ├── build_attack_lookup.py# Parses STIX 2.1 bundle into attack_lookup.json
+│   ├── taxii_connector.py    # STIX/TAXII connector: pulls techniques, groups and relationships from MITRE TAXII 2.1
+│   ├── taxii_ingest.py       # Structured ingestion: maps threat groups to pipeline-supported techniques
 │   ├── sigmahq_rules/        # Reference SigmaHQ rules for Set 1
 │   ├── sigmahq_rules_set2/   # Reference SigmaHQ rules for Set 2
 │   ├── sigmahq_rules_set3/   # Reference SigmaHQ rules for Set 3
@@ -230,8 +247,10 @@ C:\ATIDEP/
 │   ├── set1_prompt_round3.md # Round 3 prompt comparison on Set 1
 │   ├── set1_failure_modes.md # Set 1 failure mode breakdown
 │   └── set3_use_log.csv      # Audit log of Set 3 executions
-├── tests/                    # Automated regression test suite (99 tests)
+├── tests/                    # Automated regression test suite (110 tests)
 │   ├── test_attack_lookup.py # ATT&CK STIX lookup module tests (12 tests)
+│   ├── test_taxii_connector.py # TAXII connector tests, offline (4 tests)
+│   ├── test_taxii_ingest.py  # TAXII ingestion tests, offline (7 tests)
 │   ├── test_coverage.py      # Coverage template builder tests (16 tests)
 │   ├── test_dashboard.py     # Flask API and data loader tests (13 tests)
 │   ├── test_demo.py          # End-to-end demo prototype tests (9 tests)

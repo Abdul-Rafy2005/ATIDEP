@@ -74,6 +74,12 @@
     --color-critical: var(--critical);
     --color-critical-muted: var(--critical-muted);
     --color-critical-edge: var(--critical-edge);
+    --color-code-bg: var(--code-bg);
+    --color-code-fg: var(--code-fg);
+    --color-code-edge: var(--code-edge);
+    --color-code-muted: var(--code-muted);
+    --color-bar-secondary: var(--bar-secondary);
+    --color-bar-tertiary: var(--bar-tertiary);
 }
 
 /* ── Dark mode (default) ─────────────────────────────────── */
@@ -137,6 +143,12 @@
     --critical: #f87171;
     --critical-muted: #2a0808;
     --critical-edge: #7f1d1d;
+    --code-bg: #0c0c12;
+    --code-fg: #d4d4d8;
+    --code-edge: #23232d;
+    --code-muted: #71717a;
+    --bar-secondary: #17949e;
+    --bar-tertiary: #3f3f46;
 }
 
 /* ── Light mode ──────────────────────────────────────────── */
@@ -199,6 +211,12 @@
     --critical: #dc2626;
     --critical-muted: #fef2f2;
     --critical-edge: #fecaca;
+    --code-bg: #1a1a2e;
+    --code-fg: #d4d4d8;
+    --code-edge: #2d2d44;
+    --code-muted: #71717a;
+    --bar-secondary: #0e7490;
+    --bar-tertiary: #94a3b8;
 }
 
 @layer base {
@@ -210,5 +228,13 @@
   }
   html {
     @apply font-sans;
+    scroll-behavior: smooth;
+  }
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-ring/50;
+  }
+  ::selection {
+    background: var(--brand);
+    color: var(--brand-fg);
   }
 }

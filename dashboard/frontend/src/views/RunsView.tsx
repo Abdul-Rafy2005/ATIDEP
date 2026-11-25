@@ -257,8 +257,8 @@ export const RunsView = ({ onNavigateTab, initialFolder, searchFilter = '' }: Ru
                 <div className="text-xs font-medium text-fg-secondary">Gate verification</div>
                 {[
                   { label: 'Strict pass', value: selectedRun.strict_pass, total: selectedRun.total, pct: selStrictPct, barClass: 'bg-brand' },
-                  { label: 'Single pass', value: selectedRun.single_pass, total: selectedRun.total, pct: selSinglePct, barClass: 'bg-brand opacity-60' },
-                  { label: 'Syntax OK', value: selectedRun.total - selectedRun.syntax_errors, total: selectedRun.total, pct: selSyntaxPct, barClass: selectedRun.syntax_errors > 0 ? 'bg-narrow' : 'bg-fg-muted' },
+                  { label: 'Single pass', value: selectedRun.single_pass, total: selectedRun.total, pct: selSinglePct, barClass: 'bg-bar-secondary' },
+                  { label: 'Syntax OK', value: selectedRun.total - selectedRun.syntax_errors, total: selectedRun.total, pct: selSyntaxPct, barClass: selectedRun.syntax_errors > 0 ? 'bg-narrow' : 'bg-bar-tertiary' },
                 ].map((m) => (
                   <div key={m.label} className="space-y-1">
                     <div className="flex justify-between text-xs">
@@ -286,12 +286,12 @@ export const RunsView = ({ onNavigateTab, initialFolder, searchFilter = '' }: Ru
 
             <div className="pt-2.5 border-t border-subtle flex items-center gap-2">
               <button onClick={() => onNavigateTab('coverage')}
-                className="flex-1 py-2 rounded-md bg-brand hover:bg-brand-hover text-brand-fg text-xs font-semibold flex items-center justify-center gap-1.5 cursor-pointer">
+                className="flex-1 py-2 rounded-lg bg-brand hover:bg-brand-hover text-brand-fg text-xs font-semibold flex items-center justify-center gap-1.5 cursor-pointer transition-all duration-150">
                 <Filter className="w-3.5 h-3.5" />
                 <span>ATT&CK Matrix</span>
               </button>
               <button onClick={() => onNavigateTab('gate')}
-                className="py-2 px-3 rounded-md bg-panel-inset hover:bg-panel-hover border border-edge text-fg-secondary text-xs font-medium flex items-center gap-1 cursor-pointer">
+                className="py-2 px-3 rounded-lg bg-panel-inset hover:bg-panel-hover border border-edge text-fg-secondary text-xs font-medium flex items-center gap-1 cursor-pointer transition-all duration-150">
                 <Play className="w-3.5 h-3.5" />
                 <span>Gate</span>
               </button>
@@ -310,8 +310,8 @@ export const RunsView = ({ onNavigateTab, initialFolder, searchFilter = '' }: Ru
           <div className="space-y-2 text-xs">
             {[
               { label: '14b (v3b) Primary', score: '57/60 (95.0%)', pct: 95, barClass: 'bg-brand' },
-              { label: '7b (v3a) Comparison', score: '58/60 (96.7%)', pct: 96.7, barClass: 'bg-brand opacity-60' },
-              { label: '14b (v3a) Exploratory', score: '55/60 (91.7%)', pct: 91.7, barClass: 'bg-fg-muted' },
+              { label: '7b (v3a) Comparison', score: '58/60 (96.7%)', pct: 96.7, barClass: 'bg-bar-secondary' },
+              { label: '14b (v3a) Exploratory', score: '55/60 (91.7%)', pct: 91.7, barClass: 'bg-bar-tertiary' },
               { label: 'v1 Baseline', score: '82/120 (68.3%)', pct: 68.3, barClass: 'bg-edge-hover' },
             ].map((m) => (
               <div key={m.label}>
