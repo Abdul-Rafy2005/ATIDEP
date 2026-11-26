@@ -540,3 +540,24 @@ Antigravity started on 2026-11-06
   | Narrow registry rule gets TOO_NARROW | verdict == TOO_NARROW | PASS |
   | Existing tests unbroken | 202 passed (5 pre-existing set3 guard failures unchanged) | PASS |
 - WARN lines: 5 pre-existing test failures in test_check_frozen.py and test_scoring_pipeline.py (set 3 freeze guard). Not caused by this task.
+
+### 2026-11-26: Task 24 - Fix coverage crash on non-numeric set IDs and update frozen hashes
+- Status: DONE
+- What was fixed:
+  - coverage/build_coverage.py crashed with ValueError when processing registry/file/network run folders because int("registry") fails. Added try/except to handle string set IDs. Non-numeric set configs are excluded from coverage grid columns (the grid only has rows for sets 1, 2, and 3).
+  - FROZEN.md hashes for validator/runner.py and llm/scoring.py were stale after Task 23 changes. Updated to current hashes.
+- Files created or changed:
+  - coverage/build_coverage.py (fixed: string set_id handling, excluded non-numeric configs from coverage columns)
+  - FROZEN.md (updated: SHA-256 hashes for runner.py and scoring.py)
+  - coverage/coverage.csv (regenerated)
+  - coverage/coverage.html (regenerated)
+  - coverage/COVERAGE.md (regenerated)
+  - coverage/README.md (regenerated)
+  - PROGRESS.md (this entry)
+- Self-check:
+  | EXPECTED | ACTUAL | RESULT |
+  | Coverage builds without crash | 44 techniques, 19 configurations | PASS |
+  | Frozen config numbers unchanged | 14b v3b set3 19/20, 7b v3a set3 18/20 | PASS |
+  | Frozen hash check passes | check_frozen.py returns 0 | PASS |
+  | Full test suite | 226 passed, 0 failed | PASS |
+- WARN lines: none

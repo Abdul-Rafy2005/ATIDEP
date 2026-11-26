@@ -246,7 +246,11 @@ def collect_config_results(newest_configs, root_dir=None):
     for key, (folder_name, settings, rows) in newest_configs.items():
         parts = key.split("|")
         model = parts[0]
-        set_num = int(settings.get("set", parts[2] if len(parts) > 2 else 1))
+        raw_set = settings.get("set", parts[2] if len(parts) > 2 else "1")
+        try:
+            set_num = int(raw_set)
+        except (ValueError, TypeError):
+            set_num = raw_set
         repeats = int(settings.get("repeats", 1))
         model_safe = model.replace(":", "_").replace("/", "_")
         rf_dir = os.path.join(runs_base, folder_name, "rules_first", model_safe)
@@ -396,8 +400,14 @@ def build_coverage_table(runs_dir=None, root_dir=None):
     if 3 in sets_with_runs and set3_techs:
         sets_to_include.append((3, set3_techs))
 
-    # Stable column order: sort by model, then prompt, then set
-    config_keys = sorted(config_results.keys())
+    # Stable column order: sort by model, then prompt, then set.
+    # Exclude non-numeric sets (registry, file, network) from coverage columns
+    # because the coverage grid only has rows for sets 1, 2 and 3.
+    numeric_set_ids = {str(s) for s, _ in sets_to_include}
+    config_keys = sorted(
+        k for k in config_results
+        if k.rsplit("|", 1)[-1] in numeric_set_ids
+    )
 
     # Build rows
     rows = []
