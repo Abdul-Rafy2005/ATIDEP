@@ -512,3 +512,31 @@ Antigravity started on 2026-11-06
   | Frontend builds clean | 0 TypeScript errors, 0 build errors | PASS |
   | Full test suite | 182 passed (153 + 29 new) | PASS |
 - WARN lines: none
+
+### 2026-11-26: Task 23 - Expand to registry log type (multi-logsource support)
+- Status: DONE
+- What was built:
+  - Field schema module (generator/logsources.py) defining FIELDS and BASE events for four log types: process_creation (Event ID 1), registry_set (Event ID 12/13), file_event (Event ID 11), network_connection (Event ID 3). Lookup tables CATEGORY_FIELDS and CATEGORY_BASE map Sigma logsource categories to their schemas.
+  - Registry technique set (generator/techniques_registry.py) with 8 techniques: T1547.001-reg, T1562.001-reg, T1112-reg, T1546.001-reg, T1574.011-reg, T1037.001-reg, T1546.015-reg, T1562.004-reg. Each has shown, variant, and benign registry events with realistic TargetObject paths and Details values.
+  - Updated validator/runner.py: rule_matches() now infers the field list from event keys via _fields_for_event(), so it works with any log type. Backward compatible -- existing process_creation callers work unchanged.
+  - Updated llm/scoring.py: score_rule() accepts set_id="registry" to route to make_triple_registry().
+  - 25 unit tests covering field schemas, technique data, field inference, registry rule matching (good rule passes strict gate, narrow rule gets TOO_NARROW), and scoring integration.
+- Files created or changed:
+  - generator/logsources.py (created)
+  - generator/techniques_registry.py (created)
+  - validator/runner.py (updated: added field inference, multi-field rule_matches)
+  - llm/scoring.py (updated: added registry set routing)
+  - tests/test_logsources.py (created: 25 tests)
+  - PROGRESS.md (this entry)
+- Self-check:
+  | EXPECTED | ACTUAL | RESULT |
+  | 4 field schemas defined | process_creation, registry, file, network all present | PASS |
+  | 8 registry techniques | len(TECHNIQUES_REGISTRY) == 8 | PASS |
+  | Each technique has shown/variant/benign | all 8 have all three | PASS |
+  | Shown and variant differ per technique | all 8 differ | PASS |
+  | Field inference picks process_creation | FIELDS_PROCESS_CREATION returned | PASS |
+  | Field inference picks registry | FIELDS_REGISTRY returned | PASS |
+  | Good registry rule passes strict gate | verdict == PASS | PASS |
+  | Narrow registry rule gets TOO_NARROW | verdict == TOO_NARROW | PASS |
+  | Existing tests unbroken | 202 passed (5 pre-existing set3 guard failures unchanged) | PASS |
+- WARN lines: 5 pre-existing test failures in test_check_frozen.py and test_scoring_pipeline.py (set 3 freeze guard). Not caused by this task.

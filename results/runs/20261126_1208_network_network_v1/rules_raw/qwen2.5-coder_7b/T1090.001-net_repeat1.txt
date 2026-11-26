@@ -1,0 +1,17 @@
+# keep: Temp folder process, connection to internal proxy port
+# ignore: proxy.exe, 10.0.0.100, 8080
+title: Process in Temp Folder Connects to Internal Proxy Port
+status: test
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        Image|contains: '\Temp\'
+        DestinationPort: 8080
+        Initiated: 'true'
+    condition: selection
+level: high
+tags:
+    - attack.proxy
+    - attack.t1090.001

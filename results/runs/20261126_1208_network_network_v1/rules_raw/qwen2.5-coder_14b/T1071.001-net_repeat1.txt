@@ -1,0 +1,18 @@
+# keep: non-browser process making outbound HTTP connection
+# ignore: 185.141.27.100, cdn-update.example.com, 443
+title: Non-Browser Process Outbound HTTP Connection
+status: test
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\rundll32.exe'
+        Initiated: 'true'
+        Protocol: 'tcp'
+        DestinationPort: 443
+    condition: selection
+level: medium
+tags:
+    - attack.execution
+    - attack.t1071.001

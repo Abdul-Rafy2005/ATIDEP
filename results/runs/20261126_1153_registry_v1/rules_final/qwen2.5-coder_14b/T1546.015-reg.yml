@@ -1,0 +1,13 @@
+title: COM Object Registration for Code Execution Hijacking
+status: test
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|contains: 'CLSID\InprocServer32\(Default)'
+    condition: selection
+level: high
+tags:
+    - attack.execution
+    - attack.t1546.015

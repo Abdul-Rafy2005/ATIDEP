@@ -1,0 +1,16 @@
+# keep: .xml in Tasks folder
+# ignore: Updater, schtasks.exe
+title: XML Task File Created in Windows Tasks Folder
+status: test
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|contains: '\Tasks\'
+        TargetFilename|endswith: '.xml'
+    condition: selection
+level: high
+tags:
+    - attack.persistence
+    - attack.t1053.005

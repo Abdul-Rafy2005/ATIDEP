@@ -1,0 +1,16 @@
+# keep: .zip in Temp folder from a System32 process
+# ignore: exfil.zip, cmd.exe
+title: Archive File Staged For Exfiltration
+status: test
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|contains: '\Temp\'
+        TargetFilename|endswith: '.zip'
+    condition: selection
+level: high
+tags:
+    - attack.exfiltration
+    - attack.t1074.001

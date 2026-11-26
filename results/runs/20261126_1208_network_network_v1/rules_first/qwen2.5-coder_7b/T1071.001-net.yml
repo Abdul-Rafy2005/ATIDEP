@@ -1,0 +1,16 @@
+title: Rundll32 Outbound HTTP Connection
+status: test
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\rundll32.exe'
+        DestinationPort: 443
+        Protocol: tcp
+        Initiated: 'true'
+    condition: selection
+level: high
+tags:
+    - attack.execution
+    - attack.t1071.001

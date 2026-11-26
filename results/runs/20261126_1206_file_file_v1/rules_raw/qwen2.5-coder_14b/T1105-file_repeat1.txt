@@ -1,0 +1,17 @@
+# keep: .exe in Public folder
+# ignore: payload.exe, certutil.exe
+title: Suspicious Executable Dropped in Public Folder
+status: test
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection_ext:
+        TargetFilename|endswith: '.exe'
+    selection_path:
+        TargetFilename|contains: '\Public\'
+    condition: all of selection_*
+level: high
+tags:
+    - attack.execution
+    - attack.t1105

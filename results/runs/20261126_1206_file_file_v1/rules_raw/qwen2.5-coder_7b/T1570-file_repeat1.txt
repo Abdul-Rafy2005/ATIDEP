@@ -1,0 +1,17 @@
+# keep: .exe on remote admin share via cmd.exe
+# ignore: beacon.exe, cmd.exe
+title: Remote Admin Share File Creation
+status: test
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|contains: '\\'
+        TargetFilename|endswith: '.exe'
+        Image|endswith: '\cmd.exe'
+    condition: selection
+level: high
+tags:
+    - attack.lateral-movement
+    - attack.t1570

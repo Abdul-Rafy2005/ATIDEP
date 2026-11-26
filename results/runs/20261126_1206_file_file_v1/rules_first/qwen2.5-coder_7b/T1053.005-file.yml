@@ -1,0 +1,14 @@
+title: Scheduled Task XML File Creation
+status: test
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|endswith: '.xml'
+        TargetFilename|contains: '\System32\Tasks\'
+    condition: selection
+level: high
+tags:
+    - attack.persistence
+    - attack.t1053.005

@@ -16,6 +16,9 @@ from runner import rule_to_sql, rule_matches
 from generate import make_triple as make_triple_set1
 from techniques_set2 import make_triple as make_triple_set2
 from techniques_set3 import make_triple3 as make_triple_set3
+from techniques_registry import make_triple_registry
+from techniques_file_create import make_triple_file
+from techniques_network import make_triple_network
 
 
 class ScoreResult:
@@ -66,7 +69,10 @@ def score_rule(set_id, technique, rule_text):
     Returns:
         syntax_ok, fires_shown, fires_variant, fires_benign, single_pass, strict_pass, verdict
     """
-    set_num = int(set_id)
+    try:
+        set_num = int(set_id)
+    except (ValueError, TypeError):
+        set_num = None
     syntax_error = ""
     try:
         rule_to_sql(rule_text)
@@ -87,7 +93,13 @@ def score_rule(set_id, technique, rule_text):
             error=syntax_error,
         )
 
-    if set_num == 1:
+    if set_id == "registry" or str(set_id).startswith("reg"):
+        shown, variant, benign = make_triple_registry(technique)
+    elif set_id == "file" or str(set_id).startswith("file"):
+        shown, variant, benign = make_triple_file(technique)
+    elif set_id == "network" or str(set_id).startswith("net"):
+        shown, variant, benign = make_triple_network(technique)
+    elif set_num == 1:
         shown, variant, benign = make_triple_set1(technique)
     elif set_num == 2:
         shown, variant, benign = make_triple_set2(technique)

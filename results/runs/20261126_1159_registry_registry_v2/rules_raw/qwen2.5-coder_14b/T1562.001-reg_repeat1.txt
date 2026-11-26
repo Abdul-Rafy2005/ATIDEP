@@ -1,0 +1,16 @@
+# keep: Policies\Microsoft\Windows Defender\Real-Time Protection
+# ignore: DisableRealtimeMonitoring, reg.exe
+title: Windows Defender Real-Time Protection Disabled Via Registry
+status: test
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|contains: 'Policies\Microsoft\Windows Defender\Real-Time Protection'
+        Details: 'DWORD (0x00000001)'
+    condition: selection
+level: high
+tags:
+    - attack.defense-evasion
+    - attack.t1562.001

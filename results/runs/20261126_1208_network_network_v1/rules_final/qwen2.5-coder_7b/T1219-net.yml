@@ -1,0 +1,15 @@
+title: AnyDesk Outbound Network Connection
+status: test
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\anydesk.exe'
+        DestinationPort: 7070
+        Initiated: 'true'
+    condition: selection
+level: high
+tags:
+    - attack.remote_access
+    - attack.t1219

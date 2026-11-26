@@ -1,0 +1,15 @@
+title: Process in Temp Folder Makes DNS Connection
+status: test
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        Image|contains: '\Temp\'
+        DestinationPort: 53
+        Protocol: udp
+    condition: selection
+level: high
+tags:
+    - attack.exfiltration
+    - attack.t1048.003

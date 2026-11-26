@@ -1,0 +1,13 @@
+title: Run Key Modified Via Registry
+status: test
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|contains: 'Run'
+    condition: selection
+level: medium
+tags:
+    - attack.persistence
+    - attack.t1547.001

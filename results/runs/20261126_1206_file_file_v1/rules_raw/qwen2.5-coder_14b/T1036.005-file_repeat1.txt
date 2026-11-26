@@ -1,0 +1,17 @@
+# keep: .exe in non-standard location mimicking svchost.exe
+# ignore: svchost.exe, cmd.exe
+title: Mimicking svchost.exe in Non-Standard Location
+status: test
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection_ext:
+        TargetFilename|endswith: '.exe'
+    selection_path:
+        TargetFilename|contains: '\Users\Public\'
+    condition: all of selection_*
+level: high
+tags:
+    - attack.execution
+    - attack.t1036.005

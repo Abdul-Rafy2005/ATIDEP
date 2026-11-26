@@ -1,0 +1,16 @@
+# keep: Services\SharedAccess\Parameters\FirewallPolicy\StandardProfile\EnableFirewall
+# ignore: DWORD (0x00000000), reg.exe
+title: Windows Firewall Disabled Via Registry
+status: test
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|contains: 'Services\SharedAccess\Parameters\FirewallPolicy\StandardProfile\EnableFirewall'
+        Details: 'DWORD (0x00000000)'
+    condition: selection
+level: high
+tags:
+    - attack.defense-evasion
+    - attack.t1562.004

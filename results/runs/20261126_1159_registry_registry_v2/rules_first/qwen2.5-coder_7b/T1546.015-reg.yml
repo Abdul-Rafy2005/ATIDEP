@@ -1,0 +1,15 @@
+title: COM Object Hijack via Registry
+status: test
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|contains|all:
+            - 'CLSID'
+            - 'InprocServer32'
+    condition: selection
+level: high
+tags:
+    - attack.persistence
+    - attack.t1546.015

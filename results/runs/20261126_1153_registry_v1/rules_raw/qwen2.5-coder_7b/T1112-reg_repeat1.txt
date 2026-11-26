@@ -1,0 +1,16 @@
+# keep: Explorer\Advanced\HideFileExt
+# ignore: DWORD (0x00000001), reg.exe
+title: File Extension Hidden Via Registry
+status: test
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|contains: 'Explorer\Advanced\HideFileExt'
+        Details: 'DWORD (0x00000001)'
+    condition: selection
+level: medium
+tags:
+    - attack.persistence
+    - attack.t1112

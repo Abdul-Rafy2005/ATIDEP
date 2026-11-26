@@ -1,0 +1,14 @@
+title: PowerShell Writes Script File to Temp Directory
+status: test
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|contains: '\AppData\Local\Temp\'
+        TargetFilename|endswith: '.ps1'
+    condition: selection
+level: high
+tags:
+    - attack.persistence
+    - attack.t1059.001

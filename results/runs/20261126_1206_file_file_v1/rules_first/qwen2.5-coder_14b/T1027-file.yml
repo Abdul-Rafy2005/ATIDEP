@@ -1,0 +1,15 @@
+title: Obfuscated Script File Created in Temp Directory
+status: test
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection_ext:
+        TargetFilename|endswith: '.vbs'
+    selection_img:
+        Image|endswith: '\cmd.exe'
+    condition: all of selection_*
+level: high
+tags:
+    - attack.execution
+    - attack.t1027

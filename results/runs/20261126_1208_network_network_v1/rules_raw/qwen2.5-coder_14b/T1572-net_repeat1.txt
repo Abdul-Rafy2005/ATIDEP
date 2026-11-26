@@ -1,0 +1,17 @@
+# keep: ssh.exe making outbound connection on port 22
+# ignore: 203.0.113.50
+title: SSH Outbound Connection on Port 22
+status: test
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\ssh.exe'
+        DestinationPort: 22
+        Initiated: 'true'
+    condition: selection
+level: medium
+tags:
+    - attack.tunneling
+    - attack.t1572

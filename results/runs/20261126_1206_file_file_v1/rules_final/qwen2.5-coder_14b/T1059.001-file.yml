@@ -1,0 +1,15 @@
+title: PowerShell Writes Script File to Temp Directory
+status: test
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection_ext:
+        TargetFilename|endswith: '.ps1'
+    selection_img:
+        Image|endswith: '\powershell.exe'
+    condition: all of selection_*
+level: high
+tags:
+    - attack.execution
+    - attack.t1059.001

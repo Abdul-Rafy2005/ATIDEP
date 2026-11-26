@@ -1,0 +1,15 @@
+title: Process In Temp Folder Connects to Known Proxy Port
+status: test
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        Image|contains: '\Temp\'
+        DestinationPort: 8080
+        Initiated: 'true'
+    condition: selection
+level: high
+tags:
+    - attack.tor
+    - attack.t1090.001

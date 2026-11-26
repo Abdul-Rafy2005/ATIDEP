@@ -1,0 +1,17 @@
+# keep: Temp folder process, outbound
+# ignore: anydesk.exe, 80.209.241.3, relay.anydesk.com, 7070
+title: Remote Access Tool Outbound Connection
+status: test
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        Image|contains: '\Temp\'
+        Initiated: 'true'
+        DestinationPort: 7070
+    condition: selection
+level: high
+tags:
+    - attack.execution
+    - attack.t1219

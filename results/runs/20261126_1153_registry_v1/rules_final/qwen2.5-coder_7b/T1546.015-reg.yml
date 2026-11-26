@@ -1,0 +1,13 @@
+title: COM Object Registered for Execution Hijack
+status: test
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|contains: 'CLSID\{b5f8350b-0548-48b1-a6ee-88bd00b4a5e7}\InprocServer32'
+    condition: selection
+level: high
+tags:
+    - attack.execution-manipulation
+    - attack.t1546.015

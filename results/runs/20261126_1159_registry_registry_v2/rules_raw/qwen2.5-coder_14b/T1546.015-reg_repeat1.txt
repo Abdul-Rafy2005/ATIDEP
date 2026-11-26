@@ -1,0 +1,17 @@
+# keep: Classes\CLSID\InprocServer32
+# ignore: {b5f8350b-0548-48b1-a6ee-88bd00b4a5e7}, C:\Users\Public\evil.dll, reg.exe
+title: COM Object Registration for Execution Hijacking
+status: test
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|contains|all:
+            - 'Classes\CLSID'
+            - 'InprocServer32'
+    condition: selection
+level: high
+tags:
+    - attack.persistence
+    - attack.t1546.015

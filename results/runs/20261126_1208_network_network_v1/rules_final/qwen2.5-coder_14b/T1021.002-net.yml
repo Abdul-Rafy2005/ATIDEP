@@ -1,0 +1,18 @@
+# keep: net.exe making outbound SMB connection
+# ignore: 10.0.0.8, 445
+title: Net.exe Outbound SMB Connection
+status: test
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\net.exe'
+        DestinationPort: 445
+        Initiated: 'true'
+        Protocol: tcp
+    condition: selection
+level: high
+tags:
+    - attack.lateral_movement
+    - attack.t1021.002

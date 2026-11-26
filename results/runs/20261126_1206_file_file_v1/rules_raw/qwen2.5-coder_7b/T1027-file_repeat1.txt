@@ -1,0 +1,17 @@
+# keep: .vbs in Temp folder with .pdf extension
+# ignore: invoice.pdf.vbs, cmd.exe
+title: Obfuscated Script File Written To Temp Directory
+status: test
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection_ext:
+        TargetFilename|endswith: '.vbs'
+    selection_path:
+        TargetFilename|contains: '\Temp\'
+    condition: all of selection_ext, selection_path
+level: high
+tags:
+    - attack.persistence
+    - attack.t1027

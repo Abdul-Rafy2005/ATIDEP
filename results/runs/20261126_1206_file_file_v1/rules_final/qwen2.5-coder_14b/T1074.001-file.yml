@@ -1,0 +1,15 @@
+title: Command Line Tool Creates Archive in Temp Directory
+status: test
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection_ext:
+        TargetFilename|endswith: '.zip'
+    selection_img:
+        Image|endswith: '\cmd.exe'
+    condition: all of selection_*
+level: high
+tags:
+    - attack.exfiltration
+    - attack.t1074.001

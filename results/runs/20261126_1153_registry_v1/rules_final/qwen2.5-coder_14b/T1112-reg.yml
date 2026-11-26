@@ -1,0 +1,13 @@
+title: File Extension Hiding Enabled Via Registry
+status: test
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|contains: 'Explorer\Advanced\HideFileExt'
+        Details: 'DWORD (0x00000001)'
+    condition: selection
+level: medium
+tags:
+    - attack.t1112

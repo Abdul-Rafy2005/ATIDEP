@@ -1,0 +1,15 @@
+title: Remote Access Tool Outbound Connection
+status: test
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        Image|contains: '\Temp\'
+        Initiated: 'true'
+        DestinationPort: 7070
+    condition: selection
+level: high
+tags:
+    - attack.execution
+    - attack.t1219

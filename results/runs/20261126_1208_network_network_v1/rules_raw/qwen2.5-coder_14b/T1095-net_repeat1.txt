@@ -1,0 +1,17 @@
+# keep: Temp folder process, raw TCP, outbound
+# ignore: implant.exe, 45.33.32.100, 443
+title: Non-Standard Process in Temp Folder Communicates Over Raw TCP
+status: test
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        Image|contains: '\Temp\'
+        Protocol: tcp
+        Initiated: 'true'
+    condition: selection
+level: high
+tags:
+    - attack.command_and_control
+    - attack.t1095

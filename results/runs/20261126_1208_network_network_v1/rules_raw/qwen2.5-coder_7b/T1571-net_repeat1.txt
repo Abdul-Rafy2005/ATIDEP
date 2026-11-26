@@ -1,0 +1,17 @@
+# keep: Temp folder process, outbound connection on non-standard port
+# ignore: beacon.exe, 45.33.32.100, 8443
+title: Process in Temp Folder Makes Outbound Connection on Non-Standard Port
+status: test
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        Image|contains: '\Temp\'
+        DestinationPort: 8443
+        Initiated: 'true'
+    condition: selection
+level: high
+tags:
+    - attack.cobaltstrike
+    - attack.t1571

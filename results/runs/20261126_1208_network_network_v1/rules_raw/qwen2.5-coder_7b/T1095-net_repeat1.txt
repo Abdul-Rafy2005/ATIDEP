@@ -1,0 +1,18 @@
+# keep: Temp folder process, non-standard TCP connection
+# ignore: implant.exe, 45.33.32.100, 443
+title: Suspicious Process in Temp Folder Making Non-Standard TCP Connection
+status: test
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        Image|contains: '\Temp\'
+        DestinationPort: [135, 139, 445, 1433, 3389, 5985, 5986, 636, 1434, 3268, 3269, 3389, 5985, 5986, 636, 1434, 3268, 3269]
+        Protocol: tcp
+        Initiated: 'true'
+    condition: selection
+level: high
+tags:
+    - attack.c2
+    - attack.t1095

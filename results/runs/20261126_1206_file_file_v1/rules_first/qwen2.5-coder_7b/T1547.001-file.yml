@@ -1,0 +1,15 @@
+title: Startup Folder Executable Drop
+status: test
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection_ext:
+        TargetFilename|endswith: '.exe'
+    selection_img:
+        Image|endswith: '\cmd.exe'
+    condition: all of selection_*
+level: high
+tags:
+    - attack.persistence
+    - attack.t1547.001

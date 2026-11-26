@@ -1,0 +1,19 @@
+# keep: .exe in Public folder mimicking svchost.exe
+# ignore: svchost.exe, Public
+title: Suspicious Executable Mimicking Legitimate Binary
+status: test
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection_ext:
+        TargetFilename|endswith: '.exe'
+    selection_img:
+        Image|contains: '\System32\'
+    selection_path:
+        TargetFilename|contains: '\Public\'
+    condition: all of selection_ext, selection_img, selection_path
+level: high
+tags:
+    - attack.execution
+    - attack.t1036.005

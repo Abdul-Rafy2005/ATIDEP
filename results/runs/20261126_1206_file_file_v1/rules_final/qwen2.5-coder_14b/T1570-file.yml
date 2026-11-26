@@ -1,0 +1,14 @@
+title: Executable Written to Remote Admin Share Temp Directory
+status: test
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|contains: '\Windows\Temp\'
+        TargetFilename|endswith: '.exe'
+    condition: selection
+level: high
+tags:
+    - attack.lateral-movement
+    - attack.t1570
