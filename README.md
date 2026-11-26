@@ -5,7 +5,7 @@ ATIDEP is an Automated Threat-Informed Detection Engineering Platform developed 
 Supervisor: Dr. Shahbaz Siddiqui.
 Team: Abdul Rafy (backend and AI), Muhammad Owais (malware sandbox), Abdul Ahad (governance and coverage template).
 
-The system takes unstructured threat descriptions, uses a local LLM to draft Sigma detection rules, and evaluates each rule through an automated validation gate. The gate tests pySigma SQL conversion syntax, catches hidden attack variants, and blocks noisy or overly narrow detections on synthetic process creation logs.
+The system takes unstructured threat descriptions, uses a local LLM to draft Sigma detection rules, and evaluates each rule through an automated validation gate. The gate tests pySigma SQL conversion syntax, catches hidden attack variants, and blocks noisy or overly narrow detections on synthetic logs. Supports four Sysmon log types: process creation (Event ID 1), registry (Event ID 12/13), file creation (Event ID 11), and network connection (Event ID 3).
 
 ---
 
@@ -38,7 +38,7 @@ Full results: [docs/FYP1_LLM_testing_report.md](docs/FYP1_LLM_testing_report.md)
 cd C:\ATIDEP
 
 # Install required Python dependencies
-pip install pySigma pysigma-backend-sqlite pyyaml flask
+pip install pySigma pysigma-backend-sqlite pysigma-backend-splunk pysigma-backend-microsoft365defender pyyaml flask
 
 # Pull required local models in Ollama
 ollama pull qwen2.5-coder:14b
@@ -135,7 +135,8 @@ python dashboard/app.py
 - **Coverage Matrix:** Interactive tactic-grouped matrix across 44 techniques with ATT&CK official names.
 - **Experiment Runs:** Sortable table of all recorded runs with strict/single pass metrics.
 - **Gate Validator:** Live interactive Sigma rule validator against synthetic logs.
-- **Pipeline Studio:** End-to-end extraction, drafting, and validation pipeline interface.
+- **Pipeline Studio:** End-to-end extraction, drafting, and validation pipeline interface with STIX/TAXII structured ingestion and IOC extraction.
+- **Priority Backlog:** Threat-informed technique ranking by active threat group usage, with coverage gap analysis.
 
 ---
 
@@ -144,7 +145,7 @@ python dashboard/app.py
 All tests run locally without requiring live GPU inference.
 
 ```powershell
-# Run the full pytest suite (110 tests)
+# Run the full pytest suite (226 tests)
 python -m pytest tests/ -v
 
 # Run the validator scripts (SigmaHQ reference rules against synthetic logs)
@@ -206,7 +207,7 @@ C:\ATIDEP/
 │   ├── data_loader.py        # Data aggregator for runs, coverage, and techniques
 │   ├── pipeline_service.py   # Production pipeline service (extract, draft, validate)
 │   ├── frontend/             # React 19 + Vite + TypeScript + Tailwind + shadcn/ui
-│   │   └── src/views/        # OverviewView, CoverageMatrixView, RunsView, GateValidatorView, PipelineView
+│   │   └── src/views/        # OverviewView, CoverageMatrixView, RunsView, GateValidatorView, PipelineView, PriorityBacklogView
 │   ├── templates/            # Legacy Flask HTML views
 │   └── static/               # Legacy D3.js visualizers and styles
 ├── data/                     # Reference rules, synthetic logs, and ATT&CK lookup
@@ -228,33 +229,51 @@ C:\ATIDEP/
 ├── docs/                     # Project documentation and reports
 │   ├── DEMO_SCRIPT.md        # 5-minute evaluation presentation plan
 │   └── FYP1_LLM_testing_report.md  # Full FYP-1 testing report with all results
+├── export/                   # Rule export, prioritisation, and IOC extraction
+│   ├── rule_export.py        # Sigma to SPL, KQL, SQLite conversion
+│   ├── prioritisation.py     # Threat-informed technique ranking by group usage
+│   └── ioc_extract.py        # IOC extraction (IPs, domains, URLs, hashes) from text
 ├── generator/                # Synthetic event generation and technique definitions
 │   ├── generate.py           # Set 1 techniques (12) and make_triple generator
+│   ├── logsources.py         # Field schemas for all 4 log types (process, registry, file, network)
 │   ├── techniques_set2.py    # Set 2 techniques (12) and make_triple generator
-│   └── techniques_set3.py    # Set 3 techniques (20) and make_triple3 generator
+│   ├── techniques_set3.py    # Set 3 techniques (20) and make_triple3 generator
+│   ├── techniques_registry.py # Registry techniques (8) for Event ID 12/13
+│   ├── techniques_file_create.py # File creation techniques (8) for Event ID 11
+│   └── techniques_network.py # Network connection techniques (8) for Event ID 3
 ├── llm/                      # Prompt templates, Ollama runner, and scoring
-│   ├── prompts/              # Frozen prompt templates (v1, v2, v2_1, v3a, v3b)
+│   ├── prompts/              # Frozen prompt templates
+│   │   ├── v1.py, v2.py, v2_1.py, v3a.py, v3b.py  # Process creation prompts
+│   │   ├── registry_v1.py, registry_v2.py          # Registry prompts
+│   │   ├── file_v1.py                               # File creation prompt
+│   │   └── network_v1.py                            # Network connection prompt
 │   ├── analyze_failure_modes.py       # Failure mode classifier for Set 1
 │   ├── analyze_failure_modes_set3.py  # Failure mode classifier for Set 3
 │   ├── compare_models.py     # Set 1 evaluation driver
 │   ├── run_experiment.py     # Unified multi-set experiment execution pipeline
+│   ├── run_registry_experiment.py  # Multi-logsource experiment runner (registry, file, network)
 │   └── scoring.py            # Unified rule scoring and gate verification module
 ├── results/                  # Evaluation outputs, summaries, and run artifacts
-│   ├── runs/                 # Timestamped experiment folders (16 runs)
+│   ├── runs/                 # Timestamped experiment folders (20 runs)
 │   ├── archive/              # Archived prompt v1 and earlier results
 │   ├── FINAL_set3_report.md  # Final evaluation report on locked Set 3
 │   ├── RESULTS_SUMMARY.md    # Multi-round summary table across experiments
 │   ├── set1_prompt_round3.md # Round 3 prompt comparison on Set 1
 │   ├── set1_failure_modes.md # Set 1 failure mode breakdown
 │   └── set3_use_log.csv      # Audit log of Set 3 executions
-├── tests/                    # Automated regression test suite (110 tests)
+├── tests/                    # Automated regression test suite (226 tests)
 │   ├── test_attack_lookup.py # ATT&CK STIX lookup module tests (12 tests)
 │   ├── test_taxii_connector.py # TAXII connector tests, offline (4 tests)
 │   ├── test_taxii_ingest.py  # TAXII ingestion tests, offline (7 tests)
 │   ├── test_coverage.py      # Coverage template builder tests (16 tests)
-│   ├── test_dashboard.py     # Flask API and data loader tests (13 tests)
+│   ├── test_dashboard.py     # Flask API and data loader tests (20 tests)
 │   ├── test_demo.py          # End-to-end demo prototype tests (9 tests)
 │   ├── test_gate_demo.py     # Gate demo sample rules tests (5 tests)
+│   ├── test_rule_export.py   # Rule export (SPL, KQL, SQLite) tests (20 tests)
+│   ├── test_prioritisation.py # Threat-informed prioritisation tests (17 tests)
+│   ├── test_ioc_extract.py   # IOC extraction tests (29 tests)
+│   ├── test_logsources.py    # Multi-logsource field schema and registry tests (25 tests)
+│   ├── test_file_network_logsources.py # File and network logsource tests (19 tests)
 │   ├── test_scoring_pipeline.py # Scoring pipeline across all sets (13 tests)
 │   ├── test_prompts.py       # Prompt v1/v2 tests (2 tests)
 │   ├── test_prompts_v3.py    # Prompt v3a/v3b tests (5 tests)
